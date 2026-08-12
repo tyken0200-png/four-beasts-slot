@@ -2,2382 +2,1561 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>NODE_0</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NODE_0 // ARCHIVE</title>
 
 <style>
-*{
-    box-sizing:border-box;
-}
-
-html,body{
-    margin:0;
-    width:100%;
-    height:100%;
-}
-
-body{
-    overflow:hidden;
-    background:#020303;
-    color:#a8aaa4;
-    font-family:
-        "Courier New",
-        Consolas,
-        monospace;
-}
-
-/* CRT */
+*{box-sizing:border-box}
+html,body{margin:0;background:#020202;color:#aaa;font-family:Consolas,"Courier New",monospace}
+body{min-height:100vh;overflow-x:hidden}
 
 body:before{
-    content:"";
-    position:fixed;
-    inset:0;
-    z-index:999;
-    pointer-events:none;
-
-    background:
-        repeating-linear-gradient(
-            0deg,
-            rgba(255,255,255,.025) 0px,
-            rgba(255,255,255,.025) 1px,
-            transparent 1px,
-            transparent 4px
-        );
-
-    mix-blend-mode:screen;
-    opacity:.35;
+content:"";position:fixed;inset:0;pointer-events:none;z-index:99;
+background:repeating-linear-gradient(
+0deg,rgba(255,255,255,.025) 0px,
+rgba(255,255,255,.025) 1px,
+transparent 1px,transparent 4px);
 }
 
 body:after{
-    content:"";
-    position:fixed;
-    inset:0;
-    z-index:998;
-    pointer-events:none;
-
-    background:
-        radial-gradient(
-            ellipse at center,
-            transparent 45%,
-            rgba(0,0,0,.72) 100%
-        );
+content:"";position:fixed;inset:0;pointer-events:none;z-index:98;
+background:radial-gradient(circle,transparent 40%,rgba(0,0,0,.8));
 }
 
-/* BOOT */
+button{
+font-family:inherit;
+background:#080908;
+color:#777;
+border:1px solid #272927;
+padding:9px 13px;
+cursor:pointer;
+}
+
+button:hover{
+background:#151715;
+color:#ccc;
+}
 
 #boot{
-    position:fixed;
-    inset:0;
-    z-index:1000;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:#000;
+position:fixed;inset:0;background:#000;z-index:1000;
+display:flex;align-items:center;justify-content:center;
 }
 
-.boot-box{
-    width:min(700px,90vw);
-    color:#9da19a;
-    font-size:13px;
-    line-height:1.9;
+.boot{
+width:min(720px,90vw);
+font-size:13px;
+line-height:2;
 }
 
-.boot-line{
-    opacity:0;
+.boot p{opacity:0}
+.boot p.on{opacity:1}
+#enter{
+display:none;
+color:#aaa;
+cursor:pointer;
+animation:blink 1s infinite;
 }
 
-.boot-line.show{
-    opacity:1;
+@keyframes blink{50%{opacity:.1}}
+
+#app{display:none;min-height:100vh}
+
+.shell{
+max-width:1250px;
+margin:auto;
+display:grid;
+grid-template-columns:200px 1fr;
+min-height:100vh;
 }
 
-.boot-warning{
-    color:#b9b9ad;
-}
-
-.enter{
-    margin-top:25px;
-    color:#777a74;
-    cursor:pointer;
-    animation:blink 1s infinite;
-}
-
-@keyframes blink{
-    50%{opacity:.15}
-}
-
-/* MAIN */
-
-#app{
-    width:100%;
-    height:100%;
-    display:none;
-}
-
-.layout{
-    width:min(1200px,94vw);
-    height:100%;
-
-    margin:auto;
-
-    display:grid;
-    grid-template-columns:190px 1fr;
-}
-
-/* SIDEBAR */
-
-.sidebar{
-    border-right:1px solid #252925;
-    padding:25px 15px;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,.012),
-            transparent
-        );
+aside{
+border-right:1px solid #222;
+padding:25px 14px;
 }
 
 .logo{
-    color:#c2c3bd;
-    font-size:19px;
-    letter-spacing:4px;
-    margin-bottom:6px;
+font-size:20px;
+letter-spacing:5px;
+color:#ccc;
+margin-bottom:5px;
 }
 
-.version{
-    color:#444842;
-    font-size:9px;
-    margin-bottom:35px;
+.small{
+font-size:9px;
+color:#444;
 }
 
-.nav{
-    display:flex;
-    flex-direction:column;
-    gap:3px;
+nav{
+margin-top:40px;
+display:flex;
+flex-direction:column;
+gap:3px;
 }
 
-.nav button{
-    border:0;
-    background:transparent;
-    color:#777b74;
-
-    padding:11px 8px;
-    text-align:left;
-
-    font-family:inherit;
-    cursor:pointer;
+nav button{
+text-align:left;
+border:0;
+background:transparent;
 }
 
-.nav button:hover{
-    background:#101310;
-    color:#c7c8c0;
+nav button.active{
+background:#101210;
+color:#ddd;
 }
 
-.nav button.active{
-    color:#d1d1c8;
-    background:#0c0e0c;
+.session{
+position:fixed;
+bottom:20px;
+font-size:9px;
+line-height:1.8;
+color:#444;
 }
 
-.status{
-    position:absolute;
-    bottom:25px;
+main{padding:25px;max-width:1000px}
 
-    color:#454942;
-    font-size:9px;
-    line-height:1.8;
+.top{
+display:flex;
+justify-content:space-between;
+border-bottom:1px solid #222;
+padding-bottom:12px;
+font-size:10px;
+color:#555;
 }
 
-/* CONTENT */
-
-.content{
-    padding:25px 30px;
-    overflow:auto;
-}
-
-.topbar{
-    display:flex;
-    justify-content:space-between;
-
-    border-bottom:1px solid #252925;
-    padding-bottom:12px;
-    margin-bottom:25px;
-
-    color:#535750;
-    font-size:10px;
-}
-
-.page{
-    display:none;
-}
-
-.page.active{
-    display:block;
-}
+.page{display:none;padding-top:25px}
+.page.active{display:block}
 
 h1{
-    margin:0 0 8px;
-    color:#c5c6be;
-    font-size:20px;
-    font-weight:normal;
+font-weight:normal;
+font-size:21px;
+color:#ccc;
+margin:0 0 7px;
 }
 
-.sub{
-    color:#494d47;
-    font-size:10px;
-    margin-bottom:25px;
+.desc{
+font-size:10px;
+color:#494d48;
+margin-bottom:25px;
 }
-
-/* PANELS */
 
 .panel{
-    border:1px solid #252925;
-    background:#050605;
-    margin-bottom:12px;
+border:1px solid #242724;
+background:#050605;
+margin-bottom:15px;
 }
 
-.panel-head{
-    padding:10px 12px;
-    border-bottom:1px solid #20241f;
-
-    color:#6f746d;
-    font-size:10px;
+.head{
+padding:10px;
+border-bottom:1px solid #202320;
+font-size:10px;
+color:#666;
 }
 
-.panel-body{
-    padding:15px;
+.body{padding:15px}
+
+.camera-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
 }
 
-/* BOARD */
+.cam{
+border:1px solid #292c29;
+background:#000;
+position:relative;
+cursor:pointer;
+overflow:hidden;
+}
+
+.cam video{
+width:100%;
+display:block;
+aspect-ratio:16/10;
+object-fit:cover;
+filter:
+grayscale(.75)
+contrast(1.25)
+brightness(.62);
+}
+
+.cam:hover video{
+filter:grayscale(.45) contrast(1.35) brightness(.72);
+}
+
+.cam .label{
+position:absolute;
+top:8px;
+left:9px;
+z-index:4;
+font-size:9px;
+color:#bbb;
+text-shadow:0 1px 4px #000;
+}
+
+.cam .rec{
+position:absolute;
+top:8px;
+right:9px;
+z-index:4;
+font-size:9px;
+color:#784545;
+}
+
+.cam .stamp{
+position:absolute;
+bottom:8px;
+left:9px;
+z-index:4;
+font-size:9px;
+color:#aaa;
+}
+
+.scan{
+position:absolute;
+inset:0;
+z-index:3;
+pointer-events:none;
+background:
+repeating-linear-gradient(
+0deg,
+transparent 0px,
+transparent 5px,
+rgba(255,255,255,.025) 6px
+);
+mix-blend-mode:screen;
+}
+
+.vhs{
+position:absolute;
+inset:0;
+z-index:5;
+pointer-events:none;
+opacity:.35;
+background:
+linear-gradient(
+90deg,
+transparent 0%,
+rgba(255,255,255,.07) 49%,
+transparent 51%
+);
+animation:vhs 5s infinite;
+}
+
+@keyframes vhs{
+0%{transform:translateX(-100%)}
+30%{transform:translateX(100%)}
+100%{transform:translateX(100%)}
+}
+
+.list{
+display:flex;
+flex-direction:column;
+}
+
+.item{
+padding:15px 10px;
+border-bottom:1px solid #171917;
+cursor:pointer;
+}
+
+.item:hover{
+background:#0c0e0c;
+}
+
+.item b{color:#aaa;font-weight:normal}
+.item span{float:right;color:#444;font-size:9px}
 
 .post{
-    border-bottom:1px solid #171a17;
-    padding:15px 0;
+padding:16px 0;
+border-bottom:1px solid #171917;
+line-height:1.7;
 }
 
-.post:last-child{
-    border-bottom:0;
-}
+.post:last-child{border:0}
 
-.post-user{
-    color:#70746d;
-    font-size:10px;
-}
-
-.post-text{
-    margin-top:7px;
-    color:#a4a69f;
-    line-height:1.6;
-}
-
-.post-time{
-    margin-top:6px;
-    color:#41453f;
-    font-size:9px;
-}
-
-/* FILES */
-
-.file{
-    display:flex;
-    justify-content:space-between;
-
-    padding:12px;
-
-    border-bottom:1px solid #151815;
-
-    cursor:pointer;
-}
-
-.file:hover{
-    background:#0c0e0c;
-}
-
-.file-name{
-    color:#9ea098;
-}
-
-.file-size{
-    color:#41443f;
-}
-
-/* CAMERAS */
-
-.cameras{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-}
-
-.camera{
-    position:relative;
-
-    aspect-ratio:16/10;
-
-    background:#080a09;
-
-    border:1px solid #292d28;
-
-    overflow:hidden;
-
-    cursor:pointer;
-}
-
-.camera-screen{
-    position:absolute;
-    inset:0;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    color:#3d423c;
-    font-size:11px;
-
-    background:
-        radial-gradient(
-            circle,
-            #171a17,
-            #050605 70%
-        );
-}
-
-.camera-screen:after{
-    content:"";
-    position:absolute;
-    inset:0;
-
-    background:
-        repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 3px,
-            rgba(255,255,255,.025) 4px
-        );
-}
-
-.cam-label{
-    position:absolute;
-    left:8px;
-    top:7px;
-    z-index:3;
-
-    color:#8b8d85;
-    font-size:9px;
-}
-
-.cam-time{
-    position:absolute;
-    right:8px;
-    top:7px;
-    z-index:3;
-
-    color:#676a64;
-    font-size:9px;
-}
-
-.red{
-    color:#713b3b;
-}
-
-.figure{
-    position:absolute;
-
-    width:13px;
-    height:65px;
-
-    background:#050505;
-
-    border-radius:45% 45% 20% 20%;
-
-    filter:blur(1px);
-
-    opacity:0;
-
-    transition:
-        opacity 1.5s,
-        left 2s,
-        top 2s;
-}
-
-.figure:before{
-    content:"";
-
-    position:absolute;
-
-    width:18px;
-    height:18px;
-
-    border-radius:50%;
-
-    background:#030303;
-
-    left:-2.5px;
-    top:-14px;
-}
-
-.camera-haunted .figure{
-    opacity:.78;
-}
-
-/* FILE VIEWER */
+.user{font-size:10px;color:#666}
+.msg{margin-top:6px;color:#999}
 
 .viewer{
-    min-height:260px;
-
-    white-space:pre-wrap;
-
-    color:#8d9189;
-
-    line-height:1.8;
-
-    font-size:12px;
+display:none;
+position:fixed;
+z-index:300;
+inset:0;
+background:rgba(0,0,0,.96);
+padding:4vh 5vw;
 }
 
-.close{
-    float:right;
-    color:#555a53;
-    cursor:pointer;
+.viewer-inner{
+max-width:1100px;
+margin:auto;
+height:92vh;
+display:flex;
+flex-direction:column;
 }
 
-/* ALERT */
-
-#alert{
-    position:fixed;
-
-    left:50%;
-    top:50%;
-
-    transform:translate(-50%,-50%);
-
-    z-index:800;
-
-    display:none;
-
-    width:min(620px,85vw);
-
-    border:1px solid #5b302f;
-
-    background:
-        rgba(2,3,2,.96);
-
-    box-shadow:
-        0 0 80px rgba(80,0,0,.25);
-
-    padding:30px;
-
-    color:#aaa;
+.viewer video{
+width:100%;
+max-height:70vh;
+background:#000;
+object-fit:contain;
+border:1px solid #333;
 }
 
-.alert-title{
-    color:#8e5552;
-    margin-bottom:20px;
+.viewer-title{
+display:flex;
+justify-content:space-between;
+padding:12px 0;
+color:#aaa;
+font-size:11px;
 }
 
-.alert-text{
-    line-height:1.8;
+.controls{
+display:flex;
+gap:6px;
+flex-wrap:wrap;
+margin-top:10px;
 }
 
-/* FINAL */
+.controls button{
+font-size:10px;
+}
+
+#frameInfo{
+font-size:9px;
+color:#555;
+margin-top:9px;
+}
+
+.warning{
+color:#85504d;
+}
+
+#popup{
+display:none;
+position:fixed;
+z-index:500;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+width:min(600px,90vw);
+padding:28px;
+border:1px solid #5c3836;
+background:#030403;
+box-shadow:0 0 100px rgba(80,0,0,.25);
+}
+
+#popupTitle{color:#9b5c57;margin-bottom:18px}
+#popupText{font-size:12px;line-height:1.9;white-space:pre-line}
 
 #final{
-    position:fixed;
-    inset:0;
-
-    z-index:900;
-
-    display:none;
-
-    background:#000;
-
-    align-items:center;
-    justify-content:center;
-
-    text-align:center;
-
-    color:#aaa;
-
-    font-size:13px;
-
-    letter-spacing:2px;
+display:none;
+position:fixed;
+inset:0;
+z-index:900;
+background:#000;
+align-items:center;
+justify-content:center;
+text-align:center;
 }
 
-.final-inner{
-    line-height:2.4;
+.finalText{
+line-height:2.4;
+font-size:12px;
+color:#888;
 }
 
-.final-big{
-    color:#d0d0c8;
-    font-size:20px;
+.finalBig{
+font-size:22px;
+color:#ccc;
+letter-spacing:3px;
 }
-
-/* GLITCH */
 
 .glitch{
-    animation:
-        glitch .12s steps(2) 3;
+animation:glitch .08s steps(2) 4;
 }
 
 @keyframes glitch{
-    0%{
-        transform:translate(0);
-    }
-    25%{
-        transform:translate(-3px,1px);
-    }
-    50%{
-        transform:translate(4px,-1px);
-    }
-    75%{
-        transform:translate(-1px,2px);
-    }
-    100%{
-        transform:translate(0);
-    }
+0%{transform:translate(0)}
+25%{transform:translate(-5px,2px)}
+50%{transform:translate(4px,-3px)}
+75%{transform:translate(-2px,4px)}
+100%{transform:translate(0)}
 }
 
-/* MOBILE */
-
 @media(max-width:700px){
-
-    .layout{
-        display:block;
-    }
-
-    .sidebar{
-        position:fixed;
-        left:0;
-        right:0;
-        bottom:0;
-
-        height:60px;
-
-        z-index:100;
-
-        border-right:0;
-        border-top:1px solid #252925;
-
-        padding:5px;
-    }
-
-    .logo,
-    .version,
-    .status{
-        display:none;
-    }
-
-    .nav{
-        flex-direction:row;
-        justify-content:space-around;
-    }
-
-    .nav button{
-        font-size:9px;
-    }
-
-    .content{
-        padding:18px 15px 80px;
-    }
-
-    .cameras{
-        grid-template-columns:1fr;
-    }
+.shell{display:block}
+aside{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+height:58px;
+z-index:100;
+background:#050605;
+border-right:0;
+border-top:1px solid #222;
+padding:3px;
+}
+.logo,.session{display:none}
+nav{margin:0;flex-direction:row;justify-content:space-around}
+nav button{font-size:8px}
+main{padding:18px 12px 75px}
+.camera-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 
 <body>
 
-<!-- BOOT -->
-
 <div id="boot">
+<div class="boot">
 
-    <div class="boot-box">
-
-        <div class="boot-line">
-            NODE_0 INITIALIZING...
-        </div>
-
-        <div class="boot-line">
-            establishing anonymous connection...
-        </div>
-
-        <div class="boot-line">
-            routing through 7 nodes...
-        </div>
-
-        <div class="boot-line">
-            connection established
-        </div>
-
-        <br>
-
-        <div class="boot-line boot-warning">
-            WARNING: THIS NODE WAS NOT MEANT TO
-            BE ACCESSED FROM HERE.
-        </div>
-
-        <div
-            class="boot-line enter"
-            id="enter">
-            &gt; ENTER NODE
-        </div>
-
-    </div>
+<p>NODE_0 // RECOVERED ARCHIVE</p>
+<p>checking node integrity...</p>
+<p>loading surveillance index...</p>
+<p>warning: archive contains corrupted media</p>
+<p>warning: timestamps cannot be trusted</p>
+<p>connection established</p>
+<p id="enter">> ENTER ARCHIVE</p>
 
 </div>
+</div>
 
-
-<!-- APP -->
 
 <div id="app">
 
-<div class="layout">
+<div class="shell">
 
-    <aside class="sidebar">
+<aside>
 
-        <div class="logo">
-            NODE_0
-        </div>
+<div class="logo">NODE_0</div>
+<div class="small">RECOVERED ARCHIVE</div>
 
-        <div class="version">
-            anonymous network
-        </div>
+<nav>
+<button class="active" data-page="home">[ INDEX ]</button>
+<button data-page="cams">[ CAMERAS ]</button>
+<button data-page="files">[ FILES ]</button>
+<button data-page="board">[ BOARD ]</button>
+</nav>
 
-        <nav class="nav">
+<div class="session">
+SESSION: 8F2A-19C<br>
+NODE: UNKNOWN<br>
+STATUS: CONNECTED
+</div>
 
-            <button
-                class="active"
-                data-page="index">
-                [ INDEX ]
-            </button>
+</aside>
 
-            <button data-page="board">
-                [ BOARD ]
-            </button>
 
-            <button data-page="archive">
-                [ ARCHIVE ]
-            </button>
+<main>
 
-            <button data-page="cams">
-                [ CAMERAS ]
-            </button>
+<div class="top">
+<span>NODE_0 / ARCHIVE</span>
+<span id="clock">03:17:22</span>
+</div>
 
-            <button data-page="users">
-                [ USERS ]
-            </button>
 
-        </nav>
+<section id="home" class="page active">
 
-        <div class="status">
+<h1>RECOVERED NODE</h1>
+<div class="desc">
+The original owner of this node could not be identified.
+</div>
 
-            NODE: 03<br>
-            STATUS: CONNECTED<br>
-            ROUTE: UNKNOWN<br><br>
+<div class="panel">
 
-            SESSION:<br>
-            <span id="session">8F2A-19C</span>
+<div class="head">SYSTEM</div>
 
-        </div>
+<div class="body">
 
-    </aside>
+ARCHIVE STATUS:
+<span id="status">PARTIALLY RECOVERED</span>
 
+<br><br>
 
-    <main class="content">
+CAMERAS:
+07
 
-        <div class="topbar">
+<br>
 
-            <span>
-                anonymous network / node_0
-            </span>
+FILES:
+23
 
-            <span id="clock">
-                03:17:22
-            </span>
+<br>
 
-        </div>
+ACTIVE CONNECTIONS:
+<span id="users">0</span>
 
+<br><br>
 
-        <!-- INDEX -->
+<span class="warning">
+Do not assume the timestamps are correct.
+</span>
 
-        <section
-            class="page active"
-            id="index">
+</div>
+</div>
 
-            <h1>
-                NODE_0
-            </h1>
+<div class="panel">
 
-            <div class="sub">
-                anonymous network
-            </div>
+<div class="head">LAST MESSAGE</div>
 
+<div class="body">
 
-            <div class="panel">
+"The footage isn't showing what happened."
 
-                <div class="panel-head">
-                    CONNECTION STATUS
-                </div>
+<br><br>
 
-                <div class="panel-body">
-
-                    CONNECTION:
-                    <span id="connection">
-                        ESTABLISHED
-                    </span>
-
-                    <br>
-
-                    ROUTE:
-                    UNKNOWN
-
-                    <br>
-
-                    ACTIVE USERS:
-                    <span id="users">
-                        0
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <div class="panel">
-
-                <div class="panel-head">
-                    SYSTEM MESSAGE
-                </div>
-
-                <div class="panel-body">
-
-                    Welcome to NODE_0.
-
-                    <br><br>
-
-                    This node is not indexed.
-
-                    <br>
-
-                    Do not share the address.
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- BOARD -->
-
-        <section
-            class="page"
-            id="board">
-
-            <h1>
-                BOARD
-            </h1>
-
-            <div class="sub">
-                anonymous discussion
-            </div>
-
-            <div
-                class="panel"
-                id="posts">
-
-                <div class="panel-body">
-
-                    loading posts...
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ARCHIVE -->
-
-        <section
-            class="page"
-            id="archive">
-
-            <h1>
-                ARCHIVE
-            </h1>
-
-            <div class="sub">
-                recovered files
-            </div>
-
-            <div class="panel">
-
-                <div
-                    class="file"
-                    data-file="incident">
-                    <span class="file-name">
-                        incident_001.log
-                    </span>
-
-                    <span class="file-size">
-                        4 KB
-                    </span>
-                </div>
-
-
-                <div
-                    class="file"
-                    data-file="camera">
-                    <span class="file-name">
-                        incident_002.log
-                    </span>
-
-                    <span class="file-size">
-                        7 KB
-                    </span>
-                </div>
-
-
-                <div
-                    class="file"
-                    data-file="readme">
-                    <span class="file-name">
-                        README.txt
-                    </span>
-
-                    <span class="file-size">
-                        1 KB
-                    </span>
-                </div>
-
-
-                <div
-                    class="file"
-                    data-file="last">
-                    <span class="file-name">
-                        ██████████.dat
-                    </span>
-
-                    <span class="file-size">
-                        ???
-                    </span>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- CAMS -->
-
-        <section
-            class="page"
-            id="cams">
-
-            <h1>
-                CAMERAS
-            </h1>
-
-            <div class="sub">
-                surveillance node
-            </div>
-
-
-            <div class="cameras">
-
-                <div class="camera">
-                    <div class="camera-screen">
-                        EMPTY ROOM
-                    </div>
-
-                    <div class="cam-label">
-                        CAM_01
-                    </div>
-
-                    <div class="cam-time">
-                        03:17:22
-                    </div>
-                </div>
-
-
-                <div class="camera">
-                    <div class="camera-screen">
-                        NO SIGNAL
-                    </div>
-
-                    <div class="cam-label">
-                        CAM_02
-                    </div>
-                </div>
-
-
-                <div
-                    class="camera"
-                    id="cam03">
-
-                    <div class="camera-screen">
-                        EMPTY ROOM
-                        <div class="figure"></div>
-                    </div>
-
-                    <div class="cam-label">
-                        CAM_03
-                    </div>
-
-                    <div class="cam-time">
-                        03:17:22
-                    </div>
-
-                </div>
-
-
-                <div
-                    class="camera"
-                    id="cam04">
-
-                    <div class="camera-screen">
-                        EMPTY ROOM
-                        <div class="figure"></div>
-                    </div>
-
-                    <div class="cam-label">
-                        CAM_04
-                    </div>
-
-                    <div class="cam-time">
-                        03:17:22
-                    </div>
-
-                </div>
-
-
-                <div class="camera">
-
-                    <div class="camera-screen">
-                        CONNECTED
-                    </div>
-
-                    <div class="cam-label">
-                        CAM_05
-                    </div>
-
-                </div>
-
-
-                <div
-                    class="camera"
-                    id="cam07"
-                    style="display:none">
-
-                    <div class="camera-screen">
-
-                        <span>
-                            SIGNAL
-                        </span>
-
-                        <div class="figure"></div>
-
-                    </div>
-
-                    <div class="cam-label">
-                        CAM_07
-                    </div>
-
-                    <div class="cam-time">
-                        03:17:26
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- USERS -->
-
-        <section
-            class="page"
-            id="users">
-
-            <h1>
-                USERS
-            </h1>
-
-            <div class="sub">
-                connected sessions
-            </div>
-
-
-            <div class="panel">
-
-                <div class="panel-body">
-
-                    <div>
-                        guest_████
-                        <span style="color:#555">
-                            [ONLINE]
-                        </span>
-                    </div>
-
-                    <br>
-
-                    <div id="unknownUser">
-                        unknown_01
-                        <span style="color:#555">
-                            [OFFLINE]
-                        </span>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-    </main>
+"It's showing what is happening."
 
 </div>
 
 </div>
 
+</section>
 
-<!-- ALERT -->
 
-<div id="alert">
+<section id="cams" class="page">
 
-    <div class="alert-title">
-        SYSTEM MESSAGE
-    </div>
+<h1>SURVEILLANCE</h1>
 
-    <div
-        class="alert-text"
-        id="alertText">
-    </div>
+<div class="desc">
+Recovered camera feeds. Some footage may have been altered.
+</div>
+
+<div class="camera-grid">
+
+<div class="cam" data-video="terror" data-cam="01">
+
+<video muted loop playsinline preload="metadata">
+<source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/0/08/The_Terror_%281963%29.webm/The_Terror_%281963%29.webm.360p.vp9.webm" type="video/webm">
+</video>
+
+<div class="scan"></div>
+<div class="vhs"></div>
+
+<div class="label">CAM_01</div>
+<div class="rec">● REC</div>
+<div class="stamp">1987-11-03 03:16:09</div>
 
 </div>
 
 
-<!-- FINAL -->
+<div class="cam" data-video="terror" data-cam="02">
+
+<video muted loop playsinline preload="metadata">
+<source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/0/08/The_Terror_%281963%29.webm/The_Terror_%281963%29.webm.360p.vp9.webm" type="video/webm">
+</video>
+
+<div class="scan"></div>
+<div class="vhs"></div>
+
+<div class="label">CAM_02</div>
+<div class="rec">● REC</div>
+<div class="stamp">1987-11-03 03:17:02</div>
+
+</div>
+
+
+<div class="cam" data-video="terror" data-cam="03">
+
+<video muted loop playsinline preload="metadata">
+<source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/0/08/The_Terror_%281963%29.webm/The_Terror_%281963%29.webm.360p.vp9.webm" type="video/webm">
+</video>
+
+<div class="scan"></div>
+<div class="vhs"></div>
+
+<div class="label">CAM_03</div>
+<div class="rec">● REC</div>
+<div class="stamp">1987-11-03 03:17:26</div>
+
+</div>
+
+
+<div class="cam" data-video="terror" data-cam="04">
+
+<video muted loop playsinline preload="metadata">
+<source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/0/08/The_Terror_%281963%29.webm/The_Terror_%281963%29.webm.360p.vp9.webm" type="video/webm">
+</video>
+
+<div class="scan"></div>
+<div class="vhs"></div>
+
+<div class="label">CAM_04</div>
+<div class="rec">● REC</div>
+<div class="stamp">1987-11-03 03:17:26</div>
+
+</div>
+
+
+<div class="cam" data-video="terror" data-cam="05">
+
+<video muted loop playsinline preload="metadata">
+<source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/0/08/The_Terror_%281963%29.webm/The_Terror_%281963%29.webm.360p.vp9.webm" type="video/webm">
+</video>
+
+<div class="scan"></div>
+<div class="vhs"></div>
+
+<div class="label">CAM_05</div>
+<div class="rec">● REC</div>
+<div class="stamp">1987-11-03 03:18:44</div>
+
+</div>
+
+
+<div class="cam" data-video="terror" data-cam="06">
+
+<video muted loop playsinline preload="metadata">
+<source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/0/08/The_Terror_%281963%29.webm/The_Terror_%281963%29.webm.360p.vp9.webm" type="video/webm">
+</video>
+
+<div class="scan"></div>
+<div class="vhs"></div>
+
+<div class="label">CAM_06</div>
+<div class="rec">● REC</div>
+<div class="stamp">UNKNOWN</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section id="files" class="page">
+
+<h1>FILES</h1>
+<div class="desc">Recovered fragments.</div>
+
+<div class="panel">
+
+<div class="list">
+
+<div class="item" data-file="001">
+<b>incident_001.log</b>
+<span>4 KB</span>
+</div>
+
+<div class="item" data-file="002">
+<b>camera_04_notes.txt</b>
+<span>2 KB</span>
+</div>
+
+<div class="item" data-file="003">
+<b>frame_1837.dat</b>
+<span>UNKNOWN</span>
+</div>
+
+<div class="item" data-file="004">
+<b>observer.log</b>
+<span>1 KB</span>
+</div>
+
+<div class="item" data-file="005">
+<b>██████████.dat</b>
+<span>???</span>
+</div>
+
+</div>
+</div>
+
+</section>
+
+
+<section id="board" class="page">
+
+<h1>BOARD</h1>
+<div class="desc">Recovered messages.</div>
+
+<div class="panel">
+<div class="body">
+
+<div class="post">
+<div class="user">user_0192 / 2014-11-03</div>
+<div class="msg">who uploaded camera 04?</div>
+</div>
+
+<div class="post">
+<div class="user">user_7731 / 2014-11-03</div>
+<div class="msg">delete the footage.</div>
+</div>
+
+<div class="post">
+<div class="user">user_0192 / 2014-11-03</div>
+<div class="msg">why?</div>
+</div>
+
+<div class="post">
+<div class="user">user_7731 / 2014-11-03</div>
+<div class="msg">because it changes when you watch it.</div>
+</div>
+
+<div class="post" id="secretPost" style="display:none">
+<div class="user">unknown / NOW</div>
+<div class="msg warning">STOP WATCHING CAMERA 04.</div>
+</div>
+
+</div>
+</div>
+
+</section>
+
+</main>
+</div>
+</div>
+
+
+<!-- VIDEO VIEWER -->
+
+<div id="viewer" class="viewer">
+
+<div class="viewer-inner">
+
+<div class="viewer-title">
+
+<span id="viewerTitle">
+CAM_04 // RECOVERED FOOTAGE
+</span>
+
+<button id="closeViewer">
+CLOSE
+</button>
+
+</div>
+
+<video
+id="mainVideo"
+controls
+playsinline>
+</video>
+
+<div class="controls">
+
+<button id="minusFrame">- FRAME</button>
+<button id="plusFrame">+ FRAME</button>
+<button id="slow">SLOW</button>
+<button id="normal">1X</button>
+<button id="pause">PAUSE</button>
+<button id="enhance">ENHANCE</button>
+
+</div>
+
+<div id="frameInfo">
+FRAME: 0000
+</div>
+
+</div>
+</div>
+
+
+<div id="popup">
+
+<div id="popupTitle">
+ARCHIVE MESSAGE
+</div>
+
+<div id="popupText"></div>
+
+<br>
+
+<button id="closePopup">
+CLOSE
+</button>
+
+</div>
+
 
 <div id="final">
 
-    <div class="final-inner">
+<div class="finalText">
 
-        <div>
-            SESSION TERMINATED
-        </div>
+SESSION TERMINATED
 
-        <br>
+<br><br>
 
-        <div class="final-big">
-            CONNECTION REESTABLISHED
-        </div>
+<div class="finalBig">
+CONNECTION REESTABLISHED
+</div>
 
-        <br>
+<br>
 
-        <div>
-            USER: guest
-            <br>
-            STATUS: ONLINE
-            <br>
-            CAMERA: 07
-        </div>
+CAMERA: 04<br>
+VIEWERS: 1<br>
+STATUS: WATCHING
 
-        <br>
+<br><br>
 
-        <div>
-            YOU NEVER LOGGED OUT.
-        </div>
+YOU WERE NOT THE ONLY ONE
+WATCHING THE FOOTAGE.
 
-    </div>
+</div>
 
 </div>
 
 
 <script>
 
-/* =====================================================
+/* =========================
    STATE
-===================================================== */
+========================= */
 
-let audioStarted = false;
-
-let visited = {
-    cam04:false,
-    archive:false,
-    lastFile:false,
-    board:false
+const state={
+entered:false,
+camsOpened:0,
+cam04:false,
+file003:false,
+file005:false,
+board:false,
+horror:0,
+final:false
 };
 
-let horrorLevel = 0;
 
-let clockSeconds = 3 * 3600 + 17 * 60 + 22;
+/* =========================
+   AUDIO
+========================= */
 
-
-/* =====================================================
-   AUDIO ENGINE
-===================================================== */
-
-let audio;
-
+let ctx;
 let master;
-let droneGain;
-let heartbeatGain;
+let drone;
+let started=false;
 
-function startAudio(){
+function audioStart(){
 
-    if(audioStarted)
-        return;
+if(started)return;
 
-    audioStarted = true;
+started=true;
 
-    audio =
-        new (
-            window.AudioContext ||
-            window.webkitAudioContext
-        )();
+ctx=new(window.AudioContext||window.webkitAudioContext)();
 
-    master =
-        audio.createGain();
+master=ctx.createGain();
+master.gain.value=.16;
+master.connect(ctx.destination);
 
-    master.gain.value =
-        .18;
+const o=ctx.createOscillator();
+const g=ctx.createGain();
 
-    master.connect(
-        audio.destination
-    );
+o.type="sine";
+o.frequency.value=39;
+g.gain.value=.055;
 
+o.connect(g);
+g.connect(master);
+o.start();
 
-    /* LOW HORROR DRONE */
-
-    const osc1 =
-        audio.createOscillator();
-
-    const gain1 =
-        audio.createGain();
-
-    osc1.type =
-        "sine";
-
-    osc1.frequency.value =
-        43;
-
-    gain1.gain.value =
-        .08;
-
-    osc1.connect(gain1);
-
-    gain1.connect(master);
-
-    osc1.start();
-
-
-    const osc2 =
-        audio.createOscillator();
-
-    const gain2 =
-        audio.createGain();
-
-    osc2.type =
-        "triangle";
-
-    osc2.frequency.value =
-        86.4;
-
-    gain2.gain.value =
-        .025;
-
-    osc2.connect(gain2);
-
-    gain2.connect(master);
-
-    osc2.start();
-
-
-    droneGain =
-        gain1;
-
-
-    /* VERY LOW PULSE */
-
-    heartbeatGain =
-        audio.createGain();
-
-    heartbeatGain.gain.value =
-        0;
-
-    heartbeatGain.connect(
-        master
-    );
-
-    heartbeatLoop();
+drone=g;
 
 }
 
+function noise(duration=.25,amount=.12){
 
-/* =====================================================
-   HEARTBEAT
-===================================================== */
+if(!started)return;
 
-function heartbeatLoop(){
-
-    if(!audioStarted)
-        return;
-
-    const now =
-        audio.currentTime;
-
-    const osc =
-        audio.createOscillator();
-
-    const gain =
-        audio.createGain();
-
-    osc.type =
-        "sine";
-
-    osc.frequency.value =
-        55;
-
-    gain.gain.setValueAtTime(
-        0,
-        now
-    );
-
-    gain.gain.linearRampToValueAtTime(
-        .15,
-        now+.04
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        .001,
-        now+.16
-    );
-
-    osc.connect(gain);
-
-    gain.connect(
-        heartbeatGain
-    );
-
-    osc.start(now);
-
-    osc.stop(now+.2);
-
-
-    setTimeout(
-        heartbeatLoop,
-        900 - Math.min(
-            horrorLevel*50,
-            350
-        )
-    );
-}
-
-
-/* =====================================================
-   RADIO NOISE
-===================================================== */
-
-function radioNoise(
-    duration=350
-){
-
-    if(!audioStarted)
-        return;
-
-    const buffer =
-        audio.createBuffer(
-            1,
-            audio.sampleRate *
-            (duration/1000),
-            audio.sampleRate
-        );
-
-    const data =
-        buffer.getChannelData(0);
-
-    for(
-        let i=0;
-        i<data.length;
-        i++
-    ){
-
-        data[i] =
-            (
-                Math.random() * 2 - 1
-            ) *
-            .45;
-    }
-
-    const source =
-        audio.createBufferSource();
-
-    const filter =
-        audio.createBiquadFilter();
-
-    const gain =
-        audio.createGain();
-
-    filter.type =
-        "bandpass";
-
-    filter.frequency.value =
-        900;
-
-    filter.Q.value =
-        1.2;
-
-    gain.gain.value =
-        .12;
-
-    source.buffer =
-        buffer;
-
-    source.connect(filter);
-
-    filter.connect(gain);
-
-    gain.connect(master);
-
-    source.start();
-
-}
-
-
-/* =====================================================
-   METAL / CLICK
-===================================================== */
-
-function clickSound(){
-
-    if(!audioStarted)
-        return;
-
-    const osc =
-        audio.createOscillator();
-
-    const gain =
-        audio.createGain();
-
-    osc.type =
-        "square";
-
-    osc.frequency.value =
-        1200;
-
-    gain.gain.setValueAtTime(
-        .001,
-        audio.currentTime
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        .035,
-        audio.currentTime+.002
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        .001,
-        audio.currentTime+.035
-    );
-
-    osc.connect(gain);
-
-    gain.connect(master);
-
-    osc.start();
-
-    osc.stop(
-        audio.currentTime+.04
-    );
-}
-
-
-/* =====================================================
-   DEEP HIT
-===================================================== */
-
-function deepHit(){
-
-    if(!audioStarted)
-        return;
-
-    const osc =
-        audio.createOscillator();
-
-    const gain =
-        audio.createGain();
-
-    osc.type =
-        "sine";
-
-    osc.frequency.setValueAtTime(
-        75,
-        audio.currentTime
-    );
-
-    osc.frequency.exponentialRampToValueAtTime(
-        28,
-        audio.currentTime+.8
-    );
-
-    gain.gain.setValueAtTime(
-        .001,
-        audio.currentTime
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        .32,
-        audio.currentTime+.03
-    );
-
-    gain.gain.exponentialRampToValueAtTime(
-        .001,
-        audio.currentTime+.9
-    );
-
-    osc.connect(gain);
-
-    gain.connect(master);
-
-    osc.start();
-
-    osc.stop(
-        audio.currentTime+1
-    );
-}
-
-
-/* =====================================================
-   UI
-===================================================== */
-
-const pages =
-    document.querySelectorAll(
-        ".page"
-    );
-
-const navButtons =
-    document.querySelectorAll(
-        ".nav button"
-    );
-
-
-function openPage(
-    name
-){
-
-    pages.forEach(
-        page => {
-
-            page.classList.remove(
-                "active"
-            );
-
-            if(
-                page.id === name
-            ){
-                page.classList.add(
-                    "active"
-                );
-            }
-        }
-    );
-
-
-    navButtons.forEach(
-        button => {
-
-            button.classList.toggle(
-                "active",
-                button.dataset.page === name
-            );
-
-        }
-    );
-
-
-    clickSound();
-
-
-    if(name === "board"){
-
-        visited.board = true;
-
-        loadBoard();
-
-    }
-
-
-    if(name === "cams"){
-
-        startCameraPage();
-
-    }
-
-
-    if(
-        name === "archive"
-    ){
-
-        visited.archive = true;
-
-    }
-
-
-    horrorCheck();
-}
-
-
-navButtons.forEach(
-    button => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                openPage(
-                    button.dataset.page
-                );
-
-            }
-        );
-
-    }
+const buffer=ctx.createBuffer(
+1,
+ctx.sampleRate*duration,
+ctx.sampleRate
 );
 
+const d=buffer.getChannelData(0);
 
-/* =====================================================
-   BOARD
-===================================================== */
+for(let i=0;i<d.length;i++){
+d[i]=(Math.random()*2-1)*amount;
+}
 
-function loadBoard(){
+const src=ctx.createBufferSource();
+const gain=ctx.createGain();
 
-    const posts =
-        document.getElementById(
-            "posts"
-        );
+gain.gain.value=.5;
 
+src.buffer=buffer;
+src.connect(gain);
+gain.connect(master);
 
-    posts.innerHTML = `
+src.start();
 
-        <div class="panel-body">
+}
 
-            <div class="post">
+function hit(freq=45,vol=.3){
 
-                <div class="post-user">
-                    user_0192
-                </div>
+if(!started)return;
 
-                <div class="post-text">
-                    who made this?
-                </div>
+const o=ctx.createOscillator();
+const g=ctx.createGain();
 
-                <div class="post-time">
-                    2014-11-03 02:51
-                </div>
+o.type="sine";
 
-            </div>
+o.frequency.setValueAtTime(
+freq,
+ctx.currentTime
+);
 
+o.frequency.exponentialRampToValueAtTime(
+20,
+ctx.currentTime+.8
+);
 
-            <div class="post">
+g.gain.setValueAtTime(
+.001,
+ctx.currentTime
+);
 
-                <div class="post-user">
-                    user_7731
-                </div>
+g.gain.exponentialRampToValueAtTime(
+vol,
+ctx.currentTime+.025
+);
 
-                <div class="post-text">
-                    don't access camera 04
-                </div>
+g.gain.exponentialRampToValueAtTime(
+.001,
+ctx.currentTime+.8
+);
 
-                <div class="post-time">
-                    2014-11-03 02:54
-                </div>
+o.connect(g);
+g.connect(master);
 
-            </div>
+o.start();
+o.stop(ctx.currentTime+.9);
 
+}
 
-            <div class="post">
+function tick(){
 
-                <div class="post-user">
-                    user_0192
-                </div>
+if(!started)return;
 
-                <div class="post-text">
-                    why?
-                </div>
+const o=ctx.createOscillator();
+const g=ctx.createGain();
 
-                <div class="post-time">
-                    2014-11-03 02:56
-                </div>
+o.type="square";
+o.frequency.value=900;
 
-            </div>
+g.gain.setValueAtTime(.001,ctx.currentTime);
+g.gain.exponentialRampToValueAtTime(.025,ctx.currentTime+.002);
+g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.035);
 
+o.connect(g);
+g.connect(master);
 
-        </div>
-    `;
-
-
-    setTimeout(
-        () => {
-
-            posts
-                .querySelector(
-                    ".panel-body"
-                )
-                .insertAdjacentHTML(
-                    "beforeend",
-                    `
-                    <div class="post">
-
-                        <div class="post-user">
-                            user_7731
-                        </div>
-
-                        <div
-                            class="post-text"
-                            style="color:#8c5755">
-                            because he answers.
-                        </div>
-
-                        <div class="post-time">
-                            2014-11-03 02:57
-                        </div>
-
-                    </div>
-                    `
-                );
-
-            radioNoise(500);
-
-        },
-        3500
-    );
-
-
-    setTimeout(
-        () => {
-
-            posts
-                .querySelector(
-                    ".panel-body"
-                )
-                .insertAdjacentHTML(
-                    "beforeend",
-                    `
-                    <div class="post">
-
-                        <div class="post-user">
-                            user_0000
-                        </div>
-
-                        <div
-                            class="post-text"
-                            style="color:#9a5b57">
-                            HE IS HERE.
-                        </div>
-
-                        <div class="post-time">
-                            NOW
-                        </div>
-
-                    </div>
-                    `
-                );
-
-            deepHit();
-
-            horrorLevel++;
-
-        },
-        8000
-    );
+o.start();
+o.stop(ctx.currentTime+.04);
 
 }
 
 
-/* =====================================================
+/* =========================
+   BOOT
+========================= */
+
+const lines=document.querySelectorAll(".boot p");
+
+lines.forEach((p,i)=>{
+setTimeout(()=>{
+p.classList.add("on");
+
+if(i===lines.length-1){
+document.getElementById("enter").style.display="block";
+}
+
+},500+i*650);
+});
+
+
+document.getElementById("enter").onclick=async()=>{
+
+audioStart();
+
+if(ctx.state==="suspended")
+await ctx.resume();
+
+document.getElementById("boot").style.display="none";
+document.getElementById("app").style.display="block";
+
+noise(.4,.15);
+hit(50,.08);
+
+state.entered=true;
+
+};
+
+
+/* =========================
+   NAV
+========================= */
+
+document.querySelectorAll("nav button").forEach(btn=>{
+
+btn.onclick=()=>{
+
+tick();
+
+document.querySelectorAll(".page")
+.forEach(p=>p.classList.remove("active"));
+
+document.getElementById(btn.dataset.page)
+.classList.add("active");
+
+document.querySelectorAll("nav button")
+.forEach(b=>b.classList.remove("active"));
+
+btn.classList.add("active");
+
+if(btn.dataset.page==="board"){
+state.board=true;
+document.getElementById("secretPost").style.display="block";
+}
+
+checkHorror();
+
+};
+
+});
+
+
+/* =========================
+   CAMERAS
+========================= */
+
+const viewer=document.getElementById("viewer");
+const mainVideo=document.getElementById("mainVideo");
+
+let currentCam="";
+let frame=0;
+
+
+document.querySelectorAll(".cam").forEach(cam=>{
+
+const v=cam.querySelector("video");
+
+v.play().catch(()=>{});
+
+cam.onclick=()=>{
+
+currentCam=cam.dataset.cam;
+
+state.camsOpened++;
+
+if(currentCam==="04"){
+
+state.cam04=true;
+state.horror+=2;
+
+}
+
+openViewer(
+cam.dataset.cam,
+v.querySelector("source").src
+);
+
+checkHorror();
+
+};
+
+});
+
+
+function openViewer(cam,src){
+
+viewer.style.display="block";
+
+document.getElementById("viewerTitle")
+.textContent=
+"CAM_"+cam+" // RECOVERED FOOTAGE";
+
+mainVideo.src=src;
+
+mainVideo.currentTime=
+cam==="04" ? 13 : 3;
+
+mainVideo.play().catch(()=>{});
+
+frame=Math.floor(mainVideo.currentTime*24);
+
+document.getElementById("frameInfo")
+.textContent=
+"FRAME: "+String(frame).padStart(5,"0");
+
+noise(.3,.1);
+
+if(cam==="04"){
+
+setTimeout(()=>{
+document.body.classList.add("glitch");
+noise(.7,.18);
+hit(32,.25);
+
+setTimeout(()=>{
+document.body.classList.remove("glitch");
+},300);
+
+},4500);
+
+}
+
+}
+
+
+/* =========================
+   VIDEO CONTROLS
+========================= */
+
+document.getElementById("closeViewer").onclick=()=>{
+
+viewer.style.display="none";
+
+mainVideo.pause();
+
+tick();
+
+};
+
+
+document.getElementById("pause").onclick=()=>{
+
+if(mainVideo.paused)
+mainVideo.play();
+else
+mainVideo.pause();
+
+tick();
+
+};
+
+
+document.getElementById("slow").onclick=()=>{
+mainVideo.playbackRate=.35;
+tick();
+};
+
+
+document.getElementById("normal").onclick=()=>{
+mainVideo.playbackRate=1;
+tick();
+};
+
+
+document.getElementById("plusFrame").onclick=()=>{
+
+mainVideo.pause();
+
+mainVideo.currentTime+=1/24;
+
+frame++;
+
+document.getElementById("frameInfo")
+.textContent=
+"FRAME: "+String(frame).padStart(5,"0");
+
+tick();
+
+if(
+currentCam==="04" &&
+frame%37===0
+){
+
+state.horror++;
+noise(.4,.2);
+}
+
+checkHorror();
+
+};
+
+
+document.getElementById("minusFrame").onclick=()=>{
+
+mainVideo.pause();
+
+mainVideo.currentTime=Math.max(
+0,
+mainVideo.currentTime-1/24
+);
+
+frame--;
+
+document.getElementById("frameInfo")
+.textContent=
+"FRAME: "+String(frame).padStart(5,"0");
+
+tick();
+
+};
+
+
+/* =========================
+   ENHANCE
+========================= */
+
+document.getElementById("enhance").onclick=()=>{
+
+mainVideo.style.filter=
+"grayscale(.2) contrast(2) brightness(.9)";
+
+noise(.8,.2);
+
+hit(35,.22);
+
+state.horror++;
+
+setTimeout(()=>{
+
+document.getElementById("frameInfo")
+.textContent=
+"ENHANCEMENT COMPLETE // MATCH FOUND";
+
+},700);
+
+checkHorror();
+
+};
+
+
+/* =========================
    FILES
-===================================================== */
+========================= */
 
-document
-.querySelectorAll(".file")
-.forEach(
-    file => {
+document.querySelectorAll(".item")
+.forEach(item=>{
 
-        file.addEventListener(
-            "click",
-            () => {
+item.onclick=()=>{
 
-                const type =
-                    file.dataset.file;
+tick();
 
-                openFile(
-                    type
-                );
+const id=item.dataset.file;
 
-            }
-        );
+let text="";
 
-    }
-);
+if(id==="001"){
 
-
-function openFile(type){
-
-    const alert =
-        document.getElementById(
-            "alert"
-        );
-
-    const text =
-        document.getElementById(
-            "alertText"
-        );
-
-
-    alert.style.display =
-        "block";
-
-
-    if(type === "incident"){
-
-        text.textContent =
-`
-INCIDENT_001
+text=
+`INCIDENT_001
 
 03:17:22
 
-Camera 04 reported
-a continuous static frame.
+Camera 04 began recording
+without an operator.
 
-No hardware failure
-was found.
+No movement detected.
 
-Operator reported
-hearing footsteps.
+Audio contains footsteps.
 
-There was no one
-inside the building.
-`;
+The footsteps do not
+match the room acoustics.`;
 
-    }
+}
 
+if(id==="002"){
 
-    if(type === "camera"){
+text=
+`CAMERA_04_NOTES
 
-        text.textContent =
-`
-INCIDENT_002
+DO NOT LOOP THE FOOTAGE.
 
-The camera was moved
-approximately 3.7 meters.
+DO NOT ENHANCE FRAME 1837.
 
-No movement was recorded.
+DO NOT WATCH AFTER 03:17:26.
 
-The camera was later
-found facing the wall.
+Someone wrote this
+underneath the original note:
 
-The wall contained
-a message.
+"IT KNOWS WHEN YOU PAUSE."`;
 
-The message was removed.
-`;
+}
 
-    }
+if(id==="003"){
 
+state.file003=true;
 
-    if(type === "readme"){
+text=
+`FRAME_1837
 
-        text.textContent =
-`
-README
+MATCH FOUND.
 
-If you found this directory,
-
-do not open the last file.
-
-It is not a file.
-
-It is a record.
-`;
-
-    }
-
-
-    if(type === "last"){
-
-        visited.lastFile =
-            true;
-
-
-        text.textContent =
-`
-██████████.dat
-
-OPENED.
-
-You should not have
-opened this.
-
-SESSION RECORD:
-
-USER: guest
-TIME: ${getTime()}
 CAMERA: 04
+
+The image does not match
+the surrounding frames.
+
+There is no explanation
+for the additional object.
+
+DO NOT CLOSE THIS WINDOW
+UNTIL THE VIDEO IS FINISHED.`;
+
+hit(31,.28);
+noise(1,.18);
+
+}
+
+if(id==="004"){
+
+text=
+`OBSERVER.LOG
+
+03:17:26
+viewer connected
+
+03:17:31
+viewer connected
+
+03:17:36
+viewer connected
+
+03:17:41
+viewer connected
+
+03:17:46
+viewer connected
+
+03:17:51
+viewer connected
 
 ...
 
-The camera is currently
-watching this page.
+There is only one
+connection.
 
-Do not look behind you.
 `;
 
-        radioNoise(1000);
+}
 
-        deepHit();
+if(id==="005"){
 
-        horrorLevel += 2;
+state.file005=true;
 
-    }
+text=
+`██████████.DAT
+
+OPENED.
+
+SESSION: 8F2A-19C
+
+CAMERA: 04
+
+VIEWER: 1
+
+THE VIEWER IS NOT
+OUTSIDE THE ARCHIVE.
+
+THE VIEWER IS INSIDE
+THE FOOTAGE.`;
+
+hit(24,.4);
+noise(1.5,.2);
+
+}
+
+showPopup(text);
+
+checkHorror();
+
+};
+
+});
+
+
+/* =========================
+   POPUP
+========================= */
+
+function showPopup(text){
+
+document.getElementById("popupText")
+.textContent=text;
+
+document.getElementById("popup")
+.style.display="block";
+
+}
+
+document.getElementById("closePopup").onclick=()=>{
+
+document.getElementById("popup")
+.style.display="none";
+
+tick();
+
+};
+
+
+/* =========================
+   HORROR EVENTS
+========================= */
+
+function checkHorror(){
+
+if(state.horror>=5){
+
+document.getElementById("status")
+.textContent="CORRUPTED";
+
+}
+
+if(
+state.cam04 &&
+state.file003 &&
+state.board
+){
+
+setTimeout(()=>{
+
+if(!state.final){
+
+document.getElementById("secretPost")
+.querySelector(".msg")
+.textContent=
+"HE CAN SEE YOU THROUGH CAMERA 04.";
+
+noise(1,.18);
+hit(29,.3);
+
+}
+
+},1200);
+
+}
+
+if(
+state.cam04 &&
+state.file003 &&
+state.file005 &&
+state.board &&
+!state.final
+){
+
+setTimeout(finalSequence,2500);
+
+}
 
 }
 
 
-/* CLOSE ALERT */
-
-document
-.getElementById("alert")
-.addEventListener(
-    "click",
-    function(){
-
-        this.style.display =
-            "none";
-
-    }
-);
-
-
-/* =====================================================
-   CAMERA
-===================================================== */
-
-let cameraStarted =
-    false;
-
-
-function startCameraPage(){
-
-    if(cameraStarted)
-        return;
-
-    cameraStarted = true;
-
-
-    const cam04 =
-        document.getElementById(
-            "cam04"
-        );
-
-
-    setTimeout(
-        () => {
-
-            cam04.classList.add(
-                "camera-haunted"
-            );
-
-            radioNoise(400);
-
-            horrorLevel++;
-
-        },
-        5000
-    );
-
-
-    setTimeout(
-        () => {
-
-            const figure =
-                cam04.querySelector(
-                    ".figure"
-                );
-
-            figure.style.left =
-                "72%";
-
-            figure.style.top =
-                "25%";
-
-        },
-        6000
-    );
-
-
-    setTimeout(
-        () => {
-
-            const figure =
-                cam04.querySelector(
-                    ".figure"
-                );
-
-            figure.style.left =
-                "48%";
-
-            figure.style.top =
-                "20%";
-
-            deepHit();
-
-        },
-        11000
-    );
-
-
-    setTimeout(
-        () => {
-
-            unlockCam07();
-
-        },
-        15000
-    );
-
-}
-
-
-/* =====================================================
-   CAM 07
-===================================================== */
-
-function unlockCam07(){
-
-    const cam07 =
-        document.getElementById(
-            "cam07"
-        );
-
-
-    cam07.style.display =
-        "block";
-
-
-    const screen =
-        cam07.querySelector(
-            ".camera-screen"
-        );
-
-
-    screen.firstChild.textContent =
-        "";
-
-
-    setTimeout(
-        () => {
-
-            screen.innerHTML =
-                `
-                <span>
-                    SIGNAL FOUND
-                </span>
-
-                <div class="figure"></div>
-                `;
-
-            radioNoise(800);
-
-        },
-        1800
-    );
-
-
-    horrorLevel += 2;
-}
-
-
-/* =====================================================
-   HORROR CHECK
-===================================================== */
-
-function horrorCheck(){
-
-    if(
-        visited.cam04 &&
-        visited.archive &&
-        visited.lastFile &&
-        visited.board
-    ){
-
-        finalSequence();
-
-        return;
-    }
-
-
-    if(
-        horrorLevel >= 5
-    ){
-
-        document.body
-            .classList.add(
-                "glitch"
-            );
-
-        setTimeout(
-            () => {
-
-                document.body
-                    .classList.remove(
-                        "glitch"
-                    );
-
-            },
-            400
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   CAMERA CLICK
-===================================================== */
-
-document
-.getElementById("cam04")
-.addEventListener(
-    "click",
-    () => {
-
-        visited.cam04 =
-            true;
-
-        clickSound();
-
-        horrorLevel++;
-
-        if(
-            horrorLevel > 2
-        ){
-
-            const figure =
-                document
-                .getElementById(
-                    "cam04"
-                )
-                .querySelector(
-                    ".figure"
-                );
-
-            figure.style.left =
-                "40%";
-
-            figure.style.top =
-                "16%";
-
-        }
-
-        horrorCheck();
-
-    }
-);
-
-
-/* =====================================================
-   CLOCK
-===================================================== */
-
-function getTime(){
-
-    const h =
-        Math.floor(
-            clockSeconds / 3600
-        );
-
-    const m =
-        Math.floor(
-            (clockSeconds % 3600) / 60
-        );
-
-    const s =
-        clockSeconds % 60;
-
-
-    return [
-        h,
-        m,
-        s
-    ]
-    .map(
-        n =>
-            String(n)
-            .padStart(2,"0")
-    )
-    .join(":");
-}
-
-
-setInterval(
-    () => {
-
-        clockSeconds++;
-
-        document
-            .getElementById(
-                "clock"
-            )
-            .textContent =
-                getTime();
-
-    },
-    1000
-);
-
-
-/* =====================================================
-   USER COUNT
-===================================================== */
-
-setTimeout(
-    () => {
-
-        document
-            .getElementById(
-                "users"
-            )
-            .textContent =
-                "1";
-
-    },
-    3000
-);
-
-
-setTimeout(
-    () => {
-
-        document
-            .getElementById(
-                "users"
-            )
-            .textContent =
-                "2";
-
-        document
-            .getElementById(
-                "unknownUser"
-            )
-            .innerHTML =
-                `
-                unknown_01
-                <span
-                    style="color:#8b504c">
-                    [ONLINE]
-                </span>
-                `;
-
-        radioNoise(300);
-
-    },
-    9000
-);
-
-
-/* =====================================================
-   RANDOM BACKGROUND EVENTS
-===================================================== */
-
-setInterval(
-    () => {
-
-        if(
-            !audioStarted
-        )
-            return;
-
-
-        const chance =
-            Math.random();
-
-
-        if(
-            chance < .16
-        ){
-
-            radioNoise(
-                120 +
-                Math.random()*500
-            );
-
-        }
-
-
-        if(
-            chance > .91 &&
-            horrorLevel > 2
-        ){
-
-            document.body
-                .classList.add(
-                    "glitch"
-                );
-
-            setTimeout(
-                () => {
-
-                    document.body
-                        .classList.remove(
-                            "glitch"
-                        );
-
-                },
-                180
-            );
-
-        }
-
-    },
-    7000
-);
-
-
-/* =====================================================
-   FINAL SEQUENCE
-===================================================== */
+/* =========================
+   FINAL
+========================= */
 
 function finalSequence(){
 
-    const final =
-        document.getElementById(
-            "final"
-        );
+if(state.final)return;
 
+state.final=true;
 
-    final.style.display =
-        "flex";
+if(drone)
+drone.gain.exponentialRampToValueAtTime(
+.001,
+ctx.currentTime+.2
+);
 
+document.getElementById("final")
+.style.display="flex";
 
-    /*
-       모든 소리를 잠시 끊음.
-       공포에서는 정적이 중요함.
-    */
+setTimeout(()=>{
+noise(.8,.25);
+},1800);
 
-    if(
-        droneGain
-    ){
+setTimeout(()=>{
+hit(22,.45);
+},2600);
 
-        droneGain.gain.exponentialRampToValueAtTime(
-            .001,
-            audio.currentTime + .2
-        );
+setTimeout(()=>{
 
-    }
+document.querySelector("#final .finalText")
+.innerHTML=`
 
+SESSION TERMINATED
 
-    setTimeout(
-        () => {
+<br><br>
 
-            deepHit();
+<div class="finalBig">
+CONNECTION REESTABLISHED
+</div>
 
-        },
-        1800
-    );
+<br>
 
+CAMERA: 04<br>
+VIEWERS: 1<br>
+STATUS: WATCHING
 
-    setTimeout(
-        () => {
+<br><br>
 
-            radioNoise(700);
+THE FOOTAGE WAS NEVER
+A RECORDING.
 
-        },
-        2600
-    );
+<br><br>
+
+YOU WERE THE LIVE FEED.
+
+`;
+
+},4200);
 
 }
 
 
-/* =====================================================
-   BOOT
-===================================================== */
+/* =========================
+   CLOCK
+========================= */
 
-const bootLines =
-    document.querySelectorAll(
-        ".boot-line"
-    );
+let seconds=3*3600+17*60+22;
 
+setInterval(()=>{
 
-bootLines.forEach(
-    (line,index) => {
+seconds++;
 
-        setTimeout(
-            () => {
+let h=Math.floor(seconds/3600)%24;
+let m=Math.floor(seconds%3600/60);
+let s=seconds%60;
 
-                line.classList.add(
-                    "show"
-                );
+document.getElementById("clock")
+.textContent=
+[h,m,s]
+.map(x=>String(x).padStart(2,"0"))
+.join(":");
 
-            },
-            500 +
-            index*650
-        );
-
-    }
-);
+},1000);
 
 
-document
-.getElementById("enter")
-.addEventListener(
-    "click",
-    async () => {
+/* =========================
+   RANDOM VHS EVENTS
+========================= */
 
-        startAudio();
+setInterval(()=>{
 
+if(!state.entered)return;
 
-        if(
-            audio.state ===
-            "suspended"
-        ){
+if(Math.random()<.2){
 
-            await audio.resume();
+document.body.classList.add("glitch");
 
-        }
+noise(.15,.08);
 
+setTimeout(()=>{
+document.body.classList.remove("glitch");
+},150);
 
-        document
-            .getElementById(
-                "boot"
-            )
-            .style.display =
-                "none";
+}
+
+},6000);
 
 
-        document
-            .getElementById(
-                "app"
-            )
-            .style.display =
-                "block";
+/* =========================
+   USER COUNT
+========================= */
 
+setTimeout(()=>{
+document.getElementById("users").textContent="1";
+},2500);
 
-        radioNoise(250);
-
-        clickSound();
-
-    }
-);
+setTimeout(()=>{
+document.getElementById("users").textContent="2";
+noise(.3,.08);
+},9000);
 
 </script>
 
 </body>
 </html>
+
+
+
 
