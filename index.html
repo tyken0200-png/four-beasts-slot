@@ -2,2725 +2,2497 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover">
-
-<title>NODE_0 // NIGHTMARE</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#020303">
+<title>THE LAST LINK</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
+*{box-sizing:border-box}
+:root{
+  --bg:#020303;
+  --panel:#070a09;
+  --panel2:#0a0e0d;
+  --line:#18211e;
+  --text:#a9b8b1;
+  --dim:#52625b;
+  --green:#80ffb0;
+  --red:#ff405d;
+  --yellow:#d5d08a;
+  --shadow:0 0 30px rgba(0,255,120,.035);
 }
 
 html,body{
   margin:0;
   width:100%;
   min-height:100%;
-  background:#020202;
-  color:#aaa;
-  font-family:Consolas,"Courier New",monospace;
+  background:#010202;
+  color:var(--text);
+  font-family:
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    "Liberation Mono",
+    monospace;
 }
 
 body{
   overflow-x:hidden;
 }
 
-/* =========================
-   CRT / VHS
-========================= */
-
-body::before{
+/* CRT */
+body:before{
   content:"";
+  pointer-events:none;
   position:fixed;
   inset:0;
-  z-index:999;
-  pointer-events:none;
-
+  z-index:9998;
   background:
     repeating-linear-gradient(
       to bottom,
-      rgba(255,255,255,.025) 0,
-      rgba(255,255,255,.025) 1px,
-      transparent 1px,
+      rgba(255,255,255,.018) 0px,
+      rgba(255,255,255,.018) 1px,
+      transparent 2px,
       transparent 4px
     );
+  mix-blend-mode:overlay;
+  opacity:.32;
 }
 
-body::after{
+body:after{
   content:"";
-  position:fixed;
-  inset:0;
-  z-index:998;
   pointer-events:none;
-
+  position:fixed;
+  inset:-20%;
+  z-index:9997;
   background:
     radial-gradient(
       ellipse at center,
-      transparent 35%,
-      rgba(0,0,0,.78) 100%
+      transparent 45%,
+      rgba(0,0,0,.72) 100%
     );
 }
 
-/* =========================
-   BOOT
-========================= */
+button,input{
+  font:inherit;
+}
+
+button{
+  color:inherit;
+}
+
+a{
+  color:inherit;
+}
+
+/* BOOT */
 
 #boot{
   position:fixed;
   inset:0;
-  z-index:2000;
+  z-index:10000;
   background:#000;
-
   display:flex;
   align-items:center;
   justify-content:center;
-
   padding:25px;
 }
 
-.boot-inner{
-  width:min(700px,100%);
+.bootBox{
+  width:min(720px,100%);
+  color:#7cffaa;
   font-size:13px;
-  line-height:2;
-}
-
-.boot-line{
-  opacity:0;
-  transition:opacity .2s;
-}
-
-.boot-line.show{
-  opacity:1;
-}
-
-#enter{
-  display:none;
-  margin-top:20px;
-  color:#aaa;
-  cursor:pointer;
-  animation:blink 1s infinite;
-}
-
-@keyframes blink{
-  50%{opacity:.1}
-}
-
-/* =========================
-   APP
-========================= */
-
-#app{
-  display:none;
-  min-height:100vh;
-}
-
-.layout{
-  width:100%;
-  max-width:1500px;
-  min-height:100vh;
-  margin:auto;
-
-  display:grid;
-  grid-template-columns:210px minmax(0,1fr);
-}
-
-/* =========================
-   SIDEBAR
-========================= */
-
-.sidebar{
-  position:relative;
-  border-right:1px solid #202220;
-  padding:25px 15px;
-}
-
-.logo{
-  color:#ddd;
-  font-size:21px;
-  letter-spacing:5px;
-}
-
-.sublogo{
-  margin-top:4px;
-  color:#444;
-  font-size:9px;
-}
-
-.nav{
-  display:flex;
-  flex-direction:column;
-  gap:3px;
-  margin-top:40px;
-}
-
-.nav button{
-  width:100%;
-  padding:12px 10px;
-
-  border:0;
-  background:transparent;
-
-  color:#555;
-  font-family:inherit;
-  font-size:10px;
-
-  text-align:left;
-  cursor:pointer;
-}
-
-.nav button:hover,
-.nav button.active{
-  background:#101210;
-  color:#ccc;
-}
-
-.session{
-  position:absolute;
-  bottom:20px;
-  left:15px;
-
-  color:#414441;
-  font-size:8px;
   line-height:1.8;
 }
 
-/* =========================
-   MAIN
-========================= */
+.bootTitle{
+  font-size:clamp(25px,6vw,58px);
+  letter-spacing:.2em;
+  margin-bottom:25px;
+  text-shadow:0 0 15px rgba(80,255,140,.3);
+}
 
-main{
-  min-width:0;
-  padding:25px;
+#bootLog{
+  min-height:170px;
+  color:#71847a;
+}
+
+.bootEnter{
+  margin-top:20px;
+  border:1px solid #294334;
+  background:#061009;
+  color:#8dffb2;
+  padding:13px 18px;
+  cursor:pointer;
+  letter-spacing:.12em;
+}
+
+.bootEnter:hover{
+  background:#0b1a10;
+  border-color:#4b8d62;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* APP */
+
+#app{
+  min-height:100vh;
+  display:flex;
+}
+
+.sidebar{
+  width:245px;
+  min-height:100vh;
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  background:#030605;
+  border-right:1px solid var(--line);
+  padding:22px 16px;
+  z-index:100;
+}
+
+.brand{
+  padding:8px 10px 25px;
+  border-bottom:1px solid var(--line);
+  margin-bottom:15px;
+}
+
+.brandName{
+  color:#c9d5cf;
+  font-size:18px;
+  letter-spacing:.18em;
+}
+
+.brandSub{
+  color:#435149;
+  font-size:9px;
+  margin-top:8px;
+}
+
+.navBtn{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-align:left;
+  background:transparent;
+  border:0;
+  color:#64746c;
+  padding:12px 10px;
+  margin:2px 0;
+  cursor:pointer;
+  font-size:12px;
+  transition:.15s;
+}
+
+.navBtn:hover,
+.navBtn.active{
+  color:#b5ffc9;
+  background:#08100b;
+}
+
+.navDot{
+  width:5px;
+  height:5px;
+  background:#304036;
+  display:inline-block;
+}
+
+.navBtn.active .navDot{
+  background:var(--green);
+  box-shadow:0 0 9px var(--green);
+}
+
+.sideStatus{
+  position:absolute;
+  bottom:20px;
+  left:16px;
+  right:16px;
+  padding:12px;
+  border:1px solid var(--line);
+  font-size:9px;
+  color:#45544d;
+  line-height:1.8;
+}
+
+.liveDot{
+  display:inline-block;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#ff3654;
+  box-shadow:0 0 8px #ff3654;
+  margin-right:5px;
+}
+
+.main{
+  margin-left:245px;
+  width:calc(100% - 245px);
+  min-height:100vh;
 }
 
 .topbar{
+  height:58px;
+  border-bottom:1px solid var(--line);
   display:flex;
+  align-items:center;
   justify-content:space-between;
+  padding:0 25px;
+  color:#53625b;
+  font-size:10px;
+}
 
-  padding-bottom:12px;
-  border-bottom:1px solid #202220;
+.topLeft{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
 
-  color:#555;
-  font-size:9px;
+.status{
+  color:#71e79b;
+}
+
+.session{
+  color:#36433d;
 }
 
 .page{
   display:none;
-  padding-top:25px;
+  padding:30px;
+  max-width:1250px;
+  margin:auto;
 }
 
 .page.active{
   display:block;
+  animation:pageIn .35s ease;
 }
 
-h1{
-  margin:0 0 7px;
-  color:#ccc;
-  font-size:22px;
-  font-weight:normal;
+@keyframes pageIn{
+  from{opacity:0;transform:translateY(5px)}
+  to{opacity:1;transform:none}
 }
 
-.desc{
-  margin-bottom:25px;
-  color:#4c504c;
-  font-size:10px;
+.pageTitle{
+  font-size:clamp(24px,4vw,42px);
+  color:#c8d3ce;
+  letter-spacing:.12em;
+  margin:0 0 8px;
 }
 
-/* =========================
-   PANELS
-========================= */
-
-.panel{
-  margin-bottom:15px;
-  border:1px solid #242724;
-  background:#050605;
-}
-
-.panel-head{
-  padding:11px;
-  border-bottom:1px solid #202320;
-
-  color:#666;
-  font-size:10px;
-}
-
-.panel-body{
-  padding:16px;
+.pageDesc{
+  color:#45544d;
   font-size:11px;
-  line-height:1.9;
+  margin-bottom:28px;
 }
 
-/* =========================
-   CAMERAS
-========================= */
+/* HOME */
 
-.camera-grid{
-  display:grid;
-  grid-template-columns:
-    repeat(2,minmax(0,1fr));
-
-  gap:12px;
-}
-
-.camera{
+.hero{
+  min-height:62vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  border:1px solid var(--line);
+  background:
+    linear-gradient(135deg,rgba(20,40,28,.16),transparent 45%),
+    #040706;
+  padding:clamp(25px,6vw,75px);
   position:relative;
-  min-width:0;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
 
-  border:1px solid #292c29;
-  background:#000;
+.hero:before{
+  content:"";
+  position:absolute;
+  width:320px;
+  height:320px;
+  right:-140px;
+  top:-140px;
+  border:1px solid rgba(100,255,150,.06);
+  border-radius:50%;
+  box-shadow:
+    0 0 0 40px rgba(100,255,150,.015),
+    0 0 0 80px rgba(100,255,150,.01);
+}
 
+.kicker{
+  color:#5f7669;
+  font-size:10px;
+  letter-spacing:.25em;
+  margin-bottom:20px;
+}
+
+.hero h1{
+  margin:0;
+  font-size:clamp(42px,9vw,100px);
+  line-height:.9;
+  color:#d5dfda;
+  letter-spacing:.06em;
+  text-shadow:
+    0 0 25px rgba(110,255,160,.08);
+}
+
+.hero h1 span{
+  color:#607269;
+}
+
+.heroText{
+  max-width:610px;
+  margin:30px 0;
+  line-height:1.9;
+  color:#68776f;
+  font-size:12px;
+}
+
+.enterBtn{
+  width:max-content;
+  padding:14px 20px;
+  background:#08120b;
+  border:1px solid #294b35;
+  color:#8effb2;
   cursor:pointer;
+  letter-spacing:.15em;
+}
+
+.enterBtn:hover{
+  background:#0d1d12;
+  box-shadow:0 0 25px rgba(90,255,140,.08);
+}
+
+.statGrid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin-top:10px;
+}
+
+.stat{
+  border:1px solid var(--line);
+  padding:16px;
+  background:#040706;
+}
+
+.statLabel{
+  font-size:9px;
+  color:#46534d;
+}
+
+.statValue{
+  color:#9aaea4;
+  font-size:17px;
+  margin-top:7px;
+}
+
+/* DIRECTORY */
+
+.directory{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.card{
+  border:1px solid var(--line);
+  background:#050807;
+  padding:18px;
+  min-height:145px;
+  cursor:pointer;
+  transition:.2s;
+  position:relative;
+}
+
+.card:hover{
+  border-color:#294534;
+  background:#071009;
+  transform:translateY(-2px);
+}
+
+.cardDanger:hover{
+  border-color:#4c2029;
+}
+
+.cardIcon{
+  color:#596a61;
+  font-size:18px;
+  margin-bottom:20px;
+}
+
+.cardTitle{
+  color:#aab8b1;
+  font-size:12px;
+  letter-spacing:.1em;
+}
+
+.cardDesc{
+  color:#46534d;
+  font-size:10px;
+  line-height:1.6;
+  margin-top:8px;
+}
+
+.cardStatus{
+  position:absolute;
+  right:13px;
+  top:13px;
+  font-size:8px;
+  color:#4d5c54;
+}
+
+.cardStatus.red{
+  color:#b6374b;
+}
+
+/* ARCHIVE */
+
+.archiveList{
+  border:1px solid var(--line);
+}
+
+.archiveRow{
+  display:grid;
+  grid-template-columns:80px 1fr 120px;
+  gap:15px;
+  align-items:center;
+  padding:16px;
+  border-bottom:1px solid #0e1512;
+  cursor:pointer;
+}
+
+.archiveRow:last-child{
+  border-bottom:0;
+}
+
+.archiveRow:hover{
+  background:#071009;
+}
+
+.fileId{
+  color:#3d4b44;
+  font-size:10px;
+}
+
+.fileTitle{
+  color:#9ba9a2;
+  font-size:11px;
+}
+
+.fileMeta{
+  color:#46534d;
+  font-size:9px;
+  text-align:right;
+}
+
+/* STREAM */
+
+.streamWrap{
+  display:grid;
+  grid-template-columns:1fr 330px;
+  gap:10px;
+}
+
+.screen{
+  min-height:450px;
+  border:1px solid var(--line);
+  background:#010202;
+  position:relative;
   overflow:hidden;
 }
 
-.camera video{
-  display:block;
-
-  width:100%;
-  height:auto;
-
-  /*
-    핵심:
-    cover 사용 안 함.
-    원본 비율 유지.
-  */
-
-  object-fit:contain;
-
-  background:#000;
-
-  filter:
-    grayscale(.8)
-    contrast(1.25)
-    brightness(.62);
-
-  transition:
-    filter .3s,
-    transform .3s;
-}
-
-.camera:hover video{
-  filter:
-    grayscale(.45)
-    contrast(1.35)
-    brightness(.72);
-}
-
-.camera-label{
-  position:absolute;
-  top:9px;
-  left:10px;
-  z-index:5;
-
-  color:#ccc;
-  font-size:9px;
-
-  text-shadow:
-    0 1px 5px #000;
-}
-
-.camera-rec{
-  position:absolute;
-  top:9px;
-  right:10px;
-  z-index:5;
-
-  color:#824848;
-  font-size:9px;
-}
-
-.camera-time{
-  position:absolute;
-  bottom:9px;
-  left:10px;
-  z-index:5;
-
-  color:#aaa;
-  font-size:9px;
-
-  text-shadow:
-    0 1px 5px #000;
-}
-
-.scan{
+.screenNoise{
   position:absolute;
   inset:0;
-  z-index:4;
-  pointer-events:none;
-
   background:
     repeating-linear-gradient(
-      to bottom,
-      transparent 0,
-      transparent 5px,
-      rgba(255,255,255,.025) 6px
+      0deg,
+      rgba(255,255,255,.02) 0,
+      rgba(255,255,255,.02) 1px,
+      transparent 1px,
+      transparent 5px
     );
 }
 
-.vhs-line{
+.screenCenter{
   position:absolute;
-  left:-100%;
-  top:0;
-
-  width:50%;
-  height:100%;
-
-  z-index:6;
-  pointer-events:none;
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(255,255,255,.08),
-      transparent
-    );
-
-  animation:vhs-scan 5s infinite;
-}
-
-@keyframes vhs-scan{
-  0%{
-    left:-100%;
-  }
-
-  35%{
-    left:120%;
-  }
-
-  100%{
-    left:120%;
-  }
-}
-
-/* =========================
-   FILE LIST
-========================= */
-
-.file{
-  padding:16px 10px;
-
-  border-bottom:1px solid #171917;
-
-  cursor:pointer;
-}
-
-.file:last-child{
-  border-bottom:0;
-}
-
-.file:hover{
-  background:#0b0d0b;
-}
-
-.file-name{
-  color:#aaa;
-  font-size:11px;
-}
-
-.file-size{
-  float:right;
-  color:#444;
-  font-size:9px;
-}
-
-/* =========================
-   BOARD
-========================= */
-
-.post{
-  padding:15px 0;
-  border-bottom:1px solid #171917;
-}
-
-.post:last-child{
-  border-bottom:0;
-}
-
-.post-user{
-  color:#555;
-  font-size:9px;
-}
-
-.post-text{
-  margin-top:5px;
-
-  color:#999;
-  font-size:11px;
-  line-height:1.7;
-}
-
-/* =========================
-   VIEWER
-========================= */
-
-#viewer{
-  position:fixed;
   inset:0;
-  z-index:1200;
-
-  display:none;
-
-  padding:
-    max(18px,env(safe-area-inset-top))
-    max(15px,env(safe-area-inset-right))
-    max(18px,env(safe-area-inset-bottom))
-    max(15px,env(safe-area-inset-left));
-
-  background:rgba(0,0,0,.97);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:14px;
+  color:#303c36;
+  font-size:10px;
+  text-align:center;
 }
 
-.viewer-inner{
-  width:100%;
-  max-width:1200px;
-  height:100%;
-  margin:auto;
+.cameraCircle{
+  width:75px;
+  height:75px;
+  border:1px solid #1b2922;
+  border-radius:50%;
+  position:relative;
+}
 
+.cameraCircle:after{
+  content:"";
+  position:absolute;
+  width:7px;
+  height:7px;
+  background:#1e3025;
+  border-radius:50%;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+}
+
+.streamTop{
+  position:absolute;
+  left:15px;
+  right:15px;
+  top:14px;
+  display:flex;
+  justify-content:space-between;
+  color:#4c5a53;
+  font-size:9px;
+  z-index:2;
+}
+
+.chat{
+  border:1px solid var(--line);
+  background:#040605;
+  min-height:450px;
   display:flex;
   flex-direction:column;
 }
 
-.viewer-top{
-  flex:0 0 auto;
-
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  gap:10px;
-
-  padding-bottom:12px;
-
-  color:#aaa;
+.chatHead{
+  padding:14px;
+  border-bottom:1px solid var(--line);
+  color:#69786f;
   font-size:10px;
 }
 
-.viewer-video-wrap{
-  width:100%;
-  min-height:0;
+.chatBody{
+  padding:14px;
   flex:1;
+  overflow:hidden;
+  font-size:10px;
+  line-height:1.7;
+}
 
+.chatLine{
+  margin-bottom:12px;
+}
+
+.user{
+  color:#5f806d;
+}
+
+.msg{
+  color:#68756f;
+}
+
+.system{
+  color:#9b4b59;
+}
+
+.chatInput{
+  border-top:1px solid var(--line);
   display:flex;
-  align-items:center;
-  justify-content:center;
-
-  background:#000;
-  border:1px solid #282a28;
 }
 
-#mainVideo{
-  display:block;
-
-  /*
-    영상 잘림 방지
-  */
-
-  width:100%;
-  height:100%;
-
-  object-fit:contain;
-
-  background:#000;
+.chatInput input{
+  flex:1;
+  background:transparent;
+  border:0;
+  outline:0;
+  color:#8e9e96;
+  padding:12px;
+  min-width:0;
 }
 
-.viewer-controls{
-  flex:0 0 auto;
+.chatInput button{
+  background:#071009;
+  border:0;
+  border-left:1px solid var(--line);
+  color:#688a75;
+  padding:0 13px;
+}
 
+/* SEARCH */
+
+.searchBox{
   display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-
-  padding-top:10px;
+  border:1px solid var(--line);
+  background:#040605;
+  margin-bottom:15px;
 }
 
-button{
-  min-height:40px;
+.searchBox input{
+  flex:1;
+  background:transparent;
+  border:0;
+  outline:0;
+  color:#a9b8b1;
+  padding:17px;
+  min-width:0;
+}
 
-  padding:8px 12px;
-
-  border:1px solid #292c29;
-  background:#070807;
-
-  color:#777;
-  font-family:inherit;
-  font-size:9px;
-
+.searchBox button{
+  background:#08110b;
+  border:0;
+  border-left:1px solid var(--line);
+  color:#79a889;
+  padding:0 22px;
   cursor:pointer;
 }
 
-button:hover{
-  background:#121412;
-  color:#ccc;
+.results{
+  display:grid;
+  gap:8px;
 }
 
-#frameInfo{
-  flex:0 0 auto;
+.result{
+  border:1px solid var(--line);
+  background:#040605;
+  padding:15px;
+  cursor:pointer;
+}
 
-  padding-top:8px;
+.result:hover{
+  border-color:#34523e;
+}
 
-  color:#444;
+.resultTitle{
+  color:#8fa197;
+  font-size:11px;
+}
+
+.resultMeta{
+  color:#46534d;
   font-size:9px;
+  margin-top:7px;
 }
 
-/* =========================
-   POPUP
-========================= */
+/* CHAT PAGE */
 
-#popup{
-  position:fixed;
-  z-index:1500;
+.fullChat{
+  border:1px solid var(--line);
+  background:#040605;
+  min-height:500px;
+  display:flex;
+  flex-direction:column;
+}
 
-  left:50%;
-  top:50%;
-
-  width:min(
-    600px,
-    calc(100vw - 30px)
-  );
-
-  max-height:
-    calc(100vh - 30px);
-
+.fullChatBody{
+  flex:1;
+  padding:20px;
   overflow:auto;
-
-  transform:translate(-50%,-50%);
-
-  padding:25px;
-
-  border:1px solid #533331;
-
-  background:#030403;
-
-  box-shadow:
-    0 0 100px rgba(70,0,0,.25);
-
-  display:none;
+  min-height:420px;
 }
 
-.popup-title{
+.fullMessage{
   margin-bottom:18px;
-
-  color:#9b5b56;
-  font-size:11px;
+  max-width:760px;
 }
 
-#popupText{
-  white-space:pre-line;
-
-  color:#999;
-  font-size:11px;
-  line-height:1.9;
+.fullMessage .who{
+  color:#5f7969;
+  font-size:9px;
+  margin-bottom:5px;
 }
 
-/* =========================
-   FINAL
-========================= */
+.fullMessage .text{
+  color:#78867f;
+  font-size:11px;
+  line-height:1.8;
+}
 
-#final{
+.fullMessage.unknown .who{
+  color:#a94a5b;
+}
+
+/* MODAL */
+
+#modal{
   position:fixed;
   inset:0;
-  z-index:1900;
-
+  z-index:9000;
+  background:rgba(0,0,0,.82);
   display:none;
-
   align-items:center;
   justify-content:center;
+  padding:20px;
+  backdrop-filter:blur(5px);
+}
 
-  padding:30px;
+#modal.show{
+  display:flex;
+}
 
-  background:#000;
+.modalBox{
+  width:min(700px,100%);
+  max-height:85vh;
+  overflow:auto;
+  border:1px solid #27342e;
+  background:#050807;
+  box-shadow:0 0 70px rgba(0,0,0,.8);
+}
 
+.modalHead{
+  padding:15px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  color:#65746c;
+  font-size:10px;
+}
+
+.close{
+  border:0;
+  background:transparent;
+  color:#65746c;
+  cursor:pointer;
+}
+
+.modalBody{
+  padding:22px;
+  line-height:1.9;
+  color:#68776f;
+  font-size:11px;
+}
+
+.modalBody pre{
+  white-space:pre-wrap;
+  color:#82968b;
+  font:inherit;
+}
+
+/* TOAST */
+
+#toast{
+  position:fixed;
+  left:50%;
+  bottom:30px;
+  transform:translateX(-50%) translateY(20px);
+  background:#071009;
+  border:1px solid #294334;
+  color:#86ad93;
+  padding:12px 18px;
+  font-size:10px;
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+  z-index:9500;
+  max-width:90vw;
   text-align:center;
 }
 
-.final-text{
-  color:#777;
-  font-size:11px;
-  line-height:2.4;
+#toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
 }
 
-.final-big{
-  color:#ccc;
-  font-size:22px;
-  letter-spacing:3px;
+/* MOBILE */
+
+.mobileNav{
+  display:none;
 }
 
-/* =========================
-   GLITCH
-========================= */
-
-.glitch{
-  animation:
-    glitch .08s steps(2) 5;
-}
-
-@keyframes glitch{
-
-  0%{
-    transform:translate(0);
-  }
-
-  25%{
-    transform:translate(-4px,2px);
-  }
-
-  50%{
-    transform:translate(4px,-2px);
-  }
-
-  75%{
-    transform:translate(-2px,3px);
-  }
-
-  100%{
-    transform:translate(0);
-  }
-
-}
-
-/* =========================
-   TABLET
-========================= */
-
-@media(max-width:900px){
-
-  .layout{
-    grid-template-columns:170px minmax(0,1fr);
-  }
-
-  main{
-    padding:20px;
-  }
-
-  .camera-grid{
-    grid-template-columns:1fr;
-  }
-
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media(max-width:700px){
-
-  body{
-    padding-bottom:
-      calc(62px + env(safe-area-inset-bottom));
-  }
-
-  .layout{
-    display:block;
-    min-height:100vh;
-  }
+@media(max-width:850px){
 
   .sidebar{
-    position:fixed;
-
-    left:0;
-    right:0;
-    bottom:0;
-
-    z-index:1000;
-
-    height:
-      calc(60px + env(safe-area-inset-bottom));
-
-    padding:
-      4px
-      4px
-      env(safe-area-inset-bottom)
-      4px;
-
-    border-top:1px solid #222;
-    border-right:0;
-
-    background:#050605;
+    display:none;
   }
 
-  .logo,
-  .sublogo,
+  .main{
+    margin-left:0;
+    width:100%;
+    padding-bottom:68px;
+  }
+
+  .topbar{
+    padding:0 14px;
+    height:50px;
+  }
+
   .session{
     display:none;
   }
 
-  .nav{
-    height:56px;
-    margin:0;
-
-    display:grid;
-    grid-template-columns:
-      repeat(4,1fr);
-
-    gap:3px;
+  .page{
+    padding:16px;
   }
 
-  .nav button{
-    min-height:48px;
+  .hero{
+    min-height:calc(100vh - 105px);
+    padding:25px 20px;
+  }
 
-    padding:5px 2px;
+  .hero h1{
+    font-size:clamp(39px,15vw,72px);
+  }
 
-    text-align:center;
+  .heroText{
+    font-size:11px;
+  }
 
+  .statGrid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .directory{
+    grid-template-columns:1fr;
+  }
+
+  .card{
+    min-height:125px;
+  }
+
+  .streamWrap{
+    grid-template-columns:1fr;
+  }
+
+  .screen{
+    min-height:54vh;
+  }
+
+  .chat{
+    min-height:300px;
+  }
+
+  .archiveRow{
+    grid-template-columns:55px 1fr;
+  }
+
+  .fileMeta{
+    display:none;
+  }
+
+  .mobileNav{
+    display:flex;
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    height:62px;
+    background:rgba(3,6,5,.96);
+    border-top:1px solid var(--line);
+    z-index:500;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+
+  .mobileNav button{
+    flex:1;
+    background:transparent;
+    border:0;
+    color:#4c5a53;
     font-size:8px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
   }
 
-  main{
-    width:100%;
-    padding:15px 12px 20px;
+  .mobileNav button.active{
+    color:#9bffb6;
   }
+
+  .mobileNav span:first-child{
+    font-size:15px;
+  }
+
+  #modal{
+    padding:10px;
+  }
+
+  .modalBox{
+    max-height:88vh;
+  }
+}
+
+@media(max-width:420px){
 
   .topbar{
     font-size:8px;
   }
 
-  h1{
-    font-size:19px;
+  .hero{
+    padding:22px 16px;
   }
 
-  .desc{
-    margin-bottom:18px;
-    font-size:9px;
+  .hero h1{
+    letter-spacing:.02em;
   }
 
-  .camera-grid{
-    grid-template-columns:1fr;
-    gap:9px;
+  .stat{
+    padding:12px;
   }
 
-  .camera video{
-    width:100%;
-    height:auto;
+  .statValue{
+    font-size:14px;
   }
 
-  .panel-body{
-    padding:13px;
-    font-size:10px;
+  .screen{
+    min-height:48vh;
   }
-
-  /*
-    모바일 viewer:
-    영상에 가능한 한 많은 공간 사용
-  */
-
-  #viewer{
-    padding:
-      env(safe-area-inset-top)
-      env(safe-area-inset-right)
-      env(safe-area-inset-bottom)
-      env(safe-area-inset-left);
-  }
-
-  .viewer-inner{
-    height:100%;
-  }
-
-  .viewer-top{
-    min-height:48px;
-    padding:7px 10px;
-
-    font-size:8px;
-  }
-
-  .viewer-video-wrap{
-    border-left:0;
-    border-right:0;
-  }
-
-  #mainVideo{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-  }
-
-  .viewer-controls{
-    padding:7px;
-
-    gap:4px;
-
-    background:#030403;
-  }
-
-  .viewer-controls button{
-    flex:1 1 calc(33.333% - 4px);
-
-    min-height:42px;
-
-    padding:5px 3px;
-
-    font-size:8px;
-  }
-
-  #frameInfo{
-    padding:4px 7px 7px;
-    font-size:8px;
-  }
-
-  #popup{
-    padding:20px;
-  }
-
 }
 
-/* =========================
-   SMALL PHONE
-========================= */
+/* subtle corruption */
 
-@media(max-width:380px){
-
-  main{
-    padding-left:9px;
-    padding-right:9px;
-  }
-
-  .camera-label,
-  .camera-rec,
-  .camera-time{
-    font-size:8px;
-  }
-
-  .viewer-controls button{
-    font-size:7px;
-  }
-
+.glitch{
+  animation:glitch 4s infinite;
 }
 
-/* =========================
-   LANDSCAPE PHONE
-========================= */
-
-@media(max-width:700px) and (orientation:landscape){
-
-  body{
-    padding-bottom:0;
-  }
-
-  .sidebar{
-    top:0;
-    bottom:auto;
-    left:auto;
-    width:70px;
-    height:100vh;
-
-    padding:5px;
-
-    border-top:0;
-    border-left:1px solid #222;
-  }
-
-  .nav{
-    height:auto;
-
-    display:flex;
-    flex-direction:column;
-  }
-
-  .nav button{
-    min-height:45px;
-  }
-
-  main{
-    padding-right:80px;
-    padding-bottom:10px;
-  }
-
-  .camera-grid{
-    grid-template-columns:
-      repeat(2,minmax(0,1fr));
-  }
-
+@keyframes glitch{
+  0%,92%,100%{transform:none;opacity:1}
+  93%{transform:translateX(1px);opacity:.8}
+  94%{transform:translateX(-2px);opacity:.95}
+  95%{transform:none}
 }
 
-/* =========================
-   REDUCED MOTION
-========================= */
+.redFlash{
+  animation:redFlash .7s ease;
+}
 
-@media(prefers-reduced-motion:reduce){
-
-  *,
-  *::before,
-  *::after{
-    animation-duration:.001ms!important;
-    animation-iteration-count:1!important;
-    transition:none!important;
-  }
-
+@keyframes redFlash{
+  0%{box-shadow:inset 0 0 0 rgba(255,0,40,0)}
+  35%{box-shadow:inset 0 0 100px rgba(255,0,40,.05)}
+  100%{box-shadow:none}
 }
 </style>
 </head>
 
 <body>
 
-<!-- =========================
-     BOOT
-========================= -->
-
+<!-- BOOT SCREEN -->
 <div id="boot">
-
-  <div class="boot-inner">
-
-    <div class="boot-line">NODE_0 // RECOVERED ARCHIVE</div>
-    <div class="boot-line">initializing connection...</div>
-    <div class="boot-line">checking surveillance index...</div>
-    <div class="boot-line">audio device detected</div>
-    <div class="boot-line">warning: timestamps corrupted</div>
-    <div class="boot-line">warning: active viewer detected</div>
-    <div class="boot-line">connection established</div>
-
-    <div id="enter">
-      &gt; ENTER ARCHIVE
-    </div>
-
+  <div class="bootBox">
+    <div class="bootTitle">THE LAST LINK</div>
+    <div id="bootLog"></div>
+    <button class="bootEnter" id="bootEnter">
+      ENTER ARCHIVE
+    </button>
   </div>
-
 </div>
 
+<div id="app" class="hidden">
 
-<!-- =========================
-     APP
-========================= -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brandName">THE LAST LINK</div>
+      <div class="brandSub">UNINDEXED ARCHIVE // NODE 7</div>
+    </div>
 
-<div id="app">
+    <button class="navBtn active" data-page="home">
+      <span class="navDot"></span> HOME
+    </button>
 
-  <div class="layout">
+    <button class="navBtn" data-page="directory">
+      <span class="navDot"></span> DIRECTORY
+    </button>
 
-    <aside class="sidebar">
+    <button class="navBtn" data-page="archive">
+      <span class="navDot"></span> ARCHIVE
+    </button>
 
-      <div class="logo">
-        NODE_0
+    <button class="navBtn" data-page="stream">
+      <span class="navDot"></span> STREAM
+    </button>
+
+    <button class="navBtn" data-page="chat">
+      <span class="navDot"></span> CHAT
+    </button>
+
+    <button class="navBtn" data-page="search">
+      <span class="navDot"></span> SEARCH
+    </button>
+
+    <div class="sideStatus">
+      <span class="liveDot"></span> NODE STATUS: ACTIVE<br>
+      SESSION: <span id="sideSession">7A91</span><br>
+      VISITORS: <span id="sideVisitors">1,284</span>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <div class="topbar">
+      <div class="topLeft">
+        <span class="status">● CONNECTED</span>
+        <span>NODE_07</span>
       </div>
+      <span class="session">SESSION // <span id="sessionId">7A91-03F2</span></span>
+    </div>
 
-      <div class="sublogo">
-        NIGHTMARE ARCHIVE
-      </div>
+    <!-- HOME -->
+    <section class="page active" id="page-home">
 
-      <nav class="nav">
+      <div class="hero">
+        <div class="kicker">UNINDEXED NETWORK / ARCHIVE ENTRY</div>
 
-        <button class="active" data-page="home">
-          [ INDEX ]
-        </button>
-
-        <button data-page="cams">
-          [ CAMERAS ]
-        </button>
-
-        <button data-page="files">
-          [ FILES ]
-        </button>
-
-        <button data-page="board">
-          [ BOARD ]
-        </button>
-
-      </nav>
-
-      <div class="session">
-        SESSION: 8F2A-19C<br>
-        NODE: UNKNOWN<br>
-        VIEWER: ACTIVE
-      </div>
-
-    </aside>
-
-
-    <main>
-
-      <div class="topbar">
-
-        <span>
-          NODE_0 / NIGHTMARE
-        </span>
-
-        <span id="clock">
-          03:17:22
-        </span>
-
-      </div>
-
-
-      <!-- HOME -->
-
-      <section id="home" class="page active">
-
-        <h1>
-          CONNECTION ESTABLISHED
+        <h1 class="glitch">
+          THE LAST<br>
+          <span>LINK</span>
         </h1>
 
-        <div class="desc">
-          The archive was not supposed to be accessible.
+        <div class="heroText">
+          This directory is not indexed.<br>
+          Some links are dead. Some were never alive.<br>
+          Do not open a stream marked <b>07</b>.
         </div>
 
+        <button class="enterBtn" onclick="navigate('directory')">
+          OPEN DIRECTORY →
+        </button>
+      </div>
 
-        <div class="panel">
-
-          <div class="panel-head">
-            LIVE FEED
-          </div>
-
-          <div class="panel-body">
-
-            <div style="
-              position:relative;
-              width:100%;
-              background:#000;
-              border:1px solid #222;
-              overflow:hidden;
-            ">
-
-              <video
-                id="homeVideo"
-                muted
-                autoplay
-                loop
-                playsinline
-                preload="metadata"
-                style="
-                  display:block;
-                  width:100%;
-                  height:auto;
-                  object-fit:contain;
-                  background:#000;
-                  filter:
-                    grayscale(.75)
-                    contrast(1.3)
-                    brightness(.55);
-                "
-              >
-
-                <source
-                  src="/videos/cam04.mp4"
-                  type="video/mp4"
-                >
-
-              </video>
-
-              <div class="scan"></div>
-              <div class="vhs-line"></div>
-
-              <div style="
-                position:absolute;
-                top:10px;
-                left:10px;
-                color:#ccc;
-                font-size:9px;
-              ">
-                CAM_04
-              </div>
-
-              <div style="
-                position:absolute;
-                top:10px;
-                right:10px;
-                color:#824848;
-                font-size:9px;
-              ">
-                ● LIVE
-              </div>
-
-            </div>
-
-            <br>
-
-            <span class="warning">
-              THIS FEED WAS NOT SUPPOSED TO BE PUBLIC.
-            </span>
-
-          </div>
-
+      <div class="statGrid">
+        <div class="stat">
+          <div class="statLabel">ACTIVE NODES</div>
+          <div class="statValue" id="nodes">03</div>
         </div>
 
-
-        <div class="panel">
-
-          <div class="panel-head">
-            SYSTEM
-          </div>
-
-          <div class="panel-body">
-
-            CAMERAS:
-            06
-
-            <br>
-
-            FILES:
-            23
-
-            <br>
-
-            CURRENT VIEWERS:
-            <span id="users">1</span>
-
-            <br><br>
-
-            STATUS:
-            <span id="status">
-              WATCHING
-            </span>
-
-          </div>
-
+        <div class="stat">
+          <div class="statLabel">VISITORS</div>
+          <div class="statValue" id="visitors">1,284</div>
         </div>
 
-      </section>
-
-
-      <!-- CAMERAS -->
-
-      <section id="cams" class="page">
-
-        <h1>
-          SURVEILLANCE
-        </h1>
-
-        <div class="desc">
-          Recovered camera feeds.
+        <div class="stat">
+          <div class="statLabel">ARCHIVED FILES</div>
+          <div class="statValue">4,891</div>
         </div>
 
+        <div class="stat">
+          <div class="statLabel">LAST UPDATE</div>
+          <div class="statValue" id="lastUpdate">00:47:13</div>
+        </div>
+      </div>
 
-        <div class="camera-grid">
+    </section>
 
+    <!-- DIRECTORY -->
+    <section class="page" id="page-directory">
 
-          <div class="camera" data-cam="01">
+      <h2 class="pageTitle">DIRECTORY</h2>
+      <div class="pageDesc">
+        unverified links // enter at your own discretion
+      </div>
 
-            <video muted loop playsinline preload="metadata">
+      <div class="directory">
 
-              <source
-                src="/videos/cam01.mp4"
-                type="video/mp4"
-              >
-
-            </video>
-
-            <div class="scan"></div>
-            <div class="vhs-line"></div>
-
-            <div class="camera-label">
-              CAM_01
-            </div>
-
-            <div class="camera-rec">
-              ● REC
-            </div>
-
-            <div class="camera-time">
-              03:16:09
-            </div>
-
+        <div class="card" onclick="openModal('MARKET')">
+          <div class="cardStatus">ONLINE</div>
+          <div class="cardIcon">▦</div>
+          <div class="cardTitle">MARKET</div>
+          <div class="cardDesc">
+            This section is currently unavailable.
+            Last indexed: 2019.
           </div>
-
-
-          <div class="camera" data-cam="02">
-
-            <video muted loop playsinline preload="metadata">
-
-              <source
-                src="/videos/cam02.mp4"
-                type="video/mp4"
-              >
-
-            </video>
-
-            <div class="scan"></div>
-            <div class="vhs-line"></div>
-
-            <div class="camera-label">
-              CAM_02
-            </div>
-
-            <div class="camera-rec">
-              ● REC
-            </div>
-
-            <div class="camera-time">
-              03:17:02
-            </div>
-
-          </div>
-
-
-          <div class="camera" data-cam="03">
-
-            <video muted loop playsinline preload="metadata">
-
-              <source
-                src="/videos/cam03.mp4"
-                type="video/mp4"
-              >
-
-            </video>
-
-            <div class="scan"></div>
-            <div class="vhs-line"></div>
-
-            <div class="camera-label">
-              CAM_03
-            </div>
-
-            <div class="camera-rec">
-              ● REC
-            </div>
-
-            <div class="camera-time">
-              03:17:26
-            </div>
-
-          </div>
-
-
-          <div class="camera" data-cam="04">
-
-            <video muted loop playsinline preload="metadata">
-
-              <source
-                src="/videos/cam04.mp4"
-                type="video/mp4"
-              >
-
-            </video>
-
-            <div class="scan"></div>
-            <div class="vhs-line"></div>
-
-            <div class="camera-label">
-              CAM_04
-            </div>
-
-            <div class="camera-rec">
-              ● LIVE
-            </div>
-
-            <div class="camera-time">
-              03:17:26
-            </div>
-
-          </div>
-
-
-          <div class="camera" data-cam="05">
-
-            <video muted loop playsinline preload="metadata">
-
-              <source
-                src="/videos/cam05.mp4"
-                type="video/mp4"
-              >
-
-            </video>
-
-            <div class="scan"></div>
-            <div class="vhs-line"></div>
-
-            <div class="camera-label">
-              CAM_05
-            </div>
-
-            <div class="camera-rec">
-              ● REC
-            </div>
-
-            <div class="camera-time">
-              03:18:44
-            </div>
-
-          </div>
-
-
-          <div class="camera" data-cam="06">
-
-            <video muted loop playsinline preload="metadata">
-
-              <source
-                src="/videos/cam06.mp4"
-                type="video/mp4"
-              >
-
-            </video>
-
-            <div class="scan"></div>
-            <div class="vhs-line"></div>
-
-            <div class="camera-label">
-              CAM_06
-            </div>
-
-            <div class="camera-rec">
-              ● REC
-            </div>
-
-            <div class="camera-time">
-              UNKNOWN
-            </div>
-
-          </div>
-
-
         </div>
 
-      </section>
-
-
-      <!-- FILES -->
-
-      <section id="files" class="page">
-
-        <h1>
-          FILES
-        </h1>
-
-        <div class="desc">
-          Recovered fragments.
+        <div class="card" onclick="navigate('archive')">
+          <div class="cardStatus">4,891</div>
+          <div class="cardIcon">▤</div>
+          <div class="cardTitle">ARCHIVE</div>
+          <div class="cardDesc">
+            Deleted pages, lost conversations,
+            corrupted records.
+          </div>
         </div>
 
+        <div class="card cardDanger" onclick="navigate('stream')">
+          <div class="cardStatus red">LIVE</div>
+          <div class="cardIcon">◉</div>
+          <div class="cardTitle">STREAM</div>
+          <div class="cardDesc">
+            7 active streams.
+            One of them should not be accessible.
+          </div>
+        </div>
 
-        <div class="panel">
+        <div class="card" onclick="navigate('chat')">
+          <div class="cardStatus">12</div>
+          <div class="cardIcon">□</div>
+          <div class="cardTitle">CHAT</div>
+          <div class="cardDesc">
+            Anonymous relay.
+            Messages are not stored.
+          </div>
+        </div>
 
-          <div class="file" data-file="001">
-            <span class="file-name">
-              incident_001.log
-            </span>
+        <div class="card" onclick="navigate('search')">
+          <div class="cardStatus">INDEXED</div>
+          <div class="cardIcon">⌕</div>
+          <div class="cardTitle">SEARCH</div>
+          <div class="cardDesc">
+            Search the local archive.
+          </div>
+        </div>
 
-            <span class="file-size">
-              4 KB
-            </span>
+        <div class="card cardDanger" onclick="openUnknown()">
+          <div class="cardStatus red">UNKNOWN</div>
+          <div class="cardIcon">?</div>
+          <div class="cardTitle">UNKNOWN</div>
+          <div class="cardDesc">
+            This entry has no registered owner.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ARCHIVE -->
+    <section class="page" id="page-archive">
+
+      <h2 class="pageTitle">ARCHIVE</h2>
+      <div class="pageDesc">
+        deleted records // some entries may be incomplete
+      </div>
+
+      <div class="archiveList">
+
+        <div class="archiveRow" onclick="archiveOpen(1)">
+          <div class="fileId">#001</div>
+          <div class="fileTitle">THE ROOM</div>
+          <div class="fileMeta">UNRESOLVED</div>
+        </div>
+
+        <div class="archiveRow" onclick="archiveOpen(2)">
+          <div class="fileId">#002</div>
+          <div class="fileTitle">03:14</div>
+          <div class="fileMeta">DELETED</div>
+        </div>
+
+        <div class="archiveRow" onclick="archiveOpen(3)">
+          <div class="fileId">#003</div>
+          <div class="fileTitle">LAST VISITOR</div>
+          <div class="fileMeta">ACTIVE</div>
+        </div>
+
+        <div class="archiveRow" onclick="archiveOpen(4)">
+          <div class="fileId">#004</div>
+          <div class="fileTitle">STREAM_07</div>
+          <div class="fileMeta">RESTRICTED</div>
+        </div>
+
+        <div class="archiveRow" onclick="archiveOpen(5)">
+          <div class="fileId">#005</div>
+          <div class="fileTitle">USER_0000</div>
+          <div class="fileMeta">UNKNOWN</div>
+        </div>
+
+        <div class="archiveRow" onclick="archiveOpen(6)">
+          <div class="fileId">#006</div>
+          <div class="fileTitle">EXIT</div>
+          <div class="fileMeta">CORRUPTED</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- STREAM -->
+    <section class="page" id="page-stream">
+
+      <h2 class="pageTitle">STREAM</h2>
+      <div class="pageDesc">
+        live relay // signal integrity: 71%
+      </div>
+
+      <div class="streamWrap">
+
+        <div class="screen" id="screen">
+
+          <div class="streamTop">
+            <span>STREAM_07</span>
+            <span><span class="liveDot"></span>LIVE</span>
           </div>
 
+          <div class="screenNoise"></div>
 
-          <div class="file" data-file="002">
-            <span class="file-name">
-              camera_04_notes.txt
-            </span>
-
-            <span class="file-size">
-              2 KB
-            </span>
-          </div>
-
-
-          <div class="file" data-file="003">
-            <span class="file-name">
-              frame_1837.dat
-            </span>
-
-            <span class="file-size">
-              UNKNOWN
-            </span>
-          </div>
-
-
-          <div class="file" data-file="004">
-            <span class="file-name">
-              observer.log
-            </span>
-
-            <span class="file-size">
-              1 KB
-            </span>
-          </div>
-
-
-          <div class="file" data-file="005">
-            <span class="file-name">
-              ██████████.dat
-            </span>
-
-            <span class="file-size">
-              ???
-            </span>
+          <div class="screenCenter" id="screenCenter">
+            <div class="cameraCircle"></div>
+            <div id="streamText">
+              VIDEO SIGNAL LOST
+            </div>
+            <small>
+              AUDIO CHANNEL CONNECTED
+            </small>
           </div>
 
         </div>
 
-      </section>
+        <div class="chat">
 
+          <div class="chatHead">
+            STREAM CHAT — <span id="streamViewers">1,284</span> VIEWERS
+          </div>
 
-      <!-- BOARD -->
+          <div class="chatBody" id="streamChat">
 
-      <section id="board" class="page">
+            <div class="chatLine">
+              <span class="user">anon_482:</span>
+              <span class="msg">anyone else seeing this?</span>
+            </div>
 
-        <h1>
-          BOARD
-        </h1>
+            <div class="chatLine">
+              <span class="user">anon_912:</span>
+              <span class="msg">yes</span>
+            </div>
 
-        <div class="desc">
-          Recovered messages.
+            <div class="chatLine">
+              <span class="user">anon_301:</span>
+              <span class="msg">don't type anything</span>
+            </div>
+
+          </div>
+
+          <div class="chatInput">
+            <input id="streamInput" placeholder="message..." maxlength="80">
+            <button onclick="sendStream()">SEND</button>
+          </div>
+
         </div>
+      </div>
+    </section>
 
+    <!-- CHAT -->
+    <section class="page" id="page-chat">
 
-        <div class="panel">
+      <h2 class="pageTitle">CHAT</h2>
+      <div class="pageDesc">
+        anonymous relay // messages may disappear
+      </div>
 
-          <div class="panel-body">
+      <div class="fullChat">
 
+        <div class="fullChatBody" id="fullChatBody">
 
-            <div class="post">
-
-              <div class="post-user">
-                user_0192 / 2014-11-03
-              </div>
-
-              <div class="post-text">
-                anyone know what CAM_04 is?
-              </div>
-
+          <div class="fullMessage">
+            <div class="who">anon_482 // 00:31</div>
+            <div class="text">
+              anyone know who owns this directory?
             </div>
+          </div>
 
-
-            <div class="post">
-
-              <div class="post-user">
-                user_7731 / 2014-11-03
-              </div>
-
-              <div class="post-text">
-                don't open it.
-              </div>
-
+          <div class="fullMessage">
+            <div class="who">anon_912 // 00:32</div>
+            <div class="text">
+              nobody.
             </div>
+          </div>
 
-
-            <div class="post">
-
-              <div class="post-user">
-                user_0192 / 2014-11-03
-              </div>
-
-              <div class="post-text">
-                why?
-              </div>
-
+          <div class="fullMessage">
+            <div class="who">anon_301 // 00:33</div>
+            <div class="text">
+              then why is it still updating?
             </div>
+          </div>
 
-
-            <div class="post">
-
-              <div class="post-user">
-                user_7731 / 2014-11-03
-              </div>
-
-              <div class="post-text">
-                because it changes when you watch it.
-              </div>
-
+          <div class="fullMessage unknown">
+            <div class="who">UNKNOWN // 00:34</div>
+            <div class="text">
+              it wasn't updating before you arrived.
             </div>
-
-
-            <div
-              class="post"
-              id="secretPost"
-              style="display:none"
-            >
-
-              <div class="post-user">
-                unknown / NOW
-              </div>
-
-              <div
-                class="post-text warning"
-              >
-                HE CAN SEE YOU THROUGH CAMERA 04.
-              </div>
-
-            </div>
-
-
           </div>
 
         </div>
 
-      </section>
+        <div class="chatInput">
+          <input id="fullInput" placeholder="type a message..." maxlength="100">
+          <button onclick="sendFullChat()">SEND</button>
+        </div>
 
-    </main>
+      </div>
+    </section>
 
-  </div>
+    <!-- SEARCH -->
+    <section class="page" id="page-search">
 
+      <h2 class="pageTitle">SEARCH</h2>
+      <div class="pageDesc">
+        local archive index // 12,491 entries
+      </div>
+
+      <div class="searchBox">
+        <input
+          id="searchInput"
+          placeholder="search archive..."
+          autocomplete="off"
+        >
+        <button onclick="doSearch()">SEARCH</button>
+      </div>
+
+      <div class="results" id="results">
+
+        <div class="result" onclick="openModal('SEARCH_DEFAULT')">
+          <div class="resultTitle">ARCHIVE INDEX</div>
+          <div class="resultMeta">Try searching: room / visitor / stream / exit</div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
 </div>
 
+<!-- MOBILE NAV -->
 
-<!-- =========================
-     VIEWER
-========================= -->
+<nav class="mobileNav">
 
-<div id="viewer">
-
-  <div class="viewer-inner">
-
-    <div class="viewer-top">
-
-      <span id="viewerTitle">
-        CAM_04 // RECOVERED FOOTAGE
-      </span>
-
-      <button id="closeViewer">
-        CLOSE
-      </button>
-
-    </div>
-
-
-    <div class="viewer-video-wrap">
-
-      <video
-        id="mainVideo"
-        controls
-        playsinline
-        preload="metadata"
-      ></video>
-
-    </div>
-
-
-    <div class="viewer-controls">
-
-      <button id="minusFrame">
-        - FRAME
-      </button>
-
-      <button id="plusFrame">
-        + FRAME
-      </button>
-
-      <button id="slow">
-        0.35X
-      </button>
-
-      <button id="normal">
-        1X
-      </button>
-
-      <button id="pause">
-        PAUSE
-      </button>
-
-      <button id="enhance">
-        ENHANCE
-      </button>
-
-    </div>
-
-
-    <div id="frameInfo">
-      FRAME: 00000
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =========================
-     POPUP
-========================= -->
-
-<div id="popup">
-
-  <div class="popup-title">
-    ARCHIVE MESSAGE
-  </div>
-
-  <div id="popupText"></div>
-
-  <br>
-
-  <button id="closePopup">
-    CLOSE
+  <button data-page="home" class="active">
+    <span>⌂</span>
+    HOME
   </button>
 
-</div>
+  <button data-page="directory">
+    <span>▦</span>
+    DIR
+  </button>
 
+  <button data-page="archive">
+    <span>▤</span>
+    ARCHIVE
+  </button>
 
-<!-- =========================
-     FINAL
-========================= -->
+  <button data-page="stream">
+    <span>◉</span>
+    LIVE
+  </button>
 
-<div id="final">
+  <button data-page="search">
+    <span>⌕</span>
+    SEARCH
+  </button>
 
-  <div class="final-text">
+</nav>
 
-    SESSION TERMINATED
+<!-- MODAL -->
 
-    <br><br>
+<div id="modal">
+  <div class="modalBox">
 
-    <div class="final-big">
-      CONNECTION REESTABLISHED
+    <div class="modalHead">
+      <span id="modalTitle">ARCHIVE</span>
+      <button class="close" onclick="closeModal()">[ CLOSE ]</button>
     </div>
 
-    <br>
-
-    CAMERA: 04<br>
-    VIEWERS: 1<br>
-    STATUS: WATCHING
-
-    <br><br>
-
-    YOU WERE NOT THE ONLY ONE
-    WATCHING THE FOOTAGE.
+    <div class="modalBody" id="modalBody"></div>
 
   </div>
-
 </div>
 
+<div id="toast"></div>
 
 <script>
 
-/* ==================================================
+/* =========================================
    STATE
-================================================== */
+========================================= */
 
 const state = {
+  page:"home",
+  visitors:1284,
+  nodes:3,
+  session:"7A91-03F2",
   entered:false,
-  cam04:false,
-  file003:false,
-  file005:false,
-  board:false,
-  horror:0,
-  final:false
+  streamEvents:0,
+  searched:false,
+  visitorTouched:false
 };
 
+/* =========================================
+   BOOT
+========================================= */
 
-/* ==================================================
+const bootLog = document.getElementById("bootLog");
+const bootEnter = document.getElementById("bootEnter");
+
+const bootLines = [
+  "initializing relay...",
+  "checking local archive...",
+  "loading unindexed nodes...",
+  "node_07 connected.",
+  "anonymous session created.",
+  "warning: archive contains restricted entries.",
+  "warning: stream_07 is active.",
+  "..."
+];
+
+let bootIndex = 0;
+
+function bootWrite(){
+
+  if(bootIndex >= bootLines.length){
+    bootEnter.classList.remove("hidden");
+    return;
+  }
+
+  const line = document.createElement("div");
+  line.textContent = "> " + bootLines[bootIndex];
+  bootLog.appendChild(line);
+
+  bootIndex++;
+
+  setTimeout(bootWrite, 180 + Math.random()*280);
+}
+
+bootWrite();
+
+/* =========================================
    AUDIO
-================================================== */
+   ========================================= */
 
 let audioCtx = null;
-let master = null;
-let drone = null;
-let audioStarted = false;
-
+let ambientStarted = false;
 
 function startAudio(){
 
-  if(audioStarted) return;
+  if(ambientStarted) return;
 
-  audioStarted = true;
+  ambientStarted = true;
 
-  audioCtx =
-    new (window.AudioContext ||
-         window.webkitAudioContext)();
+  try{
+    audioCtx = new (
+      window.AudioContext ||
+      window.webkitAudioContext
+    )();
 
-  master =
-    audioCtx.createGain();
+    const master = audioCtx.createGain();
+    master.gain.value = 0.035;
+    master.connect(audioCtx.destination);
 
-  master.gain.value = .15;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
 
-  master.connect(
-    audioCtx.destination
-  );
+    osc.type = "sine";
+    osc.frequency.value = 47;
 
+    gain.gain.value = 0.12;
 
-  const oscillator =
-    audioCtx.createOscillator();
+    osc.connect(gain);
+    gain.connect(master);
 
-  const gain =
-    audioCtx.createGain();
+    osc.start();
 
-  oscillator.type = "sine";
+    /* tiny electronic pulse */
 
-  oscillator.frequency.value = 38;
+    setInterval(()=>{
 
-  gain.gain.value = .045;
+      if(!audioCtx) return;
 
-  oscillator.connect(gain);
+      const o = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
 
-  gain.connect(master);
+      o.type = "triangle";
+      o.frequency.value = 75 + Math.random()*20;
 
-  oscillator.start();
+      g.gain.setValueAtTime(0.0001,audioCtx.currentTime);
+      g.gain.exponentialRampToValueAtTime(
+        0.025,
+        audioCtx.currentTime + .02
+      );
 
-  drone = gain;
+      g.gain.exponentialRampToValueAtTime(
+        0.0001,
+        audioCtx.currentTime + .35
+      );
+
+      o.connect(g);
+      g.connect(master);
+
+      o.start();
+      o.stop(audioCtx.currentTime+.4);
+
+    },5200);
+
+  }catch(e){}
 }
 
+/* click sound */
 
-function noise(duration=.25, volume=.1){
+function clickSound(){
 
-  if(!audioStarted) return;
+  if(!audioCtx) return;
 
-  const buffer =
-    audioCtx.createBuffer(
-      1,
-      audioCtx.sampleRate * duration,
-      audioCtx.sampleRate
-    );
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
 
-  const data =
-    buffer.getChannelData(0);
+  o.type="square";
+  o.frequency.value=720;
 
-  for(let i=0;i<data.length;i++){
-
-    data[i] =
-      (Math.random()*2-1) * volume;
-
-  }
-
-  const source =
-    audioCtx.createBufferSource();
-
-  const gain =
-    audioCtx.createGain();
-
-  gain.gain.value = .5;
-
-  source.buffer = buffer;
-
-  source.connect(gain);
-
-  gain.connect(master);
-
-  source.start();
-}
-
-
-function hit(freq=40, volume=.2){
-
-  if(!audioStarted) return;
-
-  const osc =
-    audioCtx.createOscillator();
-
-  const gain =
-    audioCtx.createGain();
-
-  osc.type = "sine";
-
-  osc.frequency.setValueAtTime(
-    freq,
-    audioCtx.currentTime
-  );
-
-  osc.frequency.exponentialRampToValueAtTime(
-    20,
-    audioCtx.currentTime + .8
-  );
-
-  gain.gain.setValueAtTime(
-    .001,
-    audioCtx.currentTime
-  );
-
-  gain.gain.exponentialRampToValueAtTime(
-    volume,
-    audioCtx.currentTime + .02
-  );
-
-  gain.gain.exponentialRampToValueAtTime(
-    .001,
-    audioCtx.currentTime + .8
-  );
-
-  osc.connect(gain);
-
-  gain.connect(master);
-
-  osc.start();
-
-  osc.stop(
-    audioCtx.currentTime + .9
-  );
-}
-
-
-function tick(){
-
-  if(!audioStarted) return;
-
-  const osc =
-    audioCtx.createOscillator();
-
-  const gain =
-    audioCtx.createGain();
-
-  osc.type = "square";
-
-  osc.frequency.value = 800;
-
-  gain.gain.setValueAtTime(
-    .001,
-    audioCtx.currentTime
-  );
-
-  gain.gain.exponentialRampToValueAtTime(
+  g.gain.setValueAtTime(.0001,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(
     .025,
-    audioCtx.currentTime+.002
+    audioCtx.currentTime+.01
+  );
+  g.gain.exponentialRampToValueAtTime(
+    .0001,
+    audioCtx.currentTime+.07
   );
 
-  gain.gain.exponentialRampToValueAtTime(
-    .001,
-    audioCtx.currentTime+.035
-  );
+  o.connect(g);
+  g.connect(audioCtx.destination);
 
-  osc.connect(gain);
-
-  gain.connect(master);
-
-  osc.start();
-
-  osc.stop(
-    audioCtx.currentTime+.04
-  );
+  o.start();
+  o.stop(audioCtx.currentTime+.08);
 }
 
-
-/* ==================================================
-   BOOT
-================================================== */
-
-const bootLines =
-  document.querySelectorAll(
-    ".boot-line"
-  );
-
-
-bootLines.forEach((line,index)=>{
-
-  setTimeout(()=>{
-
-    line.classList.add("show");
-
-  },500 + index*550);
-
-});
-
-
-setTimeout(()=>{
-
-  document.getElementById("enter")
-    .style.display = "block";
-
-},500 + bootLines.length*550);
-
-
-document.getElementById("enter")
-.onclick = async ()=>{
+bootEnter.addEventListener("click",()=>{
 
   startAudio();
 
-  if(audioCtx.state === "suspended"){
-    await audioCtx.resume();
-  }
+  document.getElementById("boot").classList.add("hidden");
+  document.getElementById("app").classList.remove("hidden");
 
-  document.getElementById("boot")
-    .style.display = "none";
+  state.entered=true;
 
-  document.getElementById("app")
-    .style.display = "block";
+  toast("SESSION ESTABLISHED");
 
-  state.entered = true;
+});
 
-  noise(.35,.15);
-
-  setTimeout(()=>{
-    hit(35,.08);
-  },1300);
-
-};
-
-
-/* ==================================================
+/* =========================================
    NAVIGATION
-================================================== */
+========================================= */
 
-document.querySelectorAll(
-  ".nav button"
-).forEach(button=>{
+function navigate(page){
 
-  button.onclick = ()=>{
+  clickSound();
 
-    tick();
+  state.page=page;
 
-    document.querySelectorAll(
-      ".page"
-    ).forEach(page=>{
-      page.classList.remove("active");
-    });
+  document.querySelectorAll(".page").forEach(p=>{
+    p.classList.remove("active");
+  });
 
+  const target=document.getElementById("page-"+page);
 
-    document.getElementById(
-      button.dataset.page
-    ).classList.add("active");
+  if(target) target.classList.add("active");
 
-
-    document.querySelectorAll(
-      ".nav button"
-    ).forEach(btn=>{
-      btn.classList.remove("active");
-    });
-
-
-    button.classList.add("active");
-
-
-    if(button.dataset.page === "board"){
-
-      state.board = true;
-
-      document.getElementById(
-        "secretPost"
-      ).style.display = "block";
-
-    }
-
-    checkHorror();
-
-  };
-
-});
-
-
-/* ==================================================
-   HOME VIDEO
-================================================== */
-
-const homeVideo =
-  document.getElementById(
-    "homeVideo"
-  );
-
-
-homeVideo.addEventListener(
-  "error",
-  ()=>{
-    document.getElementById(
-      "status"
-    ).textContent =
-      "VIDEO FILE NOT FOUND";
-  }
-);
-
-
-/* ==================================================
-   CAMERA PREVIEWS
-================================================== */
-
-document.querySelectorAll(
-  ".camera video"
-).forEach(video=>{
-
-  video.addEventListener(
-    "loadedmetadata",
-    ()=>{
-      video.currentTime = 0;
-    }
-  );
-
-  video.play().catch(()=>{});
-
-});
-
-
-/* ==================================================
-   VIEWER
-================================================== */
-
-const viewer =
-  document.getElementById(
-    "viewer"
-  );
-
-const mainVideo =
-  document.getElementById(
-    "mainVideo"
-  );
-
-let currentCam = "";
-let frame = 0;
-
-
-document.querySelectorAll(
-  ".camera"
-).forEach(camera=>{
-
-  camera.onclick = ()=>{
-
-    currentCam =
-      camera.dataset.cam;
-
-
-    if(currentCam === "04"){
-
-      state.cam04 = true;
-
-      state.horror += 2;
-
-    }
-
-
-    const video =
-      camera.querySelector("video");
-
-    const source =
-      video.querySelector("source");
-
-
-    openViewer(
-      currentCam,
-      source.src
+  document.querySelectorAll(".navBtn").forEach(btn=>{
+    btn.classList.toggle(
+      "active",
+      btn.dataset.page===page
     );
+  });
 
-    checkHorror();
+  document.querySelectorAll(".mobileNav button").forEach(btn=>{
+    btn.classList.toggle(
+      "active",
+      btn.dataset.page===page
+    );
+  });
 
-  };
-
-});
-
-
-function openViewer(cam,src){
-
-  viewer.style.display = "block";
-
-  document.getElementById(
-    "viewerTitle"
-  ).textContent =
-    "CAM_" +
-    cam +
-    " // RECOVERED FOOTAGE";
-
-
-  mainVideo.src = src;
-
-  mainVideo.load();
-
-
-  mainVideo.onloadedmetadata = ()=>{
-
-    /*
-      영상 길이를 넘지 않는 안전한 위치
-    */
-
-    const target =
-      Math.min(
-        cam === "04" ? 13 : 3,
-        Math.max(
-          0,
-          mainVideo.duration - .5
-        )
-      );
-
-    mainVideo.currentTime =
-      target;
-
-    frame =
-      Math.floor(
-        target * 24
-      );
-
-    updateFrame();
-
-    mainVideo.play().catch(()=>{});
-
-  };
-
-
-  noise(.3,.1);
-
-
-  if(cam === "04"){
-
-    setTimeout(()=>{
-
-      document.body.classList.add(
-        "glitch"
-      );
-
-      noise(.6,.16);
-
-      hit(30,.22);
-
-      setTimeout(()=>{
-
-        document.body.classList.remove(
-          "glitch"
-        );
-
-      },350);
-
-    },4000);
-
+  if(page==="stream"){
+    streamEntered();
   }
 
 }
 
+/* desktop nav */
 
-document.getElementById(
-  "closeViewer"
-).onclick = ()=>{
+document.querySelectorAll(".navBtn").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    navigate(btn.dataset.page);
+  });
+});
 
-  mainVideo.pause();
+/* mobile nav */
 
-  viewer.style.display = "none";
+document.querySelectorAll(".mobileNav button").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    navigate(btn.dataset.page);
+  });
+});
 
-  tick();
+/* =========================================
+   MODAL
+========================================= */
 
-};
+function openModal(type){
 
+  clickSound();
 
-/* ==================================================
-   FRAME
-================================================== */
+  const modal=document.getElementById("modal");
+  const title=document.getElementById("modalTitle");
+  const body=document.getElementById("modalBody");
 
-function updateFrame(){
+  modal.classList.add("show");
 
-  document.getElementById(
-    "frameInfo"
-  ).textContent =
-    "FRAME: " +
-    String(frame).padStart(5,"0");
+  if(type==="MARKET"){
 
-}
+    title.textContent="MARKET";
 
+    body.innerHTML=`
+      <pre>
+CONNECTION REFUSED
 
-document.getElementById(
-  "plusFrame"
-).onclick = ()=>{
+This service is no longer available.
 
-  mainVideo.pause();
+Last successful connection:
+2019-11-03 04:21:19
 
-  if(!Number.isFinite(
-    mainVideo.duration
-  )) return;
+Owner:
+UNKNOWN
 
-
-  const next =
-    Math.min(
-      mainVideo.duration,
-      mainVideo.currentTime +
-      1/24
-    );
-
-
-  mainVideo.currentTime =
-    next;
-
-  frame =
-    Math.floor(
-      next * 24
-    );
-
-
-  updateFrame();
-
-  tick();
-
-  if(
-    currentCam === "04" &&
-    frame % 37 === 0
-  ){
-
-    state.horror++;
-
-    noise(.4,.18);
-
-  }
-
-  checkHorror();
-
-};
-
-
-document.getElementById(
-  "minusFrame"
-).onclick = ()=>{
-
-  mainVideo.pause();
-
-  const next =
-    Math.max(
-      0,
-      mainVideo.currentTime -
-      1/24
-    );
-
-  mainVideo.currentTime =
-    next;
-
-  frame =
-    Math.floor(
-      next * 24
-    );
-
-  updateFrame();
-
-  tick();
-
-};
-
-
-document.getElementById(
-  "pause"
-).onclick = ()=>{
-
-  if(mainVideo.paused)
-    mainVideo.play();
-  else
-    mainVideo.pause();
-
-  tick();
-
-};
-
-
-document.getElementById(
-  "slow"
-).onclick = ()=>{
-
-  mainVideo.playbackRate = .35;
-
-  tick();
-
-};
-
-
-document.getElementById(
-  "normal"
-).onclick = ()=>{
-
-  mainVideo.playbackRate = 1;
-
-  tick();
-
-};
-
-
-/* ==================================================
-   ENHANCE
-================================================== */
-
-document.getElementById(
-  "enhance"
-).onclick = ()=>{
-
-  mainVideo.style.filter =
-    "grayscale(.2) contrast(2) brightness(.9)";
-
-  noise(.8,.2);
-
-  hit(30,.22);
-
-  state.horror++;
-
-  document.getElementById(
-    "frameInfo"
-  ).textContent =
-    "ENHANCEMENT COMPLETE // MATCH FOUND";
-
-  checkHorror();
-
-};
-
-
-/* ==================================================
-   FILES
-================================================== */
-
-document.querySelectorAll(
-  ".file"
-).forEach(file=>{
-
-  file.onclick = ()=>{
-
-    tick();
-
-    const id =
-      file.dataset.file;
-
-    let text = "";
-
-
-    if(id === "001"){
-
-      text =
-`INCIDENT_001
-
-03:17:22
-
-Camera 04 began recording
-without an operator.
-
-No movement detected.
-
-Audio contains footsteps.
-
-The footsteps do not
-match the room acoustics.`;
-
-    }
-
-
-    if(id === "002"){
-
-      text =
-`CAMERA_04_NOTES
-
-DO NOT LOOP THE FOOTAGE.
-
-DO NOT ENHANCE FRAME 1837.
-
-DO NOT WATCH AFTER 03:17:26.
-
-Someone added this:
-
-"IT KNOWS WHEN YOU PAUSE."`;
-
-    }
-
-
-    if(id === "003"){
-
-      state.file003 = true;
-
-      text =
-`FRAME_1837
-
-MATCH FOUND.
-
-CAMERA: 04
-
-The image does not match
-the surrounding frames.
-
-DO NOT CLOSE THIS WINDOW
-UNTIL THE VIDEO IS FINISHED.`;
-
-      hit(28,.28);
-
-      noise(1,.18);
-
-    }
-
-
-    if(id === "004"){
-
-      text =
-`OBSERVER.LOG
-
-03:17:26
-viewer connected
-
-03:17:31
-viewer connected
-
-03:17:36
-viewer connected
-
-03:17:41
-viewer connected
-
-03:17:46
-viewer connected
+Reason for shutdown:
+[ REDACTED ]
 
 ...
 
-There is only one
-connection.`;
+Wait.
 
+This page should not be reachable.
+      </pre>
+    `;
+
+  }else if(type==="SEARCH_DEFAULT"){
+
+    title.textContent="SEARCH";
+
+    body.innerHTML=`
+      <pre>
+SEARCH INDEX
+
+Try:
+
+room
+visitor
+stream
+exit
+
+Some results may not belong to this archive.
+      </pre>
+    `;
+
+  }else{
+
+    title.textContent="UNKNOWN ENTRY";
+
+    body.innerHTML=`
+      <pre>
+ENTRY HAS NO OWNER.
+
+NODE:
+07
+
+STATUS:
+ACTIVE
+
+CREATED:
+UNKNOWN
+
+LAST MODIFIED:
+JUST NOW
+
+...
+
+The archive is currently being accessed.
+
+ACCESSOR:
+1
+
+      </pre>
+    `;
+
+    setTimeout(()=>{
+      toast("UNKNOWN NODE IS WATCHING");
+    },1400);
+  }
+
+}
+
+function closeModal(){
+  document.getElementById("modal").classList.remove("show");
+}
+
+document.getElementById("modal").addEventListener("click",e=>{
+  if(e.target.id==="modal") closeModal();
+});
+
+/* =========================================
+   ARCHIVE
+========================================= */
+
+function archiveOpen(id){
+
+  clickSound();
+
+  const contents={
+
+    1:{
+      title:"ARCHIVE #001 // THE ROOM",
+      text:`
+FILE STATUS: UNRESOLVED
+
+A room was repeatedly reported
+to appear in different locations.
+
+No address was attached to the file.
+
+Last note:
+
+"the room is empty."
+
+Later correction:
+
+"the room was empty when we checked."
+
+Final entry:
+
+"someone is inside now."
+      `
+    },
+
+    2:{
+      title:"ARCHIVE #002 // 03:14",
+      text:`
+FILE STATUS: DELETED
+
+03:14:01
+connection established
+
+03:14:02
+visitor detected
+
+03:14:03
+visitor count: 1
+
+03:14:04
+visitor count: 2
+
+03:14:05
+visitor count: 1
+
+03:14:06
+connection terminated
+
+No second visitor was registered.
+      `
+    },
+
+    3:{
+      title:"ARCHIVE #003 // LAST VISITOR",
+      text:`
+VISITOR LOG
+
+#01 — 11 days ago
+#02 — 8 days ago
+#03 — 2 days ago
+#04 — 31 minutes ago
+#05 — NOW
+
+The fifth visitor has not disconnected.
+
+Current status:
+
+ONLINE
+      `
+    },
+
+    4:{
+      title:"ARCHIVE #004 // STREAM_07",
+      text:`
+RESTRICTED
+
+The video signal is unavailable.
+
+Audio remains active.
+
+Last recorded message:
+
+"anyone else seeing this?"
+
+Second message:
+
+"don't type anything."
+
+Third message:
+
+"too late."
+      `
+    },
+
+    5:{
+      title:"ARCHIVE #005 // USER_0000",
+      text:`
+USER PROFILE
+
+NAME:
+-
+
+STATUS:
+ONLINE
+
+FIRST SEEN:
+BEFORE ARCHIVE CREATION
+
+LAST SEEN:
+NOW
+
+The account predates
+the directory itself.
+      `
+    },
+
+    6:{
+      title:"ARCHIVE #006 // EXIT",
+      text:`
+EXIT PROCEDURE
+
+1. Close the archive.
+2. Disconnect the session.
+3. Do not reconnect.
+
+STATUS:
+
+STEP 1 ........ COMPLETE
+STEP 2 ........ COMPLETE
+STEP 3 ........ FAILED
+
+SESSION REMAINS ACTIVE.
+      `
     }
-
-
-    if(id === "005"){
-
-      state.file005 = true;
-
-      text =
-`██████████.DAT
-
-SESSION: 8F2A-19C
-
-CAMERA: 04
-
-VIEWER: 1
-
-THE VIEWER IS NOT
-OUTSIDE THE ARCHIVE.
-
-THE VIEWER IS INSIDE
-THE FOOTAGE.`;
-
-      hit(23,.4);
-
-      noise(1.5,.2);
-
-    }
-
-
-    showPopup(text);
-
-    checkHorror();
 
   };
 
-});
+  const item=contents[id];
 
+  document.getElementById("modalTitle").textContent=item.title;
 
-/* ==================================================
-   POPUP
-================================================== */
+  document.getElementById("modalBody").innerHTML=
+    "<pre>"+item.text+"</pre>";
 
-function showPopup(text){
-
-  document.getElementById(
-    "popupText"
-  ).textContent = text;
-
-  document.getElementById(
-    "popup"
-  ).style.display = "block";
+  document.getElementById("modal").classList.add("show");
 
 }
 
+/* =========================================
+   UNKNOWN
+========================================= */
 
-document.getElementById(
-  "closePopup"
-).onclick = ()=>{
+function openUnknown(){
 
-  document.getElementById(
-    "popup"
-  ).style.display = "none";
+  clickSound();
 
-  tick();
+  openModal("UNKNOWN");
+
+  setTimeout(()=>{
+
+    document.getElementById("modalBody").innerHTML=`
+      <pre>
+ENTRY:
+UNKNOWN
+
+OWNER:
+UNKNOWN
+
+ACCESS:
+GRANTED
+
+...
+
+WHY?
+
+You weren't supposed to find this.
+
+SESSION:
+${state.session}
+
+CURRENT VIEWER:
+1
+
+CURRENT VIEWER:
+1
+
+CURRENT VIEWER:
+2
+      </pre>
+    `;
+
+    document.getElementById("screen")?.classList.add("redFlash");
+
+  },1800);
+}
+
+/* =========================================
+   SEARCH
+========================================= */
+
+const searchData={
+
+  room:{
+    title:"THE ROOM",
+    meta:"ARCHIVE #001 // UNRESOLVED",
+    body:`
+THE ROOM
+
+No location.
+No owner.
+
+The archive contains 17 references
+to this room.
+
+Every reference was created
+by a different user.
+
+All descriptions are identical.
+    `
+  },
+
+  visitor:{
+    title:"LAST VISITOR",
+    meta:"ARCHIVE #003 // ACTIVE",
+    body:`
+LAST VISITOR
+
+The current visitor has been online
+for longer than the session allows.
+
+Connection:
+ACTIVE
+
+Disconnect:
+FAILED
+    `
+  },
+
+  stream:{
+    title:"STREAM_07",
+    meta:"RESTRICTED // LIVE",
+    body:`
+STREAM_07
+
+Signal:
+LOST
+
+Audio:
+CONNECTED
+
+Viewer count:
+1,285
+
+The number changed while you
+were reading this.
+    `
+  },
+
+  exit:{
+    title:"EXIT",
+    meta:"CORRUPTED",
+    body:`
+EXIT PROCEDURE
+
+The archive cannot determine
+whether the session ended.
+
+Try again later.
+
+Do not refresh.
+    `
+  }
 
 };
 
+function doSearch(){
 
-/* ==================================================
-   HORROR
-================================================== */
+  clickSound();
 
-function checkHorror(){
+  const q=document.getElementById("searchInput")
+    .value
+    .trim()
+    .toLowerCase();
 
-  if(state.horror >= 5){
+  const results=document.getElementById("results");
 
-    document.getElementById(
-      "status"
-    ).textContent =
-      "CORRUPTED";
+  if(!q){
 
-  }
+    results.innerHTML=`
+      <div class="result">
+        <div class="resultTitle">NO QUERY</div>
+        <div class="resultMeta">Enter a search term.</div>
+      </div>
+    `;
 
-
-  if(
-    state.cam04 &&
-    state.file003 &&
-    state.board
-  ){
-
-    document.getElementById(
-      "secretPost"
-    ).querySelector(
-      ".post-text"
-    ).textContent =
-      "HE CAN SEE YOU THROUGH CAMERA 04.";
-
-  }
-
-
-  if(
-    state.cam04 &&
-    state.file003 &&
-    state.file005 &&
-    state.board &&
-    !state.final
-  ){
-
-    setTimeout(
-      finalSequence,
-      1800
-    );
-
-  }
-
-}
-
-
-/* ==================================================
-   FINAL
-================================================== */
-
-function finalSequence(){
-
-  if(state.final) return;
-
-  state.final = true;
-
-
-  if(drone){
-
-    drone.gain
-      .exponentialRampToValueAtTime(
-        .001,
-        audioCtx.currentTime+.2
-      );
-
-  }
-
-
-  document.getElementById(
-    "final"
-  ).style.display =
-    "flex";
-
-
-  setTimeout(()=>{
-    noise(.8,.25);
-  },1500);
-
-
-  setTimeout(()=>{
-    hit(21,.45);
-  },2300);
-
-
-  setTimeout(()=>{
-
-    document.querySelector(
-      "#final .final-text"
-    ).innerHTML = `
-
-SESSION TERMINATED
-
-<br><br>
-
-<div class="final-big">
-CONNECTION REESTABLISHED
-</div>
-
-<br>
-
-CAMERA: 04<br>
-VIEWERS: 1<br>
-STATUS: WATCHING
-
-<br><br>
-
-THE FOOTAGE WAS NEVER
-A RECORDING.
-
-<br><br>
-
-YOU WERE THE LIVE FEED.
-
-`;
-
-  },4000);
-
-}
-
-
-/* ==================================================
-   CLOCK
-================================================== */
-
-let seconds =
-  3*3600 +
-  17*60 +
-  22;
-
-
-setInterval(()=>{
-
-  seconds++;
-
-  const h =
-    Math.floor(seconds/3600)%24;
-
-  const m =
-    Math.floor(
-      seconds%3600/60
-    );
-
-  const s =
-    seconds%60;
-
-
-  document.getElementById(
-    "clock"
-  ).textContent =
-
-    [h,m,s]
-      .map(x=>
-        String(x).padStart(2,"0")
-      )
-      .join(":");
-
-},1000);
-
-
-/* ==================================================
-   RANDOM VHS
-================================================== */
-
-setInterval(()=>{
-
-  if(!state.entered)
     return;
+  }
 
+  state.searched=true;
 
-  if(Math.random() < .18){
+  if(q==="me" || q==="i" || q==="myself"){
 
-    document.body.classList.add(
-      "glitch"
-    );
+    results.innerHTML=`
+      <div class="result" onclick="openMe()">
+        <div class="resultTitle">USER_████</div>
+        <div class="resultMeta">
+          STATUS: ONLINE // SOURCE: THIS PAGE
+        </div>
+      </div>
+    `;
 
-    noise(.15,.07);
+    return;
+  }
 
+  const key=Object.keys(searchData)
+    .find(k=>q.includes(k));
+
+  if(key){
+
+    const item=searchData[key];
+
+    results.innerHTML=`
+      <div class="result" onclick="openSearchResult('${key}')">
+        <div class="resultTitle">${item.title}</div>
+        <div class="resultMeta">${item.meta}</div>
+      </div>
+    `;
+
+  }else{
+
+    results.innerHTML=`
+      <div class="result">
+        <div class="resultTitle">0 RESULTS</div>
+        <div class="resultMeta">
+          No indexed records found.
+        </div>
+      </div>
+    `;
 
     setTimeout(()=>{
 
-      document.body.classList.remove(
-        "glitch"
+      results.insertAdjacentHTML(
+        "beforeend",
+        `
+        <div class="result" onclick="openUnknown()">
+          <div class="resultTitle">1 RESULT</div>
+          <div class="resultMeta">
+            This result was added after the search.
+          </div>
+        </div>
+        `
       );
 
-    },150);
+    },1800);
 
   }
 
-},6000);
+}
 
+function openSearchResult(key){
 
-/* ==================================================
-   VIEWER COUNT
-================================================== */
+  const item=searchData[key];
 
-setTimeout(()=>{
+  document.getElementById("modalTitle")
+    .textContent=item.title;
 
-  document.getElementById(
-    "users"
-  ).textContent = "1";
+  document.getElementById("modalBody")
+    .innerHTML="<pre>"+item.body+"</pre>";
 
-},2500);
+  document.getElementById("modal")
+    .classList.add("show");
 
+}
 
-setTimeout(()=>{
+function openMe(){
 
-  document.getElementById(
-    "users"
-  ).textContent = "2";
+  document.getElementById("modalTitle")
+    .textContent="USER PROFILE";
 
-  noise(.25,.07);
+  document.getElementById("modalBody")
+    .innerHTML=`
+      <pre>
+USER_████
 
-},9000);
+STATUS:
+ONLINE
 
+LAST SEEN:
+NOW
 
-/* ==================================================
-   MOBILE VIDEO FIX
-================================================== */
+CONNECTED FROM:
+THIS PAGE
 
-window.addEventListener(
-  "orientationchange",
-  ()=>{
+SESSION:
+${state.session}
 
-    setTimeout(()=>{
+...
 
-      if(
-        viewer.style.display === "block"
-      ){
+You searched for yourself.
 
-        mainVideo.style.width = "100%";
-        mainVideo.style.height = "100%";
+That was the first thing
+the archive learned about you.
+      </pre>
+    `;
 
-      }
+  document.getElementById("modal")
+    .classList.add("show");
 
-    },300);
+  setTimeout(()=>{
+    toast("PROFILE UPDATED");
+  },1500);
+}
+
+/* =========================================
+   STREAM
+========================================= */
+
+function streamEntered(){
+
+  if(state.streamEvents>0) return;
+
+  state.streamEvents=1;
+
+  setTimeout(()=>{
+
+    const chat=document.getElementById("streamChat");
+
+    chat.insertAdjacentHTML(
+      "beforeend",
+      `
+      <div class="chatLine">
+        <span class="user">anon_482:</span>
+        <span class="msg">why did the viewer count change?</span>
+      </div>
+      `
+    );
+
+  },2500);
+
+  setTimeout(()=>{
+
+    const chat=document.getElementById("streamChat");
+
+    chat.insertAdjacentHTML(
+      "beforeend",
+      `
+      <div class="chatLine">
+        <span class="user">anon_301:</span>
+        <span class="msg">don't type anything</span>
+      </div>
+      `
+    );
+
+  },5200);
+
+  setTimeout(()=>{
+
+    const chat=document.getElementById("streamChat");
+
+    chat.insertAdjacentHTML(
+      "beforeend",
+      `
+      <div class="chatLine system">
+        SYSTEM:
+        <span class="msg">viewer detected.</span>
+      </div>
+      `
+    );
+
+    document.getElementById("streamViewers")
+      .textContent="1,285";
+
+  },8200);
+
+  setTimeout(()=>{
+
+    document.getElementById("streamText")
+      .textContent="CAMERA IS WORKING";
+
+    document.getElementById("screen")
+      .classList.add("redFlash");
+
+  },11500);
+
+}
+
+/* =========================================
+   CHAT
+========================================= */
+
+function sendStream(){
+
+  const input=document.getElementById("streamInput");
+
+  const text=input.value.trim();
+
+  if(!text) return;
+
+  const chat=document.getElementById("streamChat");
+
+  chat.insertAdjacentHTML(
+    "beforeend",
+    `
+    <div class="chatLine">
+      <span class="user">you:</span>
+      <span class="msg">${escapeHTML(text)}</span>
+    </div>
+    `
+  );
+
+  input.value="";
+
+  setTimeout(()=>{
+
+    chat.insertAdjacentHTML(
+      "beforeend",
+      `
+      <div class="chatLine system">
+        SYSTEM:
+        <span class="msg">message received.</span>
+      </div>
+      `
+    );
+
+  },1000);
+
+  setTimeout(()=>{
+
+    chat.insertAdjacentHTML(
+      "beforeend",
+      `
+      <div class="chatLine">
+        <span class="user">UNKNOWN:</span>
+        <span class="msg">we saw that.</span>
+      </div>
+      `
+    );
+
+  },3000);
+
+}
+
+function sendFullChat(){
+
+  const input=document.getElementById("fullInput");
+
+  const text=input.value.trim();
+
+  if(!text) return;
+
+  const body=document.getElementById("fullChatBody");
+
+  body.insertAdjacentHTML(
+    "beforeend",
+    `
+    <div class="fullMessage">
+      <div class="who">YOU // NOW</div>
+      <div class="text">${escapeHTML(text)}</div>
+    </div>
+    `
+  );
+
+  input.value="";
+
+  body.scrollTop=body.scrollHeight;
+
+  setTimeout(()=>{
+
+    body.insertAdjacentHTML(
+      "beforeend",
+      `
+      <div class="fullMessage unknown">
+        <div class="who">UNKNOWN // NOW</div>
+        <div class="text">
+          you shouldn't have sent that.
+        </div>
+      </div>
+      `
+    );
+
+    body.scrollTop=body.scrollHeight;
+
+  },2800);
+
+}
+
+/* =========================================
+   TIME / LIVE STATE
+========================================= */
+
+function updateClock(){
+
+  const now=new Date();
+
+  const h=String(now.getHours()).padStart(2,"0");
+  const m=String(now.getMinutes()).padStart(2,"0");
+  const s=String(now.getSeconds()).padStart(2,"0");
+
+  document.getElementById("lastUpdate")
+    .textContent=`${h}:${m}:${s}`;
+
+}
+
+setInterval(updateClock,1000);
+updateClock();
+
+/* visitors */
+
+setInterval(()=>{
+
+  if(!state.entered) return;
+
+  const change=Math.random()<.7 ? 1 : -1;
+
+  state.visitors += change;
+
+  if(state.visitors<1270)
+    state.visitors=1270;
+
+  document.getElementById("visitors")
+    .textContent=state.visitors.toLocaleString();
+
+  document.getElementById("sideVisitors")
+    .textContent=state.visitors.toLocaleString();
+
+  if(Math.random()<.12){
+
+    state.nodes++;
+
+    if(state.nodes>5)
+      state.nodes=3;
+
+    document.getElementById("nodes")
+      .textContent=String(state.nodes).padStart(2,"0");
 
   }
-);
+
+},4300);
+
+/* =========================================
+   OCCASIONAL EVENTS
+========================================= */
+
+setInterval(()=>{
+
+  if(!state.entered) return;
+
+  const events=[
+
+    "UNKNOWN NODE CONNECTED",
+    "ARCHIVE INDEX UPDATED",
+    "STREAM_07 REQUESTED ACCESS",
+    "VISITOR COUNT DESYNC",
+    "DELETED RECORD RESTORED",
+    "SESSION WATCHER ACTIVE"
+
+  ];
+
+  if(Math.random()<.35){
+
+    toast(
+      events[Math.floor(Math.random()*events.length)]
+    );
+
+  }
+
+},11000);
+
+/* =========================================
+   KEYBOARD
+========================================= */
+
+document.addEventListener("keydown",e=>{
+
+  if(e.key==="Escape"){
+    closeModal();
+  }
+
+  if(e.key==="/" &&
+     document.activeElement.tagName!=="INPUT"){
+    e.preventDefault();
+    navigate("search");
+    document.getElementById("searchInput").focus();
+  }
+
+});
+
+/* =========================================
+   TOAST
+========================================= */
+
+let toastTimer;
+
+function toast(text){
+
+  const el=document.getElementById("toast");
+
+  el.textContent=text;
+
+  el.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer=setTimeout(()=>{
+    el.classList.remove("show");
+  },2600);
+
+}
+
+/* =========================================
+   SAFETY / HTML
+========================================= */
+
+function escapeHTML(str){
+
+  return str
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+/* =========================================
+   RANDOM SESSION
+========================================= */
+
+function makeSession(){
+
+  const chars="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+  let out="";
+
+  for(let i=0;i<4;i++)
+    out+=chars[Math.floor(Math.random()*chars.length)];
+
+  out+="-";
+
+  for(let i=0;i<4;i++)
+    out+=chars[Math.floor(Math.random()*chars.length)];
+
+  return out;
+
+}
+
+state.session=makeSession();
+
+document.getElementById("sessionId")
+  .textContent=state.session;
+
+document.getElementById("sideSession")
+  .textContent=state.session.slice(0,4);
+
+/* =========================================
+   DELAYED FIRST MESSAGE
+========================================= */
+
+setTimeout(()=>{
+
+  if(!state.entered) return;
+
+  toast("NEW MESSAGE: UNKNOWN");
+
+},18000);
 
 </script>
 
