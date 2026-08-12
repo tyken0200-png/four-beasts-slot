@@ -4,21 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>FOUR BEASTS — 四神 SLOT</title>
+<title>FOUR BEASTS</title>
 
 <style>
-/* =========================================================
-   RESET
-========================================================= */
-
 * {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
 }
 
 html,
 body {
+    margin: 0;
     width: 100%;
     min-height: 100%;
 }
@@ -30,31 +25,32 @@ body {
     justify-content: center;
     align-items: center;
 
-    overflow-x: hidden;
+    overflow: hidden;
 
     font-family:
         Arial,
         "Noto Sans KR",
         sans-serif;
 
-    color: white;
-
     background:
         radial-gradient(
-            circle at 50% 35%,
-            #b92b20 0%,
-            #7d0c0c 30%,
-            #3d0303 62%,
-            #110000 100%
+            ellipse at 50% 35%,
+            #50151a 0%,
+            #210b12 38%,
+            #08070b 75%,
+            #020204 100%
         );
+
+    color: white;
 }
 
-
-/* =========================================================
+/* =====================================================
    BACKGROUND
-========================================================= */
+===================================================== */
 
-.background-glow {
+body::before {
+    content: "";
+
     position: fixed;
     inset: 0;
 
@@ -62,54 +58,62 @@ body {
 
     background:
         radial-gradient(
-            ellipse at center,
-            transparent 30%,
-            rgba(0, 0, 0, .55) 100%
+            circle at 15% 30%,
+            rgba(255, 30, 90, .16),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 85% 30%,
+            rgba(255, 190, 30, .15),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(160, 20, 40, .2),
+            transparent 45%
         );
 
     z-index: -2;
 }
 
-.background-pattern {
+/* Vegas 네온 */
+
+.neon-left,
+.neon-right {
     position: fixed;
-    inset: 0;
+
+    width: 300px;
+    height: 300px;
+
+    border-radius: 50%;
 
     pointer-events: none;
 
+    filter: blur(90px);
+
     opacity: .18;
 
-    background-image:
-        radial-gradient(
-            circle,
-            #ffd84a 1px,
-            transparent 1.5px
-        );
-
-    background-size: 70px 70px;
-
     z-index: -1;
-
-    animation:
-        backgroundMove 18s linear infinite;
 }
 
-@keyframes backgroundMove {
+.neon-left {
+    left: -120px;
+    top: 10%;
 
-    from {
-        background-position:
-            0 0;
-    }
+    background: #ff1768;
+}
 
-    to {
-        background-position:
-            70px 70px;
-    }
+.neon-right {
+    right: -120px;
+    top: 15%;
+
+    background: #ffc928;
 }
 
 
-/* =========================================================
-   MAIN MACHINE
-========================================================= */
+/* =====================================================
+   MACHINE
+===================================================== */
 
 .machine {
     position: relative;
@@ -117,135 +121,90 @@ body {
     width: min(1050px, 94vw);
 
     padding:
-        35px
+        32px
         clamp(18px, 4vw, 50px)
-        40px;
+        38px;
 
-    border:
-        8px solid #f5cf55;
+    border: 6px solid #d6aa43;
 
-    border-radius: 30px;
+    border-radius: 28px;
 
     background:
         linear-gradient(
-            135deg,
-            #5b0505 0%,
-            #b91917 20%,
-            #7a0808 45%,
-            #c51c18 70%,
-            #4c0202 100%
+            145deg,
+            #18080b,
+            #551016 25%,
+            #1b080d 50%,
+            #67121a 75%,
+            #120509
         );
 
     box-shadow:
-        0 0 0 3px #671900,
-        0 0 0 7px #ffe277,
-        0 25px 80px rgba(0,0,0,.8),
-        inset 0 0 50px rgba(0,0,0,.65);
+        0 0 0 2px #5b3207,
+        0 0 25px rgba(255, 191, 35, .25),
+        0 25px 70px rgba(0,0,0,.85),
+        inset 0 0 45px rgba(0,0,0,.75);
 
     transform-origin: center;
 }
 
 
-/* 금빛 테두리 */
+/* 금속 내부 테두리 */
 
 .machine::before {
     content: "";
 
     position: absolute;
 
-    inset: 13px;
+    inset: 12px;
 
     border:
-        2px solid rgba(255, 226, 111, .7);
+        1px solid rgba(255,220,110,.5);
 
-    border-radius: 20px;
-
-    pointer-events: none;
-}
-
-
-/* 위 장식 */
-
-.machine::after {
-    content: "龍   虎   玄武   鳳凰";
-
-    position: absolute;
-
-    top: 10px;
-    left: 50%;
-
-    transform:
-        translateX(-50%);
-
-    white-space: nowrap;
-
-    color:
-        rgba(255, 226, 111, .35);
-
-    font-size: 10px;
-
-    letter-spacing: 5px;
+    border-radius: 18px;
 
     pointer-events: none;
 }
 
 
-/* =========================================================
-   HEADER
-========================================================= */
+/* =====================================================
+   TITLE
+===================================================== */
 
 .logo-small {
     text-align: center;
 
-    color: #ffd95b;
+    color: #dcb95c;
 
-    font-size: 13px;
+    font-size: 11px;
 
-    letter-spacing: 8px;
+    letter-spacing: 7px;
 
-    margin-bottom: 3px;
-
-    text-shadow:
-        0 0 8px #ff8a00;
+    margin-bottom: 8px;
 }
 
 .title {
+    margin: 0;
+
     text-align: center;
 
     font-size:
-        clamp(38px, 7vw, 78px);
+        clamp(40px, 7vw, 76px);
 
     line-height: 1;
 
     font-weight: 1000;
 
     letter-spacing:
-        clamp(3px, 1vw, 10px);
+        clamp(3px, 1vw, 9px);
 
-    color: #fff0a0;
+    color: #fff1a6;
 
     text-shadow:
-        0 3px 0 #8c4300,
-        0 6px 0 #541b00,
-        0 0 8px #fff3a0,
-        0 0 20px #ffd000,
-        0 0 40px #ff6a00;
-
-    animation:
-        titleGlow 2.5s ease-in-out infinite alternate;
-}
-
-@keyframes titleGlow {
-
-    from {
-        filter:
-            brightness(1);
-    }
-
-    to {
-        filter:
-            brightness(1.12);
-    }
+        0 2px 0 #7a3e00,
+        0 4px 0 #351600,
+        0 0 10px rgba(255,220,90,.8),
+        0 0 25px rgba(255,140,20,.45);
 }
 
 .subtitle {
@@ -253,121 +212,98 @@ body {
 
     text-align: center;
 
-    color: #ffe278;
+    color: #d9b867;
 
     font-size: 12px;
 
-    letter-spacing: 7px;
-
-    text-shadow:
-        0 0 10px #ff9500;
+    letter-spacing: 6px;
 }
 
 
-/* =========================================================
+/* =====================================================
    DECORATION
-========================================================= */
+===================================================== */
 
 .ornament {
     display: flex;
 
     align-items: center;
 
-    gap: 14px;
+    gap: 15px;
 
     margin:
-        25px 0
-        22px;
+        24px 0 22px;
 }
 
 .ornament-line {
     flex: 1;
 
-    height: 2px;
+    height: 1px;
 
     background:
         linear-gradient(
             90deg,
             transparent,
-            #f9cf4c,
-            #fff4a0,
-            #f9cf4c,
+            #b88c35,
+            #fff0a0,
+            #b88c35,
             transparent
         );
-
-    box-shadow:
-        0 0 10px #ffd000;
 }
 
 .ornament-center {
-    color: #fff0a0;
+    color: #f2ce65;
 
-    font-size: 24px;
-
-    text-shadow:
-        0 0 12px #ffd000;
+    font-size: 22px;
 }
 
 
-/* =========================================================
+/* =====================================================
    SLOT FRAME
-========================================================= */
+===================================================== */
 
 .slot-frame {
-    position: relative;
-
-    padding: 13px;
+    padding: 12px;
 
     border:
-        5px solid #f8d25b;
+        4px solid #d3a63c;
 
-    border-radius: 19px;
+    border-radius: 18px;
 
     background:
         linear-gradient(
             135deg,
-            #5e2700,
-            #f4c832,
-            #713000,
-            #ffe05d,
-            #5a2500
+            #3a1b06,
+            #b9811e,
+            #3b1b05,
+            #d6a936,
+            #301505
         );
 
     box-shadow:
-        inset 0 0 20px rgba(0,0,0,.9),
-        0 0 20px rgba(255,202,0,.4),
-        0 0 40px rgba(255,165,0,.2);
+        0 0 18px rgba(255,190,40,.2),
+        inset 0 0 20px rgba(0,0,0,.85);
 }
 
-
-/* 내부 검은 프레임 */
-
 .slot-inner {
-    position: relative;
-
-    padding: 12px;
-
-    background:
-        linear-gradient(
-            180deg,
-            #210000,
-            #070000,
-            #210000
-        );
+    padding: 11px;
 
     border:
-        4px solid #9d650b;
+        3px solid #704c13;
 
-    border-radius: 11px;
+    border-radius: 10px;
+
+    background:
+        #070608;
 
     box-shadow:
         inset 0 0 30px #000;
 }
 
 
-/* =========================================================
-   SLOT GRID
-========================================================= */
+/* =====================================================
+   SLOTS
+===================================================== */
 
 .slots {
     display: grid;
@@ -379,107 +315,101 @@ body {
 }
 
 
-/* =========================================================
-   INDIVIDUAL SLOT
-========================================================= */
+/* =====================================================
+   SLOT
+===================================================== */
 
 .slot {
     position: relative;
 
     height:
-        clamp(155px, 22vw, 235px);
+        clamp(160px, 22vw, 235px);
 
     overflow: hidden;
 
     border:
-        5px solid #d9ab29;
+        4px solid #bd9130;
 
-    border-radius: 10px;
+    border-radius: 9px;
 
     background:
         linear-gradient(
             180deg,
-            #ffffff 0%,
+            #ffffff,
             #eeeeee 45%,
-            #d0d0d0 100%
+            #c9c9c9
         );
 
     box-shadow:
-        inset 0 0 25px rgba(0,0,0,.55),
-        inset 0 3px 0 rgba(255,255,255,.9),
-        0 0 10px rgba(255,205,0,.25);
-
-    transform: translateZ(0);
+        inset 0 0 25px rgba(0,0,0,.5),
+        inset 0 3px 0 rgba(255,255,255,.9);
 }
 
 
-/* 슬롯 위쪽 그림자 */
+/* 위아래 음영 */
 
-.slot-shadow-top {
+.slot::before {
+    content: "";
+
     position: absolute;
 
     top: 0;
     left: 0;
     right: 0;
 
-    height: 30%;
+    height: 28%;
 
-    z-index: 20;
+    z-index: 10;
 
     pointer-events: none;
 
     background:
         linear-gradient(
-            180deg,
-            rgba(0,0,0,.62),
-            rgba(0,0,0,.15),
+            rgba(0,0,0,.55),
             transparent
         );
 }
 
+.slot::after {
+    content: "";
 
-/* 슬롯 아래쪽 그림자 */
-
-.slot-shadow-bottom {
     position: absolute;
 
     bottom: 0;
     left: 0;
     right: 0;
 
-    height: 30%;
+    height: 28%;
 
-    z-index: 20;
+    z-index: 10;
 
     pointer-events: none;
 
     background:
         linear-gradient(
-            0deg,
-            rgba(0,0,0,.62),
-            rgba(0,0,0,.15),
-            transparent
+            transparent,
+            rgba(0,0,0,.55)
         );
 }
 
 
-/* =========================================================
+/* =====================================================
    PAYLINE
-========================================================= */
+===================================================== */
 
 .payline {
     position: absolute;
 
+    left: 0;
+    right: 0;
     top: 50%;
-    left: -4px;
-    right: -4px;
 
-    height: 3px;
+    height: 2px;
 
     transform:
         translateY(-50%);
 
-    z-index: 30;
+    z-index: 20;
 
     pointer-events: none;
 
@@ -487,63 +417,55 @@ body {
         linear-gradient(
             90deg,
             transparent,
-            #fff1a0 10%,
-            #ffd000 50%,
-            #fff1a0 90%,
+            #ffe995,
+            #fff,
+            #ffe995,
             transparent
         );
 
     box-shadow:
-        0 0 5px #fff,
-        0 0 12px #ffd000,
-        0 0 25px #ff7100;
+        0 0 6px #fff,
+        0 0 14px #ffc928;
 }
 
 
-/* =========================================================
+/* =====================================================
    REEL
-========================================================= */
+
+   핵심:
+   CSS transition으로 한 번에 이동하지 않고
+   JS requestAnimationFrame으로 계속 이동시킨다.
+
+   그래서 "지지직" 없이 부드럽게 돈다.
+===================================================== */
 
 .reel {
     position: absolute;
 
-    top: 0;
     left: 0;
+    top: 0;
 
     width: 100%;
 
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    will-change:
-        transform;
+    will-change: transform;
 
     transform:
         translate3d(0,0,0);
 }
 
-
-/* 심볼 */
-
 .symbol {
     width: 100%;
 
     height:
-        clamp(155px, 22vw, 235px);
-
-    flex-shrink: 0;
+        clamp(160px, 22vw, 235px);
 
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
     font-size:
-        clamp(70px, 10vw, 125px);
+        clamp(70px, 10vw, 120px);
 
     line-height: 1;
 
@@ -552,53 +474,50 @@ body {
     transform:
         translateZ(0);
 
+    backface-visibility:
+        hidden;
+
+    /* 기존 blur 제거 */
     filter:
         drop-shadow(
-            0 5px 4px rgba(0,0,0,.4)
+            0 5px 4px rgba(0,0,0,.35)
         );
 }
 
 
-/* 회전 중 */
+/* 회전 중 살짝만 밝게 */
 
-.reel.spinning .symbol {
-    filter:
-        blur(3px)
-        drop-shadow(
-            0 0 12px rgba(255,170,0,.8)
-        );
+.slot.spinning {
+    box-shadow:
+        inset 0 0 25px rgba(0,0,0,.5),
+        0 0 15px rgba(255,205,60,.35);
 }
 
 
-/* =========================================================
-   STOP ANIMATION
-========================================================= */
+/* =====================================================
+   STOP IMPACT
+===================================================== */
 
-.reel.stop-impact {
+.reel.stop {
     animation:
-        reelImpact .35s ease-out;
+        stopBounce .28s ease-out;
 }
 
-@keyframes reelImpact {
+@keyframes stopBounce {
 
     0% {
         transform:
             scaleY(1);
     }
 
-    25% {
+    35% {
         transform:
-            scaleY(.96);
+            scaleY(.985);
     }
 
-    50% {
+    65% {
         transform:
-            scaleY(1.025);
-    }
-
-    75% {
-        transform:
-            scaleY(.99);
+            scaleY(1.01);
     }
 
     100% {
@@ -608,76 +527,43 @@ body {
 }
 
 
-/* =========================================================
-   SLOT LIGHT
-========================================================= */
-
-.slot.active {
-    animation:
-        activeSlot .6s ease-in-out infinite alternate;
-}
-
-@keyframes activeSlot {
-
-    from {
-        box-shadow:
-            inset 0 0 25px rgba(0,0,0,.55),
-            0 0 8px rgba(255,205,0,.25);
-    }
-
-    to {
-        box-shadow:
-            inset 0 0 25px rgba(0,0,0,.55),
-            0 0 25px rgba(255,225,70,.85);
-    }
-}
-
-
-/* =========================================================
+/* =====================================================
    RESULT
-========================================================= */
+===================================================== */
 
 .result {
-    min-height: 45px;
+    min-height: 42px;
 
-    margin-top: 18px;
+    margin-top: 17px;
 
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
     text-align: center;
 
-    color: #ffe57a;
+    color: #e9cc76;
 
     font-size:
-        clamp(16px, 3vw, 25px);
+        clamp(15px, 3vw, 23px);
 
-    font-weight: 900;
+    font-weight: 800;
 
     letter-spacing: 2px;
 
     text-shadow:
-        0 0 10px #ffb000,
-        0 0 20px #ff6700;
+        0 0 10px rgba(255,180,30,.55);
 }
 
-
-/* =========================================================
-   JACKPOT
-========================================================= */
-
 .result.jackpot {
-    font-size:
-        clamp(28px, 5vw, 55px);
+    color: #fff3a4;
 
-    color: #fffbd0;
+    font-size:
+        clamp(27px, 5vw, 50px);
 
     animation:
-        jackpotGlow .5s ease-in-out infinite alternate,
-        jackpotShake .25s linear infinite;
+        jackpotGlow .6s ease-in-out infinite alternate;
 }
 
 @keyframes jackpotGlow {
@@ -692,49 +578,21 @@ body {
         text-shadow:
             0 0 15px #fff,
             0 0 30px #ffd000,
-            0 0 60px #ff6500;
-    }
-}
-
-@keyframes jackpotShake {
-
-    0% {
-        transform:
-            translateX(0);
-    }
-
-    25% {
-        transform:
-            translateX(-3px);
-    }
-
-    50% {
-        transform:
-            translateX(3px);
-    }
-
-    75% {
-        transform:
-            translateX(-2px);
-    }
-
-    100% {
-        transform:
-            translateX(0);
+            0 0 50px #ff4c68;
     }
 }
 
 
-/* =========================================================
+/* =====================================================
    GO BUTTON
-========================================================= */
+===================================================== */
 
 .button-area {
     display: flex;
 
     justify-content: center;
 
-    margin-top: 20px;
+    margin-top: 19px;
 }
 
 .go-button {
@@ -744,25 +602,25 @@ body {
         clamp(180px, 30vw, 250px);
 
     height:
-        clamp(62px, 9vw, 80px);
+        clamp(62px, 9vw, 78px);
 
     border:
-        5px solid #ffe582;
+        4px solid #e5c45d;
 
-    border-radius: 18px;
+    border-radius: 15px;
 
     background:
         linear-gradient(
             180deg,
-            #fff18a 0%,
-            #ffc52e 42%,
-            #d87805 100%
+            #fff0a0,
+            #e0a929 45%,
+            #8b4a08
         );
 
-    color: #620900;
+    color: #3c0908;
 
     font-size:
-        clamp(25px, 4vw, 36px);
+        clamp(25px, 4vw, 34px);
 
     font-weight: 1000;
 
@@ -771,73 +629,28 @@ body {
     cursor: pointer;
 
     box-shadow:
-        0 8px 0 #661e00,
-        0 13px 30px rgba(0,0,0,.6),
-        0 0 25px rgba(255,210,50,.65),
-        inset 0 3px 5px rgba(255,255,255,.9);
+        0 7px 0 #351005,
+        0 10px 25px rgba(0,0,0,.6),
+        0 0 20px rgba(255,200,60,.35);
 
     transition:
         transform .08s,
-        filter .15s,
-        box-shadow .15s;
-
-    overflow: hidden;
-}
-
-
-/* 버튼 빛 */
-
-.go-button::before {
-    content: "";
-
-    position: absolute;
-
-    top: -100%;
-    left: -60%;
-
-    width: 35%;
-    height: 300%;
-
-    transform:
-        rotate(25deg);
-
-    background:
-        rgba(255,255,255,.55);
-
-    animation:
-        buttonShine 3s ease-in-out infinite;
-}
-
-@keyframes buttonShine {
-
-    0% {
-        left: -70%;
-    }
-
-    45%,
-    100% {
-        left: 140%;
-    }
+        filter .15s;
 }
 
 .go-button:hover {
     filter:
-        brightness(1.15);
+        brightness(1.12);
 
     box-shadow:
-        0 8px 0 #661e00,
-        0 15px 40px rgba(0,0,0,.65),
-        0 0 45px rgba(255,220,60,.95),
-        inset 0 3px 5px rgba(255,255,255,.9);
+        0 7px 0 #351005,
+        0 10px 30px rgba(0,0,0,.7),
+        0 0 35px rgba(255,210,70,.55);
 }
 
 .go-button:active {
     transform:
-        translateY(7px);
-
-    box-shadow:
-        0 1px 0 #661e00,
-        0 6px 15px rgba(0,0,0,.5);
+        translateY(6px);
 }
 
 .go-button:disabled {
@@ -845,13 +658,57 @@ body {
         not-allowed;
 
     filter:
-        brightness(.6);
+        brightness(.55);
 }
 
 
-/* =========================================================
-   PARTICLE CANVAS
-========================================================= */
+/* =====================================================
+   JACKPOT FLASH
+===================================================== */
+
+.flash {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 50;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,245,180,.75),
+            transparent 60%
+        );
+}
+
+.flash.active {
+    animation:
+        flash .9s ease-out;
+}
+
+@keyframes flash {
+
+    0% {
+        opacity: 0;
+    }
+
+    15% {
+        opacity: .8;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+
+/* =====================================================
+   PARTICLES
+===================================================== */
 
 #particles {
     position: fixed;
@@ -863,134 +720,72 @@ body {
 
     pointer-events: none;
 
-    z-index: 100;
+    z-index: 60;
 }
 
 
-/* =========================================================
-   FLASH
-========================================================= */
-
-.flash {
-    position: fixed;
-
-    inset: 0;
-
-    pointer-events: none;
-
-    z-index: 90;
-
-    opacity: 0;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(255,245,160,.8),
-            rgba(255,170,0,.25) 35%,
-            transparent 70%
-        );
-}
-
-.flash.active {
-    animation:
-        flashEffect 1.2s ease-out;
-}
-
-@keyframes flashEffect {
-
-    0% {
-        opacity: 0;
-    }
-
-    15% {
-        opacity: 1;
-    }
-
-    35% {
-        opacity: .35;
-    }
-
-    100% {
-        opacity: 0;
-    }
-}
-
-
-/* =========================================================
+/* =====================================================
    MOBILE
-========================================================= */
+===================================================== */
 
-@media (max-width: 650px) {
+@media(max-width: 650px) {
 
     .machine {
         padding:
-            27px 10px 28px;
+            26px 10px 28px;
 
-        border-width: 5px;
-
-        border-radius: 22px;
-    }
-
-    .machine::after {
-        display: none;
+        border-width:
+            4px;
     }
 
     .subtitle {
-        letter-spacing: 3px;
+        letter-spacing:
+            3px;
     }
 
     .slot-frame {
-        padding: 7px;
+        padding:
+            6px;
 
-        border-width: 3px;
+        border-width:
+            3px;
     }
 
     .slot-inner {
-        padding: 6px;
+        padding:
+            6px;
 
-        border-width: 3px;
+        border-width:
+            2px;
     }
 
     .slots {
-        gap: 4px;
+        gap:
+            4px;
     }
 
     .slot {
-        border-width: 3px;
-    }
-
-    .payline {
-        height: 2px;
+        border-width:
+            3px;
     }
 }
 </style>
 </head>
 
-
 <body>
 
-<!-- 배경 -->
-
-<div class="background-glow"></div>
-<div class="background-pattern"></div>
-
-<!-- 잭팟 플래시 -->
+<div class="neon-left"></div>
+<div class="neon-right"></div>
 
 <div
     class="flash"
     id="flash">
 </div>
 
-<!-- 파티클 -->
-
 <canvas
     id="particles">
 </canvas>
 
-
-<!-- ======================================================
-     MACHINE
-====================================================== -->
 
 <main
     class="machine"
@@ -1022,90 +817,54 @@ body {
     </div>
 
 
-    <!-- ==================================================
-         SLOT FRAME
-    ================================================== -->
-
     <section class="slot-frame">
 
         <div class="slot-inner">
 
             <div class="slots">
 
-                <!-- SLOT 1 -->
-
-                <div
-                    class="slot"
-                    id="slotBox0">
-
-                    <div class="slot-shadow-top"></div>
+                <div class="slot" id="slot0">
 
                     <div
                         class="reel"
                         id="reel0">
                     </div>
 
-                    <div class="slot-shadow-bottom"></div>
-
                     <div class="payline"></div>
 
                 </div>
 
 
-                <!-- SLOT 2 -->
-
-                <div
-                    class="slot"
-                    id="slotBox1">
-
-                    <div class="slot-shadow-top"></div>
+                <div class="slot" id="slot1">
 
                     <div
                         class="reel"
                         id="reel1">
                     </div>
 
-                    <div class="slot-shadow-bottom"></div>
-
                     <div class="payline"></div>
 
                 </div>
 
 
-                <!-- SLOT 3 -->
-
-                <div
-                    class="slot"
-                    id="slotBox2">
-
-                    <div class="slot-shadow-top"></div>
+                <div class="slot" id="slot2">
 
                     <div
                         class="reel"
                         id="reel2">
                     </div>
 
-                    <div class="slot-shadow-bottom"></div>
-
                     <div class="payline"></div>
 
                 </div>
 
 
-                <!-- SLOT 4 -->
-
-                <div
-                    class="slot"
-                    id="slotBox3">
-
-                    <div class="slot-shadow-top"></div>
+                <div class="slot" id="slot3">
 
                     <div
                         class="reel"
                         id="reel3">
                     </div>
-
-                    <div class="slot-shadow-bottom"></div>
 
                     <div class="payline"></div>
 
@@ -1118,8 +877,6 @@ body {
     </section>
 
 
-    <!-- 결과 -->
-
     <div
         class="result"
         id="result">
@@ -1129,13 +886,11 @@ body {
     </div>
 
 
-    <!-- 버튼 -->
-
     <div class="button-area">
 
         <button
             class="go-button"
-            id="goButton">
+            id="go">
 
             GO
 
@@ -1147,20 +902,10 @@ body {
 
 
 <script>
-/* =========================================================
-   FOUR BEASTS SLOT MACHINE
-========================================================= */
 
-
-/* =========================================================
-   SYMBOLS
-
-   모든 심볼은 동일 확률.
-
-   25% × 25% × 25% × 25%
-   = 1 / 256
-   = 약 0.39%
-========================================================= */
+/* =====================================================
+   SETTINGS
+===================================================== */
 
 const SYMBOLS = [
     "🐉",
@@ -1169,11 +914,6 @@ const SYMBOLS = [
     "🔥"
 ];
 
-
-/* =========================================================
-   DOM
-========================================================= */
-
 const reels = [
     document.getElementById("reel0"),
     document.getElementById("reel1"),
@@ -1181,15 +921,15 @@ const reels = [
     document.getElementById("reel3")
 ];
 
-const slotBoxes = [
-    document.getElementById("slotBox0"),
-    document.getElementById("slotBox1"),
-    document.getElementById("slotBox2"),
-    document.getElementById("slotBox3")
+const slots = [
+    document.getElementById("slot0"),
+    document.getElementById("slot1"),
+    document.getElementById("slot2"),
+    document.getElementById("slot3")
 ];
 
-const goButton =
-    document.getElementById("goButton");
+const button =
+    document.getElementById("go");
 
 const result =
     document.getElementById("result");
@@ -1200,124 +940,82 @@ const machine =
 const flash =
     document.getElementById("flash");
 
+let spinning = false;
 
-let isSpinning = false;
 
-
-/* =========================================================
+/* =====================================================
    RANDOM
-========================================================= */
+===================================================== */
 
 function randomSymbol() {
 
-    const index =
+    return SYMBOLS[
         Math.floor(
             Math.random() *
             SYMBOLS.length
-        );
-
-    return SYMBOLS[index];
+        )
+    ];
 }
 
 
-/* =========================================================
-   WAIT
-========================================================= */
+/* =====================================================
+   REEL SETUP
+===================================================== */
 
-function wait(milliseconds) {
-
-    return new Promise(
-        resolve =>
-            setTimeout(
-                resolve,
-                milliseconds
-            )
-    );
-}
-
-
-/* =========================================================
-   CREATE REEL
-========================================================= */
-
-function createReel(
+function buildReel(
     reel,
     finalSymbol
 ) {
 
     reel.innerHTML = "";
 
-
     /*
-        충분히 긴 릴을 만든다.
-
-        중간에는 랜덤 심볼들이
-        빠르게 지나가고
-
-        마지막에 실제 결과가 나온다.
+        많은 심볼을 연결해서
+        실제 릴처럼 계속 이어진다.
     */
 
-    const totalSymbols = 42;
-
+    const count = 80;
 
     for (
         let i = 0;
-        i < totalSymbols;
+        i < count;
         i++
     ) {
 
-        const symbol =
+        const div =
             document.createElement("div");
 
-        symbol.className =
+        div.className =
             "symbol";
 
+        div.textContent =
+            i === count - 1
+                ? finalSymbol
+                : randomSymbol();
 
-        if (
-            i === totalSymbols - 1
-        ) {
-
-            symbol.textContent =
-                finalSymbol;
-
-        } else {
-
-            symbol.textContent =
-                randomSymbol();
-
-        }
-
-
-        reel.appendChild(symbol);
+        reel.appendChild(div);
     }
 
-
-    return totalSymbols - 1;
+    return count - 1;
 }
 
 
-/* =========================================================
-   GET SYMBOL HEIGHT
-========================================================= */
+/* =====================================================
+   WAIT
+===================================================== */
 
-function getSymbolHeight(reel) {
+function wait(ms) {
 
-    const symbol =
-        reel.querySelector(".symbol");
-
-
-    if (!symbol) {
-        return 0;
-    }
-
-
-    return symbol.getBoundingClientRect().height;
+    return new Promise(
+        resolve =>
+            setTimeout(resolve, ms)
+    );
 }
 
 
-/* =========================================================
-   SPIN ONE REEL
-========================================================= */
+/* =====================================================
+   SMOOTH REEL ANIMATION
+===================================================== */
 
 function spinReel(
     index,
@@ -1330,100 +1028,141 @@ function spinReel(
         const reel =
             reels[index];
 
+        const slot =
+            slots[index];
 
-        const box =
-            slotBoxes[index];
-
-
-        /*
-            릴 생성
-        */
 
         const finalIndex =
-            createReel(
+            buildReel(
                 reel,
                 finalSymbol
             );
 
 
-        /*
-            처음 위치
-        */
+        const symbol =
+            reel.querySelector(
+                ".symbol"
+            );
 
-        reel.style.transition =
-            "none";
-
-        reel.style.transform =
-            "translate3d(0,0,0)";
-
-
-        /*
-            브라우저가
-            레이아웃을 계산하게 함
-        */
-
-        reel.offsetHeight;
-
-
-        /*
-            심볼 높이
-        */
 
         const height =
-            getSymbolHeight(reel);
+            symbol.getBoundingClientRect()
+                .height;
 
 
         /*
-            마지막 심볼 위치
+            시작 위치
+        */
+
+        let position = 0;
+
+        let lastTime = null;
+
+        const startTime =
+            performance.now();
+
+
+        /*
+            최종 위치
+
+            몇 바퀴 충분히 돈 뒤
+            마지막 심볼에 도착
         */
 
         const target =
             -(
-                finalIndex *
+                (finalIndex - 1) *
                 height
             );
 
 
         /*
-            활성화
+            실제 회전 속도
+
+            처음에는 빠르게
+            마지막에는 자연스럽게 감속
         */
 
-        reel.classList.add(
+        const totalDistance =
+            Math.abs(target);
+
+
+        /*
+            슬롯 활성화
+        */
+
+        slot.classList.add(
             "spinning"
         );
 
-        box.classList.add(
-            "active"
-        );
-
 
         /*
-            슬롯 회전 소리
+            부드러운 애니메이션
         */
 
-        startSpinSound();
+        function animate(time) {
+
+            if (!lastTime) {
+                lastTime = time;
+            }
 
 
-        /*
-            실제 이동
+            const elapsed =
+                time -
+                startTime;
 
-            cubic-bezier를 사용해서
-            처음에는 빠르고
-            마지막에는 부드럽게 감속
-        */
 
-        requestAnimationFrame(() => {
+            const progress =
+                Math.min(
+                    elapsed / duration,
+                    1
+                );
 
-            requestAnimationFrame(() => {
 
-                reel.style.transition =
-                    `transform ${duration}ms cubic-bezier(
-                        0.05,
-                        0.72,
-                        0.15,
-                        1
-                    )`;
+            /*
+                cubic easing
 
+                처음 빠르게
+                마지막 부드럽게 정지
+            */
+
+            const eased =
+                1 -
+                Math.pow(
+                    1 - progress,
+                    4
+                );
+
+
+            position =
+                target *
+                eased;
+
+
+            reel.style.transform =
+                `translate3d(
+                    0,
+                    ${position}px,
+                    0
+                )`;
+
+
+            if (
+                progress < 1
+            ) {
+
+                lastTime =
+                    time;
+
+                requestAnimationFrame(
+                    animate
+                );
+
+            } else {
+
+                /*
+                    정확한 최종 위치
+                */
 
                 reel.style.transform =
                     `translate3d(
@@ -1432,133 +1171,53 @@ function spinReel(
                         0
                     )`;
 
-            });
 
-        });
-
-
-        /*
-            정지
-        */
-
-        setTimeout(() => {
-
-            reel.classList.remove(
-                "spinning"
-            );
-
-            box.classList.remove(
-                "active"
-            );
-
-
-            /*
-                정지 충격
-            */
-
-            reel.classList.add(
-                "stop-impact"
-            );
-
-
-            setTimeout(() => {
-
-                reel.classList.remove(
-                    "stop-impact"
+                slot.classList.remove(
+                    "spinning"
                 );
 
-            }, 350);
+
+                reel.classList.add(
+                    "stop"
+                );
 
 
-            /*
-                정지 소리
-            */
+                setTimeout(() => {
 
-            playStopSound();
+                    reel.classList.remove(
+                        "stop"
+                    );
+
+                }, 300);
 
 
-            resolve();
+                playStopSound();
 
-        }, duration);
+                resolve();
+            }
+        }
+
+
+        requestAnimationFrame(
+            animate
+        );
 
     });
 }
 
 
-/* =========================================================
-   INITIALIZE
-========================================================= */
-
-function initialize() {
-
-    const initial =
-        [
-            "🐉",
-            "🐯",
-            "🐢",
-            "🔥"
-        ];
-
-
-    reels.forEach(
-        (reel, index) => {
-
-            const finalIndex =
-                createReel(
-                    reel,
-                    initial[index]
-                );
-
-
-            const height =
-                getSymbolHeight(reel);
-
-
-            /*
-                초기 화면에서는
-                마지막 심볼을 중앙에 배치
-            */
-
-            const centerOffset =
-                (
-                    height
-                );
-
-
-            reel.style.transition =
-                "none";
-
-
-            reel.style.transform =
-                `translate3d(
-                    0,
-                    ${-(
-                        (finalIndex - 1) *
-                        height
-                    )}px,
-                    0
-                )`;
-
-        }
-    );
-}
-
-
-/* =========================================================
+/* =====================================================
    AUDIO
-========================================================= */
+===================================================== */
 
 let audioContext = null;
 
-let spinOscillator = null;
-let spinGain = null;
+let rollingTimer = null;
+
+let rollingGain = null;
 
 
-/*
-    오디오 컨텍스트 생성
-*/
-
-function getAudioContext() {
+function getAudio() {
 
     if (!audioContext) {
 
@@ -1570,326 +1229,277 @@ function getAudioContext() {
 
     }
 
-
     return audioContext;
 }
 
 
+/* =====================================================
+   CASINO ROLL SOUND
+===================================================== */
+
 /*
-    GO 클릭 시 오디오 활성화
+    기존의 지지직 소리를 제거하고
+
+    짧은 고음/저음을 빠르게 반복해서
+    "도르르르르..." 느낌을 만든다.
 */
 
-function unlockAudio() {
+function startRollSound() {
+
+    stopRollSound();
 
     const ctx =
-        getAudioContext();
+        getAudio();
 
 
-    if (
-        ctx.state === "suspended"
-    ) {
-
-        ctx.resume();
-
-    }
-
-}
+    rollingGain =
+        ctx.createGain();
 
 
-/* =========================================================
-   SPIN SOUND
-========================================================= */
-
-function startSpinSound() {
-
-    try {
-
-        const ctx =
-            getAudioContext();
+    rollingGain.gain.value =
+        0.025;
 
 
-        if (spinOscillator) {
-            return;
-        }
+    rollingGain.connect(
+        ctx.destination
+    );
 
 
-        spinOscillator =
-            ctx.createOscillator();
+    rollingTimer =
+        setInterval(() => {
+
+            const osc =
+                ctx.createOscillator();
+
+            const gain =
+                ctx.createGain();
 
 
-        spinGain =
-            ctx.createGain();
+            osc.type =
+                "sine";
 
 
-        spinOscillator.type =
-            "sawtooth";
+            const frequency =
+                170 +
+                Math.random() *
+                100;
 
 
-        spinOscillator.frequency
-            .setValueAtTime(
-                85,
-                ctx.currentTime
-            );
+            osc.frequency.value =
+                frequency;
 
 
-        spinGain.gain
-            .setValueAtTime(
-                0.025,
-                ctx.currentTime
-            );
-
-
-        spinOscillator.connect(
-            spinGain
-        );
-
-        spinGain.connect(
-            ctx.destination
-        );
-
-
-        spinOscillator.start();
-
-    } catch (error) {
-
-        console.log(
-            "Audio unavailable"
-        );
-
-    }
-}
-
-
-/*
-    회전 소리 정지
-*/
-
-function stopSpinSound() {
-
-    try {
-
-        if (!spinOscillator) {
-            return;
-        }
-
-
-        const ctx =
-            getAudioContext();
-
-
-        spinGain.gain
-            .exponentialRampToValueAtTime(
+            gain.gain.setValueAtTime(
                 0.001,
-                ctx.currentTime + 0.08
+                ctx.currentTime
             );
 
 
-        spinOscillator.stop(
-            ctx.currentTime + 0.1
+            gain.gain.exponentialRampToValueAtTime(
+                0.045,
+                ctx.currentTime + .008
+            );
+
+
+            gain.gain.exponentialRampToValueAtTime(
+                0.001,
+                ctx.currentTime + .065
+            );
+
+
+            osc.connect(gain);
+
+            gain.connect(
+                rollingGain
+            );
+
+
+            osc.start();
+
+            osc.stop(
+                ctx.currentTime + .07
+            );
+
+        }, 72);
+}
+
+
+/* =====================================================
+   STOP ROLL SOUND
+===================================================== */
+
+function stopRollSound() {
+
+    if (rollingTimer) {
+
+        clearInterval(
+            rollingTimer
         );
 
-
-        spinOscillator =
+        rollingTimer =
             null;
+    }
 
-        spinGain =
+
+    if (rollingGain) {
+
+        try {
+
+            rollingGain.gain
+                .exponentialRampToValueAtTime(
+                    0.001,
+                    getAudio().currentTime + .08
+                );
+
+        } catch(e) {}
+
+        rollingGain =
             null;
-
-    } catch (error) {
-
-        spinOscillator =
-            null;
-
-        spinGain =
-            null;
-
     }
 }
 
 
-/*
-    슬롯 정지 소리
-*/
+/* =====================================================
+   STOP SOUND
+===================================================== */
 
 function playStopSound() {
 
-    try {
-
-        const ctx =
-            getAudioContext();
+    const ctx =
+        getAudio();
 
 
-        const oscillator =
-            ctx.createOscillator();
+    const osc =
+        ctx.createOscillator();
+
+    const gain =
+        ctx.createGain();
 
 
-        const gain =
-            ctx.createGain();
+    osc.type =
+        "triangle";
 
 
-        oscillator.type =
-            "square";
+    osc.frequency.setValueAtTime(
+        230,
+        ctx.currentTime
+    );
 
 
-        oscillator.frequency
-            .setValueAtTime(
-                170,
-                ctx.currentTime
-            );
+    osc.frequency.exponentialRampToValueAtTime(
+        120,
+        ctx.currentTime + .09
+    );
 
 
-        oscillator.frequency
-            .exponentialRampToValueAtTime(
-                70,
-                ctx.currentTime + 0.08
-            );
+    gain.gain.setValueAtTime(
+        .07,
+        ctx.currentTime
+    );
 
 
-        gain.gain
-            .setValueAtTime(
-                0.07,
-                ctx.currentTime
-            );
+    gain.gain.exponentialRampToValueAtTime(
+        .001,
+        ctx.currentTime + .12
+    );
 
 
-        gain.gain
-            .exponentialRampToValueAtTime(
-                0.001,
-                ctx.currentTime + 0.1
-            );
+    osc.connect(gain);
+
+    gain.connect(
+        ctx.destination
+    );
 
 
-        oscillator.connect(
-            gain
-        );
+    osc.start();
 
-        gain.connect(
-            ctx.destination
-        );
-
-
-        oscillator.start();
-
-        oscillator.stop(
-            ctx.currentTime + 0.1
-        );
-
-    } catch (error) {
-
-        console.log(
-            "Audio unavailable"
-        );
-
-    }
+    osc.stop(
+        ctx.currentTime + .13
+    );
 }
 
 
-/* =========================================================
+/* =====================================================
    JACKPOT SOUND
-========================================================= */
+===================================================== */
 
-function playJackpotSound() {
+function jackpotSound() {
 
-    try {
-
-        const ctx =
-            getAudioContext();
+    const ctx =
+        getAudio();
 
 
-        const notes = [
-            523.25,
-            659.25,
-            783.99,
-            1046.50,
-            1318.51
-        ];
+    const notes = [
+        523.25,
+        659.25,
+        783.99,
+        1046.50,
+        1318.51
+    ];
 
 
-        notes.forEach(
-            (frequency, index) => {
+    notes.forEach(
+        (note, index) => {
 
-                const oscillator =
-                    ctx.createOscillator();
+            const osc =
+                ctx.createOscillator();
 
-
-                const gain =
-                    ctx.createGain();
-
-
-                oscillator.type =
-                    "triangle";
+            const gain =
+                ctx.createGain();
 
 
-                oscillator.frequency
-                    .setValueAtTime(
-                        frequency,
-                        ctx.currentTime +
-                        index * 0.12
-                    );
+            osc.type =
+                "triangle";
 
 
-                gain.gain
-                    .setValueAtTime(
-                        0,
-                        ctx.currentTime
-                    );
+            const start =
+                ctx.currentTime +
+                index * .11;
 
 
-                gain.gain
-                    .linearRampToValueAtTime(
-                        0.12,
-                        ctx.currentTime +
-                        index * 0.12 +
-                        0.02
-                    );
+            osc.frequency.value =
+                note;
 
 
-                gain.gain
-                    .exponentialRampToValueAtTime(
-                        0.001,
-                        ctx.currentTime +
-                        index * 0.12 +
-                        0.45
-                    );
+            gain.gain.setValueAtTime(
+                .001,
+                start
+            );
 
 
-                oscillator.connect(
-                    gain
-                );
-
-                gain.connect(
-                    ctx.destination
-                );
+            gain.gain.exponentialRampToValueAtTime(
+                .12,
+                start + .02
+            );
 
 
-                oscillator.start(
-                    ctx.currentTime +
-                    index * 0.12
-                );
+            gain.gain.exponentialRampToValueAtTime(
+                .001,
+                start + .4
+            );
 
 
-                oscillator.stop(
-                    ctx.currentTime +
-                    index * 0.12 +
-                    0.5
-                );
+            osc.connect(gain);
 
-            }
-        );
+            gain.connect(
+                ctx.destination
+            );
 
-    } catch (error) {
 
-        console.log(
-            "Audio unavailable"
-        );
+            osc.start(start);
 
-    }
+            osc.stop(
+                start + .45
+            );
+
+        }
+    );
 }
 
 
-/* =========================================================
-   PARTICLE SYSTEM
-========================================================= */
+/* =====================================================
+   PARTICLES
+===================================================== */
 
 const canvas =
     document.getElementById(
@@ -1898,7 +1508,6 @@ const canvas =
 
 const ctx =
     canvas.getContext("2d");
-
 
 let particles = [];
 
@@ -1913,6 +1522,7 @@ function resizeCanvas() {
 
 }
 
+resizeCanvas();
 
 window.addEventListener(
     "resize",
@@ -1920,166 +1530,11 @@ window.addEventListener(
 );
 
 
-resizeCanvas();
-
-
-/*
-    파티클 생성
-*/
-
-function createParticles() {
-
-    particles = [];
-
-
-    const count =
-        Math.min(
-            180,
-            Math.floor(
-                window.innerWidth / 6
-            )
-        );
-
-
-    for (
-        let i = 0;
-        i < count;
-        i++
-    ) {
-
-        particles.push({
-
-            x:
-                Math.random() *
-                canvas.width,
-
-            y:
-                canvas.height +
-                Math.random() *
-                100,
-
-            size:
-                Math.random() *
-                4 +
-                1,
-
-            speed:
-                Math.random() *
-                5 +
-                2,
-
-            rotation:
-                Math.random() *
-                Math.PI,
-
-            rotationSpeed:
-                Math.random() *
-                .1 -
-
-                .05,
-
-            alpha:
-                Math.random() *
-                .8 +
-                .2
-
-        });
-
-    }
-
-}
-
-
-/*
-    파티클 애니메이션
-*/
-
-function animateParticles() {
-
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
-
-
-    particles.forEach(
-        particle => {
-
-            particle.y -=
-                particle.speed;
-
-
-            particle.rotation +=
-                particle.rotationSpeed;
-
-
-            if (
-                particle.y <
-                -20
-            ) {
-
-                particle.y =
-                    canvas.height +
-                    20;
-
-            }
-
-
-            ctx.save();
-
-
-            ctx.translate(
-                particle.x,
-                particle.y
-            );
-
-
-            ctx.rotate(
-                particle.rotation
-            );
-
-
-            ctx.globalAlpha =
-                particle.alpha;
-
-
-            ctx.fillStyle =
-                "#ffd84a";
-
-
-            ctx.fillRect(
-                -particle.size / 2,
-                -particle.size / 2,
-                particle.size,
-                particle.size
-            );
-
-
-            ctx.restore();
-
-        }
-    );
-
-
-    requestAnimationFrame(
-        animateParticles
-    );
-
-}
-
-
-createParticles();
-
-animateParticles();
-
-
-/* =========================================================
+/* =====================================================
    JACKPOT PARTICLES
-========================================================= */
+===================================================== */
 
-function jackpotParticles() {
+function createJackpotParticles() {
 
     const rect =
         machine.getBoundingClientRect();
@@ -2087,7 +1542,7 @@ function jackpotParticles() {
 
     for (
         let i = 0;
-        i < 120;
+        i < 130;
         i++
     ) {
 
@@ -2099,11 +1554,11 @@ function jackpotParticles() {
 
         const speed =
             Math.random() *
-            12 +
+            10 +
             4;
 
 
-        const particle = {
+        particles.push({
 
             x:
                 rect.left +
@@ -2126,159 +1581,90 @@ function jackpotParticles() {
 
             size:
                 Math.random() *
-                5 +
+                4 +
                 2
-
-        };
-
-
-        animateJackpotParticle(
-            particle
-        );
-
+        });
     }
-
 }
 
 
-/*
-    잭팟 파티클 하나
-*/
+/* =====================================================
+   PARTICLE LOOP
+===================================================== */
 
-function animateJackpotParticle(
-    particle
-) {
+function particleLoop() {
 
-    function frame() {
-
-        particle.x +=
-            particle.vx;
-
-
-        particle.y +=
-            particle.vy;
-
-
-        particle.vy +=
-            .25;
-
-
-        particle.life -=
-            .018;
-
-
-        ctx.save();
-
-
-        ctx.globalAlpha =
-            Math.max(
-                0,
-                particle.life
-            );
-
-
-        ctx.fillStyle =
-            Math.random() > .5
-                ? "#ffd700"
-                : "#fff4a0";
-
-
-        ctx.beginPath();
-
-
-        ctx.arc(
-            particle.x,
-            particle.y,
-            particle.size,
-            0,
-            Math.PI * 2
-        );
-
-
-        ctx.fill();
-
-
-        ctx.restore();
-
-
-        if (
-            particle.life > 0
-        ) {
-
-            requestAnimationFrame(
-                frame
-            );
-
-        }
-
-    }
-
-
-    frame();
-
-}
-
-
-/* =========================================================
-   MACHINE SHAKE
-========================================================= */
-
-function shakeMachine() {
-
-    machine.animate(
-
-        [
-
-            {
-                transform:
-                    "translateX(0) scale(1)"
-            },
-
-            {
-                transform:
-                    "translateX(-5px) scale(1.015)"
-            },
-
-            {
-                transform:
-                    "translateX(5px) scale(1.02)"
-            },
-
-            {
-                transform:
-                    "translateX(-4px) scale(1.015)"
-            },
-
-            {
-                transform:
-                    "translateX(4px) scale(1.01)"
-            },
-
-            {
-                transform:
-                    "translateX(0) scale(1)"
-            }
-
-        ],
-
-        {
-
-            duration:
-                850,
-
-            easing:
-                "ease-out"
-
-        }
-
+    ctx.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
     );
 
+
+    particles =
+        particles.filter(
+            particle =>
+                particle.life > 0
+        );
+
+
+    particles.forEach(
+        particle => {
+
+            particle.x +=
+                particle.vx;
+
+            particle.y +=
+                particle.vy;
+
+            particle.vy +=
+                .22;
+
+            particle.life -=
+                .018;
+
+
+            ctx.globalAlpha =
+                particle.life;
+
+            ctx.fillStyle =
+                Math.random() > .5
+                    ? "#ffd84a"
+                    : "#fff1a0";
+
+
+            ctx.beginPath();
+
+            ctx.arc(
+                particle.x,
+                particle.y,
+                particle.size,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+
+        }
+    );
+
+
+    ctx.globalAlpha =
+        1;
+
+
+    requestAnimationFrame(
+        particleLoop
+    );
 }
 
+particleLoop();
 
-/* =========================================================
+
+/* =====================================================
    JACKPOT EFFECT
-========================================================= */
+===================================================== */
 
 function jackpotEffect() {
 
@@ -2292,10 +1678,6 @@ function jackpotEffect() {
     );
 
 
-    /*
-        강제로 애니메이션 재시작
-    */
-
     void flash.offsetWidth;
 
 
@@ -2304,37 +1686,62 @@ function jackpotEffect() {
     );
 
 
-    shakeMachine();
+    createJackpotParticles();
+
+    jackpotSound();
 
 
-    jackpotParticles();
+    machine.animate(
+        [
+            {
+                transform:
+                    "translateX(0)"
+            },
+            {
+                transform:
+                    "translateX(-4px)"
+            },
+            {
+                transform:
+                    "translateX(4px)"
+            },
+            {
+                transform:
+                    "translateX(-3px)"
+            },
+            {
+                transform:
+                    "translateX(0)"
+            }
+        ],
+        {
+            duration:
+                700,
 
-
-    playJackpotSound();
-
+            easing:
+                "ease-out"
+        }
+    );
 }
 
 
-/* =========================================================
+/* =====================================================
    GAME
-========================================================= */
+===================================================== */
 
 async function startGame() {
 
-    if (isSpinning) {
+    if (spinning) {
         return;
     }
 
 
-    isSpinning =
+    spinning =
         true;
 
 
-    goButton.disabled =
+    button.disabled =
         true;
-
-
-    unlockAudio();
 
 
     result.classList.remove(
@@ -2343,29 +1750,29 @@ async function startGame() {
 
 
     result.textContent =
-        "운명의 릴이 돌아갑니다...";
+        "GOOD LUCK";
 
 
     /*
-        이전 결과 제거
+        브라우저 오디오 활성화
     */
 
-    slotBoxes.forEach(
-        box => {
+    const ctx =
+        getAudio();
 
-            box.classList.remove(
-                "active"
-            );
 
-        }
-    );
+    if (
+        ctx.state ===
+        "suspended"
+    ) {
+
+        await ctx.resume();
+
+    }
 
 
     /*
-        최종 결과를 먼저 결정
-
-        실제 슬롯머신과 같은
-        독립적인 결과
+        결과를 먼저 결정
     */
 
     const results = [
@@ -2379,10 +1786,14 @@ async function startGame() {
 
 
     /*
-        각 슬롯의 회전 시간을
-        조금씩 다르게 한다.
+        도르르르 소리 시작
+    */
 
-        1 → 2 → 3 → 4
+    startRollSound();
+
+
+    /*
+        1번
     */
 
     await spinReel(
@@ -2392,8 +1803,12 @@ async function startGame() {
     );
 
 
-    await wait(280);
+    await wait(220);
 
+
+    /*
+        2번
+    */
 
     await spinReel(
         1,
@@ -2402,8 +1817,12 @@ async function startGame() {
     );
 
 
-    await wait(280);
+    await wait(220);
 
+
+    /*
+        3번
+    */
 
     await spinReel(
         2,
@@ -2412,8 +1831,12 @@ async function startGame() {
     );
 
 
-    await wait(280);
+    await wait(220);
 
+
+    /*
+        4번
+    */
 
     await spinReel(
         3,
@@ -2422,15 +1845,11 @@ async function startGame() {
     );
 
 
-    /*
-        회전 소리 종료
-    */
-
-    stopSpinSound();
+    stopRollSound();
 
 
     /*
-        결과 판정
+        당첨 판정
     */
 
     const jackpot =
@@ -2447,42 +1866,84 @@ async function startGame() {
     if (jackpot) {
 
         result.textContent =
-            `🎉 JACKPOT! ${results.join(" ")} 🎉`;
-
+            "🎉 JACKPOT! 🎉";
 
         jackpotEffect();
 
     } else {
 
         result.textContent =
-            `${results.join("   ")}  —  다시 도전!`;
+            results.join("   ") +
+            "  —  다시 도전!";
 
     }
 
 
-    isSpinning =
+    spinning =
         false;
 
 
-    goButton.disabled =
+    button.disabled =
         false;
-
 }
 
 
-/* =========================================================
-   BUTTON
-========================================================= */
+/* =====================================================
+   INITIAL DISPLAY
+===================================================== */
 
-goButton.addEventListener(
+function initialize() {
+
+    const initial = [
+        "🐉",
+        "🐯",
+        "🐢",
+        "🔥"
+    ];
+
+
+    reels.forEach(
+        (reel, index) => {
+
+            const finalIndex =
+                buildReel(
+                    reel,
+                    initial[index]
+                );
+
+
+            const symbol =
+                reel.querySelector(
+                    ".symbol"
+                );
+
+
+            const height =
+                symbol.getBoundingClientRect()
+                    .height;
+
+
+            /*
+                마지막에서 한 칸 위에 위치시켜
+                중앙에 심볼이 보이게 함
+            */
+
+            reel.style.transform =
+                `translate3d(
+                    0,
+                    ${-(finalIndex - 1) * height}px,
+                    0
+                )`;
+        }
+    );
+}
+
+
+button.addEventListener(
     "click",
     startGame
 );
 
-
-/* =========================================================
-   START
-========================================================= */
 
 initialize();
 
