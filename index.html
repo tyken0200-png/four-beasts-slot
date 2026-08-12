@@ -2,1022 +2,586 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>FOUR BEASTS</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NODE_0</title>
 
 <style>
 *{
     box-sizing:border-box;
 }
 
-html,
-body{
+html,body{
     margin:0;
     width:100%;
-    min-height:100%;
+    height:100%;
 }
 
 body{
-    min-height:100vh;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-
     overflow:hidden;
-
+    background:#020303;
+    color:#a8aaa4;
     font-family:
-        Arial,
-        "Noto Sans KR",
-        sans-serif;
-
-    background:
-        radial-gradient(
-            circle at 50% 35%,
-            #172342 0%,
-            #090d18 42%,
-            #030407 100%
-        );
-
-    color:white;
+        "Courier New",
+        Consolas,
+        monospace;
 }
 
-/* =========================================
-   BACKGROUND LIGHTS
-========================================= */
+/* CRT */
 
-body::before{
+body:before{
     content:"";
-
     position:fixed;
-
-    inset:-30%;
-
+    inset:0;
+    z-index:999;
     pointer-events:none;
 
     background:
-        radial-gradient(
-            circle at 15% 40%,
-            rgba(255,30,45,.22),
-            transparent 24%
-        ),
-        radial-gradient(
-            circle at 85% 40%,
-            rgba(255,180,20,.2),
-            transparent 24%
-        ),
-        radial-gradient(
-            circle at 50% 100%,
-            rgba(0,120,255,.15),
-            transparent 35%
-        );
-}
-
-/* =========================================
-   MACHINE
-========================================= */
-
-.machine{
-
-    position:relative;
-
-    width:min(1080px,96vw);
-
-    padding:
-        24px
-        clamp(10px,3vw,40px)
-        28px;
-
-    border-radius:28px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #080a10,
-            #202734 20%,
-            #080a0f 48%,
-            #171d28 78%,
-            #050609
+        repeating-linear-gradient(
+            0deg,
+            rgba(255,255,255,.025) 0px,
+            rgba(255,255,255,.025) 1px,
+            transparent 1px,
+            transparent 4px
         );
 
-    border:
-        5px solid #d4a93f;
-
-    box-shadow:
-
-        0 0 0 2px #513b0d,
-
-        0 0 20px rgba(255,210,70,.28),
-
-        0 0 80px rgba(0,100,255,.14),
-
-        0 30px 100px rgba(0,0,0,.95),
-
-        inset 0 0 45px rgba(0,0,0,.9);
-
-    z-index:5;
-
-    transition:
-        transform .1s;
+    mix-blend-mode:screen;
+    opacity:.35;
 }
 
-.machine::before{
-
+body:after{
     content:"";
-
-    position:absolute;
-
-    inset:9px;
-
-    border:
-        1px solid rgba(255,220,100,.5);
-
-    border-radius:20px;
-
+    position:fixed;
+    inset:0;
+    z-index:998;
     pointer-events:none;
+
+    background:
+        radial-gradient(
+            ellipse at center,
+            transparent 45%,
+            rgba(0,0,0,.72) 100%
+        );
 }
 
-/* =========================================
-   LED
-========================================= */
+/* BOOT */
 
-.leds{
-
-    position:absolute;
-
-    top:12px;
-
-    left:18px;
-    right:18px;
+#boot{
+    position:fixed;
+    inset:0;
+    z-index:1000;
 
     display:flex;
+    align-items:center;
+    justify-content:center;
 
-    justify-content:space-between;
-
-    pointer-events:none;
+    background:#000;
 }
 
-.led{
-
-    width:8px;
-    height:8px;
-
-    border-radius:50%;
-
-    background:#ffe899;
-
-    box-shadow:
-        0 0 5px white,
-        0 0 12px #ffc400,
-        0 0 24px #ff8c00;
-
-    animation:
-        blink .7s infinite alternate;
+.boot-box{
+    width:min(700px,90vw);
+    color:#9da19a;
+    font-size:13px;
+    line-height:1.9;
 }
 
-.led:nth-child(2n){
-    animation-delay:.12s;
+.boot-line{
+    opacity:0;
 }
 
-.led:nth-child(3n){
-    animation-delay:.23s;
+.boot-line.show{
+    opacity:1;
 }
 
-.led:nth-child(4n){
-    animation-delay:.35s;
+.boot-warning{
+    color:#b9b9ad;
+}
+
+.enter{
+    margin-top:25px;
+    color:#777a74;
+    cursor:pointer;
+    animation:blink 1s infinite;
 }
 
 @keyframes blink{
-
-    from{
-        opacity:.25;
-        transform:scale(.7);
-    }
-
-    to{
-        opacity:1;
-        transform:scale(1.25);
-    }
+    50%{opacity:.15}
 }
 
-/* =========================================
-   HEADER
-========================================= */
+/* MAIN */
 
-.brand{
-
-    text-align:center;
-
-    color:#d5b65a;
-
-    font-size:9px;
-
-    letter-spacing:7px;
-
-    margin-top:4px;
+#app{
+    width:100%;
+    height:100%;
+    display:none;
 }
 
-.title{
+.layout{
+    width:min(1200px,94vw);
+    height:100%;
 
-    margin:
-        8px 0 0;
-
-    text-align:center;
-
-    font-size:
-        clamp(40px,7vw,76px);
-
-    font-weight:1000;
-
-    letter-spacing:
-        clamp(2px,1vw,8px);
-
-    line-height:.9;
-
-    background:
-        linear-gradient(
-            180deg,
-            #fff9ca,
-            #e8c65a 42%,
-            #fff0a0 60%,
-            #9b6417
-        );
-
-    -webkit-background-clip:text;
-    background-clip:text;
-
-    color:transparent;
-
-    filter:
-        drop-shadow(
-            0 4px 0 #271600
-        )
-        drop-shadow(
-            0 0 18px rgba(255,205,60,.5)
-        );
-}
-
-.subtitle{
-
-    margin-top:12px;
-
-    text-align:center;
-
-    color:#8793a9;
-
-    font-size:9px;
-
-    letter-spacing:5px;
-}
-
-/* =========================================
-   JACKPOT DISPLAY
-========================================= */
-
-.jackpots{
+    margin:auto;
 
     display:grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
-    gap:7px;
-
-    margin:
-        18px auto 14px;
-
-    max-width:780px;
+    grid-template-columns:190px 1fr;
 }
 
-.jackpot{
+/* SIDEBAR */
 
-    padding:7px 4px;
-
-    text-align:center;
-
-    border:
-        1px solid #66521d;
-
-    background:
-        linear-gradient(
-            #0d1119,
-            #050609
-        );
-
-    box-shadow:
-        inset 0 0 12px #000;
-}
-
-.jackpot .label{
-
-    display:block;
-
-    font-size:7px;
-
-    letter-spacing:2px;
-
-    color:#747f91;
-}
-
-.jackpot .amount{
-
-    display:block;
-
-    margin-top:2px;
-
-    color:#f3d873;
-
-    font-family:
-        "Courier New",
-        monospace;
-
-    font-weight:900;
-
-    font-size:
-        clamp(12px,2vw,18px);
-
-    text-shadow:
-        0 0 8px rgba(255,200,40,.7);
-}
-
-/* =========================================
-   ORNAMENT
-========================================= */
-
-.ornament{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:14px;
-
-    margin:
-        14px 0;
-}
-
-.line{
-
-    flex:1;
-
-    height:1px;
+.sidebar{
+    border-right:1px solid #252925;
+    padding:25px 15px;
 
     background:
         linear-gradient(
             90deg,
-            transparent,
-            #a77b25,
-            #ffe48b,
-            #a77b25,
+            rgba(255,255,255,.012),
             transparent
         );
 }
 
-.diamond{
-
-    color:#e6c55b;
-
-    text-shadow:
-        0 0 15px #ffc400;
+.logo{
+    color:#c2c3bd;
+    font-size:19px;
+    letter-spacing:4px;
+    margin-bottom:6px;
 }
 
-/* =========================================
-   REEL FRAME
-========================================= */
-
-.reel-frame{
-
-    padding:10px;
-
-    border-radius:14px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #5d4515,
-            #f0cf62,
-            #765817,
-            #d9b34a,
-            #4b350e
-        );
-
-    border:4px solid #c89c35;
-
-    box-shadow:
-
-        inset 0 0 20px #080703,
-
-        0 0 25px rgba(255,205,70,.2);
+.version{
+    color:#444842;
+    font-size:9px;
+    margin-bottom:35px;
 }
 
-.reel-inner{
-
-    padding:7px;
-
-    background:#020307;
-
-    border:
-        2px solid #5e4b1d;
-
-    box-shadow:
-        inset 0 0 25px #000;
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:3px;
 }
 
-/* =========================================
-   REELS
-========================================= */
+.nav button{
+    border:0;
+    background:transparent;
+    color:#777b74;
 
-.reels{
+    padding:11px 8px;
+    text-align:left;
 
+    font-family:inherit;
+    cursor:pointer;
+}
+
+.nav button:hover{
+    background:#101310;
+    color:#c7c8c0;
+}
+
+.nav button.active{
+    color:#d1d1c8;
+    background:#0c0e0c;
+}
+
+.status{
+    position:absolute;
+    bottom:25px;
+
+    color:#454942;
+    font-size:9px;
+    line-height:1.8;
+}
+
+/* CONTENT */
+
+.content{
+    padding:25px 30px;
+    overflow:auto;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+
+    border-bottom:1px solid #252925;
+    padding-bottom:12px;
+    margin-bottom:25px;
+
+    color:#535750;
+    font-size:10px;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+h1{
+    margin:0 0 8px;
+    color:#c5c6be;
+    font-size:20px;
+    font-weight:normal;
+}
+
+.sub{
+    color:#494d47;
+    font-size:10px;
+    margin-bottom:25px;
+}
+
+/* PANELS */
+
+.panel{
+    border:1px solid #252925;
+    background:#050605;
+    margin-bottom:12px;
+}
+
+.panel-head{
+    padding:10px 12px;
+    border-bottom:1px solid #20241f;
+
+    color:#6f746d;
+    font-size:10px;
+}
+
+.panel-body{
+    padding:15px;
+}
+
+/* BOARD */
+
+.post{
+    border-bottom:1px solid #171a17;
+    padding:15px 0;
+}
+
+.post:last-child{
+    border-bottom:0;
+}
+
+.post-user{
+    color:#70746d;
+    font-size:10px;
+}
+
+.post-text{
+    margin-top:7px;
+    color:#a4a69f;
+    line-height:1.6;
+}
+
+.post-time{
+    margin-top:6px;
+    color:#41453f;
+    font-size:9px;
+}
+
+/* FILES */
+
+.file{
+    display:flex;
+    justify-content:space-between;
+
+    padding:12px;
+
+    border-bottom:1px solid #151815;
+
+    cursor:pointer;
+}
+
+.file:hover{
+    background:#0c0e0c;
+}
+
+.file-name{
+    color:#9ea098;
+}
+
+.file-size{
+    color:#41443f;
+}
+
+/* CAMERAS */
+
+.cameras{
     display:grid;
-
-    grid-template-columns:
-        repeat(4,1fr);
-
-    gap:7px;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
 }
 
-.slot{
-
+.camera{
     position:relative;
 
-    height:
-        clamp(145px,21vw,225px);
+    aspect-ratio:16/10;
+
+    background:#080a09;
+
+    border:1px solid #292d28;
 
     overflow:hidden;
 
-    background:
-        linear-gradient(
-            180deg,
-            #f9f9f9,
-            #d8d8d8 45%,
-            #b9b9b9
-        );
-
-    border:
-        3px solid #a17b25;
-
-    border-radius:6px;
-
-    box-shadow:
-        inset 0 0 25px rgba(0,0,0,.65);
-
-    transition:
-        box-shadow .15s;
-}
-
-.slot.spinning{
-
-    box-shadow:
-
-        inset 0 0 30px rgba(0,0,0,.7),
-
-        0 0 18px rgba(255,211,70,.7);
-}
-
-.reel{
-
-    position:absolute;
-
-    top:0;
-    left:0;
-
-    width:100%;
-
-    will-change:
-        transform;
-
-    backface-visibility:hidden;
-}
-
-.symbol{
-
-    height:
-        clamp(145px,21vw,225px);
-
-    width:100%;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    font-size:
-        clamp(68px,10vw,115px);
-
-    user-select:none;
-
-    filter:
-        drop-shadow(
-            0 7px 5px rgba(0,0,0,.4)
-        );
-}
-
-/* =========================================
-   GLASS
-========================================= */
-
-.slot::before{
-
-    content:"";
-
-    position:absolute;
-
-    inset:0;
-
-    z-index:10;
-
-    pointer-events:none;
-
-    background:
-        linear-gradient(
-            105deg,
-            rgba(255,255,255,.3),
-            transparent 18%,
-            transparent 72%,
-            rgba(255,255,255,.1)
-        );
-}
-
-.slot::after{
-
-    content:"";
-
-    position:absolute;
-
-    inset:0;
-
-    z-index:11;
-
-    pointer-events:none;
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(0,0,0,.28),
-            transparent 20%,
-            transparent 80%,
-            rgba(0,0,0,.28)
-        );
-}
-
-/* =========================================
-   PAYLINE
-========================================= */
-
-.payline{
-
-    position:absolute;
-
-    z-index:20;
-
-    left:0;
-    right:0;
-
-    top:50%;
-
-    height:2px;
-
-    transform:
-        translateY(-50%);
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            white,
-            #ffe369,
-            white,
-            transparent
-        );
-
-    box-shadow:
-        0 0 7px white,
-        0 0 15px #ffc400;
-
-    pointer-events:none;
-}
-
-/* =========================================
-   RESULT
-========================================= */
-
-.result{
-
-    height:58px;
-
-    display:flex;
-
-    justify-content:center;
-    align-items:center;
-
-    text-align:center;
-
-    color:#d7bf6d;
-
-    font-size:
-        clamp(14px,2.5vw,21px);
-
-    font-weight:900;
-
-    letter-spacing:3px;
-
-    text-shadow:
-        0 0 12px rgba(255,200,40,.5);
-}
-
-.result.jackpot{
-
-    color:#fff;
-
-    font-size:
-        clamp(28px,5vw,58px);
-
-    animation:
-        jackpotText .35s infinite alternate;
-}
-
-@keyframes jackpotText{
-
-    from{
-        transform:scale(1);
-
-        text-shadow:
-            0 0 10px white,
-            0 0 25px #ffd400;
-    }
-
-    to{
-        transform:scale(1.1);
-
-        text-shadow:
-            0 0 10px white,
-            0 0 35px #ffd400,
-            0 0 70px #ff4d00;
-    }
-}
-
-/* =========================================
-   GO BUTTON
-========================================= */
-
-.go-wrap{
-
-    display:flex;
-
-    justify-content:center;
-
-    margin-top:4px;
-}
-
-.go{
-
-    width:
-        clamp(190px,32vw,280px);
-
-    height:
-        clamp(58px,8vw,76px);
-
-    border:
-        3px solid #f5d76b;
-
-    border-radius:13px;
-
     cursor:pointer;
-
-    color:#250c02;
-
-    font-size:
-        clamp(24px,4vw,36px);
-
-    font-weight:1000;
-
-    letter-spacing:8px;
-
-    background:
-        linear-gradient(
-            180deg,
-            #fff6b7,
-            #e5b437 44%,
-            #874309
-        );
-
-    box-shadow:
-
-        0 7px 0 #2b0b03,
-
-        0 12px 30px rgba(0,0,0,.8),
-
-        0 0 30px rgba(255,200,40,.3);
-
-    transition:
-        filter .1s,
-        transform .1s;
 }
 
-.go:hover{
-
-    filter:
-        brightness(1.16);
-
-    box-shadow:
-
-        0 7px 0 #2b0b03,
-
-        0 15px 35px rgba(0,0,0,.8),
-
-        0 0 45px rgba(255,215,60,.65);
-}
-
-.go:active{
-
-    transform:
-        translateY(6px);
-}
-
-.go:disabled{
-
-    cursor:not-allowed;
-
-    filter:
-        brightness(.55);
-}
-
-/* =========================================
-   JACKPOT OVERLAY
-========================================= */
-
-.overlay{
-
-    position:fixed;
-
+.camera-screen{
+    position:absolute;
     inset:0;
 
-    z-index:100;
-
-    pointer-events:none;
-
     display:flex;
-
-    justify-content:center;
     align-items:center;
+    justify-content:center;
 
-    opacity:0;
+    color:#3d423c;
+    font-size:11px;
 
     background:
         radial-gradient(
             circle,
-            rgba(255,235,100,.5),
-            transparent 60%
+            #171a17,
+            #050605 70%
         );
 }
 
-.overlay.show{
+.camera-screen:after{
+    content:"";
+    position:absolute;
+    inset:0;
 
-    animation:
-        overlayFlash 3s ease-out;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 3px,
+            rgba(255,255,255,.025) 4px
+        );
 }
 
-@keyframes overlayFlash{
+.cam-label{
+    position:absolute;
+    left:8px;
+    top:7px;
+    z-index:3;
 
-    0%{
-        opacity:0;
-    }
-
-    8%{
-        opacity:1;
-    }
-
-    35%{
-        opacity:.75;
-    }
-
-    100%{
-        opacity:0;
-    }
+    color:#8b8d85;
+    font-size:9px;
 }
 
-.jackpot-message{
+.cam-time{
+    position:absolute;
+    right:8px;
+    top:7px;
+    z-index:3;
+
+    color:#676a64;
+    font-size:9px;
+}
+
+.red{
+    color:#713b3b;
+}
+
+.figure{
+    position:absolute;
+
+    width:13px;
+    height:65px;
+
+    background:#050505;
+
+    border-radius:45% 45% 20% 20%;
+
+    filter:blur(1px);
+
+    opacity:0;
+
+    transition:
+        opacity 1.5s,
+        left 2s,
+        top 2s;
+}
+
+.figure:before{
+    content:"";
+
+    position:absolute;
+
+    width:18px;
+    height:18px;
+
+    border-radius:50%;
+
+    background:#030303;
+
+    left:-2.5px;
+    top:-14px;
+}
+
+.camera-haunted .figure{
+    opacity:.78;
+}
+
+/* FILE VIEWER */
+
+.viewer{
+    min-height:260px;
+
+    white-space:pre-wrap;
+
+    color:#8d9189;
+
+    line-height:1.8;
+
+    font-size:12px;
+}
+
+.close{
+    float:right;
+    color:#555a53;
+    cursor:pointer;
+}
+
+/* ALERT */
+
+#alert{
+    position:fixed;
+
+    left:50%;
+    top:50%;
+
+    transform:translate(-50%,-50%);
+
+    z-index:800;
+
+    display:none;
+
+    width:min(620px,85vw);
+
+    border:1px solid #5b302f;
+
+    background:
+        rgba(2,3,2,.96);
+
+    box-shadow:
+        0 0 80px rgba(80,0,0,.25);
+
+    padding:30px;
+
+    color:#aaa;
+}
+
+.alert-title{
+    color:#8e5552;
+    margin-bottom:20px;
+}
+
+.alert-text{
+    line-height:1.8;
+}
+
+/* FINAL */
+
+#final{
+    position:fixed;
+    inset:0;
+
+    z-index:900;
+
+    display:none;
+
+    background:#000;
+
+    align-items:center;
+    justify-content:center;
 
     text-align:center;
 
-    transform:
-        scale(.2)
-        rotate(-8deg);
+    color:#aaa;
 
-    opacity:0;
+    font-size:13px;
+
+    letter-spacing:2px;
 }
 
-.overlay.show
-.jackpot-message{
+.final-inner{
+    line-height:2.4;
+}
 
+.final-big{
+    color:#d0d0c8;
+    font-size:20px;
+}
+
+/* GLITCH */
+
+.glitch{
     animation:
-        jackpotPop 3s cubic-bezier(.1,.8,.2,1);
+        glitch .12s steps(2) 3;
 }
 
-.congrats{
-
-    display:block;
-
-    color:#fff4a8;
-
-    font-size:
-        clamp(15px,3vw,30px);
-
-    font-weight:1000;
-
-    letter-spacing:8px;
-}
-
-.jackpot-big{
-
-    display:block;
-
-    margin-top:4px;
-
-    font-size:
-        clamp(58px,12vw,150px);
-
-    line-height:.85;
-
-    font-style:italic;
-
-    font-weight:1000;
-
-    color:white;
-
-    text-shadow:
-
-        0 5px 0 #a64d00,
-
-        0 10px 0 #421200,
-
-        0 0 15px white,
-
-        0 0 35px #ffe600,
-
-        0 0 70px #ff7800,
-
-        0 0 120px #ff174d;
-}
-
-@keyframes jackpotPop{
-
+@keyframes glitch{
     0%{
-        opacity:0;
-
-        transform:
-            scale(.1)
-            rotate(-12deg);
+        transform:translate(0);
     }
-
-    10%{
-        opacity:1;
-
-        transform:
-            scale(1.25)
-            rotate(3deg);
+    25%{
+        transform:translate(-3px,1px);
     }
-
-    20%{
-        transform:
-            scale(.9)
-            rotate(-2deg);
+    50%{
+        transform:translate(4px,-1px);
     }
-
-    30%{
-        transform:
-            scale(1.08)
-            rotate(1deg);
-    }
-
-    42%{
-        transform:
-            scale(1)
-            rotate(0);
-    }
-
     75%{
-        opacity:1;
+        transform:translate(-1px,2px);
     }
-
     100%{
-        opacity:0;
-
-        transform:
-            scale(1.2);
+        transform:translate(0);
     }
 }
 
-/* =========================================
-   FLASH
-========================================= */
+/* MOBILE */
 
-.flash{
+@media(max-width:700px){
 
-    position:fixed;
-
-    inset:0;
-
-    z-index:90;
-
-    pointer-events:none;
-
-    opacity:0;
-}
-
-.flash.show{
-
-    animation:
-        flash .5s ease-out;
-}
-
-@keyframes flash{
-
-    0%{
-        opacity:0;
-
-        background:white;
+    .layout{
+        display:block;
     }
 
-    12%{
-        opacity:.9;
-    }
+    .sidebar{
+        position:fixed;
+        left:0;
+        right:0;
+        bottom:0;
 
-    100%{
-        opacity:0;
-    }
-}
+        height:60px;
 
-/* =========================================
-   PARTICLES
-========================================= */
+        z-index:100;
 
-#particles{
+        border-right:0;
+        border-top:1px solid #252925;
 
-    position:fixed;
-
-    inset:0;
-
-    width:100%;
-    height:100%;
-
-    z-index:80;
-
-    pointer-events:none;
-}
-
-/* =========================================
-   MOBILE
-========================================= */
-
-@media(max-width:650px){
-
-    .machine{
-
-        padding:
-            22px 7px 23px;
-
-        border-width:3px;
-    }
-
-    .brand{
-        letter-spacing:4px;
-    }
-
-    .subtitle{
-        letter-spacing:2px;
-    }
-
-    .jackpots{
-        gap:3px;
-    }
-
-    .jackpot{
-        padding:5px 2px;
-    }
-
-    .reel-frame{
         padding:5px;
-        border-width:3px;
     }
 
-    .reel-inner{
-        padding:4px;
+    .logo,
+    .version,
+    .status{
+        display:none;
     }
 
-    .reels{
-        gap:3px;
+    .nav{
+        flex-direction:row;
+        justify-content:space-around;
     }
 
-    .slot{
-        border-width:2px;
+    .nav button{
+        font-size:9px;
     }
 
-    .led{
-        width:5px;
-        height:5px;
+    .content{
+        padding:18px 15px 80px;
+    }
+
+    .cameras{
+        grid-template-columns:1fr;
     }
 }
 </style>
@@ -1025,1514 +589,1795 @@ body::before{
 
 <body>
 
-<div
-    class="overlay"
-    id="overlay">
+<!-- BOOT -->
 
-    <div class="jackpot-message">
+<div id="boot">
 
-        <span class="congrats">
-            CONGRATULATIONS
-        </span>
+    <div class="boot-box">
 
-        <span class="jackpot-big">
-            JACKPOT!
-        </span>
+        <div class="boot-line">
+            NODE_0 INITIALIZING...
+        </div>
+
+        <div class="boot-line">
+            establishing anonymous connection...
+        </div>
+
+        <div class="boot-line">
+            routing through 7 nodes...
+        </div>
+
+        <div class="boot-line">
+            connection established
+        </div>
+
+        <br>
+
+        <div class="boot-line boot-warning">
+            WARNING: THIS NODE WAS NOT MEANT TO
+            BE ACCESSED FROM HERE.
+        </div>
+
+        <div
+            class="boot-line enter"
+            id="enter">
+            &gt; ENTER NODE
+        </div>
 
     </div>
 
 </div>
 
 
-<div
-    class="flash"
-    id="flash">
-</div>
+<!-- APP -->
 
+<div id="app">
 
-<canvas
-    id="particles">
-</canvas>
+<div class="layout">
 
+    <aside class="sidebar">
 
-<main
-    class="machine"
-    id="machine">
-
-
-    <!-- LED -->
-
-    <div class="leds">
-
-        <span class="led"></span>
-        <span class="led"></span>
-        <span class="led"></span>
-        <span class="led"></span>
-        <span class="led"></span>
-        <span class="led"></span>
-        <span class="led"></span>
-        <span class="led"></span>
-        <span class="led"></span>
-        <span class="led"></span>
-        <span class="led"></span>
-        <span class="led"></span>
-
-    </div>
-
-
-    <div class="brand">
-        PREMIUM VEGAS CASINO
-    </div>
-
-
-    <h1 class="title">
-        FOUR BEASTS
-    </h1>
-
-
-    <div class="subtitle">
-        DRAGON · TIGER · TURTLE · PHOENIX
-    </div>
-
-
-    <!-- JACKPOT -->
-
-    <div class="jackpots">
-
-        <div class="jackpot">
-            <span class="label">MINI</span>
-            <span class="amount">888</span>
+        <div class="logo">
+            NODE_0
         </div>
 
-        <div class="jackpot">
-            <span class="label">MINOR</span>
-            <span class="amount">8,888</span>
+        <div class="version">
+            anonymous network
         </div>
 
-        <div class="jackpot">
-            <span class="label">MAJOR</span>
-            <span class="amount">88,888</span>
+        <nav class="nav">
+
+            <button
+                class="active"
+                data-page="index">
+                [ INDEX ]
+            </button>
+
+            <button data-page="board">
+                [ BOARD ]
+            </button>
+
+            <button data-page="archive">
+                [ ARCHIVE ]
+            </button>
+
+            <button data-page="cams">
+                [ CAMERAS ]
+            </button>
+
+            <button data-page="users">
+                [ USERS ]
+            </button>
+
+        </nav>
+
+        <div class="status">
+
+            NODE: 03<br>
+            STATUS: CONNECTED<br>
+            ROUTE: UNKNOWN<br><br>
+
+            SESSION:<br>
+            <span id="session">8F2A-19C</span>
+
         </div>
 
-        <div class="jackpot">
-            <span class="label">GRAND</span>
-            <span class="amount">888,888</span>
+    </aside>
+
+
+    <main class="content">
+
+        <div class="topbar">
+
+            <span>
+                anonymous network / node_0
+            </span>
+
+            <span id="clock">
+                03:17:22
+            </span>
+
         </div>
 
-    </div>
+
+        <!-- INDEX -->
+
+        <section
+            class="page active"
+            id="index">
+
+            <h1>
+                NODE_0
+            </h1>
+
+            <div class="sub">
+                anonymous network
+            </div>
 
 
-    <div class="ornament">
+            <div class="panel">
 
-        <div class="line"></div>
-
-        <div class="diamond">
-            ◆
-        </div>
-
-        <div class="line"></div>
-
-    </div>
-
-
-    <!-- SLOT -->
-
-    <section class="reel-frame">
-
-        <div class="reel-inner">
-
-            <div class="reels">
-
-
-                <div
-                    class="slot"
-                    id="slot0">
-
-                    <div
-                        class="reel"
-                        id="reel0">
-                    </div>
-
-                    <div class="payline"></div>
-
+                <div class="panel-head">
+                    CONNECTION STATUS
                 </div>
 
+                <div class="panel-body">
 
-                <div
-                    class="slot"
-                    id="slot1">
+                    CONNECTION:
+                    <span id="connection">
+                        ESTABLISHED
+                    </span>
 
-                    <div
-                        class="reel"
-                        id="reel1">
-                    </div>
+                    <br>
 
-                    <div class="payline"></div>
+                    ROUTE:
+                    UNKNOWN
 
-                </div>
+                    <br>
 
-
-                <div
-                    class="slot"
-                    id="slot2">
-
-                    <div
-                        class="reel"
-                        id="reel2">
-                    </div>
-
-                    <div class="payline"></div>
+                    ACTIVE USERS:
+                    <span id="users">
+                        0
+                    </span>
 
                 </div>
-
-
-                <div
-                    class="slot"
-                    id="slot3">
-
-                    <div
-                        class="reel"
-                        id="reel3">
-                    </div>
-
-                    <div class="payline"></div>
-
-                </div>
-
 
             </div>
 
-        </div>
 
-    </section>
+            <div class="panel">
 
+                <div class="panel-head">
+                    SYSTEM MESSAGE
+                </div>
+
+                <div class="panel-body">
+
+                    Welcome to NODE_0.
+
+                    <br><br>
+
+                    This node is not indexed.
+
+                    <br>
+
+                    Do not share the address.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- BOARD -->
+
+        <section
+            class="page"
+            id="board">
+
+            <h1>
+                BOARD
+            </h1>
+
+            <div class="sub">
+                anonymous discussion
+            </div>
+
+            <div
+                class="panel"
+                id="posts">
+
+                <div class="panel-body">
+
+                    loading posts...
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ARCHIVE -->
+
+        <section
+            class="page"
+            id="archive">
+
+            <h1>
+                ARCHIVE
+            </h1>
+
+            <div class="sub">
+                recovered files
+            </div>
+
+            <div class="panel">
+
+                <div
+                    class="file"
+                    data-file="incident">
+                    <span class="file-name">
+                        incident_001.log
+                    </span>
+
+                    <span class="file-size">
+                        4 KB
+                    </span>
+                </div>
+
+
+                <div
+                    class="file"
+                    data-file="camera">
+                    <span class="file-name">
+                        incident_002.log
+                    </span>
+
+                    <span class="file-size">
+                        7 KB
+                    </span>
+                </div>
+
+
+                <div
+                    class="file"
+                    data-file="readme">
+                    <span class="file-name">
+                        README.txt
+                    </span>
+
+                    <span class="file-size">
+                        1 KB
+                    </span>
+                </div>
+
+
+                <div
+                    class="file"
+                    data-file="last">
+                    <span class="file-name">
+                        ██████████.dat
+                    </span>
+
+                    <span class="file-size">
+                        ???
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CAMS -->
+
+        <section
+            class="page"
+            id="cams">
+
+            <h1>
+                CAMERAS
+            </h1>
+
+            <div class="sub">
+                surveillance node
+            </div>
+
+
+            <div class="cameras">
+
+                <div class="camera">
+                    <div class="camera-screen">
+                        EMPTY ROOM
+                    </div>
+
+                    <div class="cam-label">
+                        CAM_01
+                    </div>
+
+                    <div class="cam-time">
+                        03:17:22
+                    </div>
+                </div>
+
+
+                <div class="camera">
+                    <div class="camera-screen">
+                        NO SIGNAL
+                    </div>
+
+                    <div class="cam-label">
+                        CAM_02
+                    </div>
+                </div>
+
+
+                <div
+                    class="camera"
+                    id="cam03">
+
+                    <div class="camera-screen">
+                        EMPTY ROOM
+                        <div class="figure"></div>
+                    </div>
+
+                    <div class="cam-label">
+                        CAM_03
+                    </div>
+
+                    <div class="cam-time">
+                        03:17:22
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="camera"
+                    id="cam04">
+
+                    <div class="camera-screen">
+                        EMPTY ROOM
+                        <div class="figure"></div>
+                    </div>
+
+                    <div class="cam-label">
+                        CAM_04
+                    </div>
+
+                    <div class="cam-time">
+                        03:17:22
+                    </div>
+
+                </div>
+
+
+                <div class="camera">
+
+                    <div class="camera-screen">
+                        CONNECTED
+                    </div>
+
+                    <div class="cam-label">
+                        CAM_05
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="camera"
+                    id="cam07"
+                    style="display:none">
+
+                    <div class="camera-screen">
+
+                        <span>
+                            SIGNAL
+                        </span>
+
+                        <div class="figure"></div>
+
+                    </div>
+
+                    <div class="cam-label">
+                        CAM_07
+                    </div>
+
+                    <div class="cam-time">
+                        03:17:26
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- USERS -->
+
+        <section
+            class="page"
+            id="users">
+
+            <h1>
+                USERS
+            </h1>
+
+            <div class="sub">
+                connected sessions
+            </div>
+
+
+            <div class="panel">
+
+                <div class="panel-body">
+
+                    <div>
+                        guest_████
+                        <span style="color:#555">
+                            [ONLINE]
+                        </span>
+                    </div>
+
+                    <br>
+
+                    <div id="unknownUser">
+                        unknown_01
+                        <span style="color:#555">
+                            [OFFLINE]
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+</div>
+
+
+<!-- ALERT -->
+
+<div id="alert">
+
+    <div class="alert-title">
+        SYSTEM MESSAGE
+    </div>
 
     <div
-        class="result"
-        id="result">
+        class="alert-text"
+        id="alertText">
+    </div>
 
-        ★ PRESS GO ★
+</div>
+
+
+<!-- FINAL -->
+
+<div id="final">
+
+    <div class="final-inner">
+
+        <div>
+            SESSION TERMINATED
+        </div>
+
+        <br>
+
+        <div class="final-big">
+            CONNECTION REESTABLISHED
+        </div>
+
+        <br>
+
+        <div>
+            USER: guest
+            <br>
+            STATUS: ONLINE
+            <br>
+            CAMERA: 07
+        </div>
+
+        <br>
+
+        <div>
+            YOU NEVER LOGGED OUT.
+        </div>
 
     </div>
 
-
-    <div class="go-wrap">
-
-        <button
-            class="go"
-            id="go">
-
-            GO
-
-        </button>
-
-    </div>
-
-
-</main>
+</div>
 
 
 <script>
 
-/* =================================================
-   SYMBOLS
-================================================= */
+/* =====================================================
+   STATE
+===================================================== */
 
-const SYMBOLS = [
-    "🐉",
-    "🐯",
-    "🐢",
-    "🔥"
-];
+let audioStarted = false;
+
+let visited = {
+    cam04:false,
+    archive:false,
+    lastFile:false,
+    board:false
+};
+
+let horrorLevel = 0;
+
+let clockSeconds = 3 * 3600 + 17 * 60 + 22;
 
 
-/* =================================================
-   DOM
-================================================= */
+/* =====================================================
+   AUDIO ENGINE
+===================================================== */
 
-const reels =
-    [0,1,2,3].map(
-        i =>
-            document.getElementById(
-                "reel"+i
-            )
+let audio;
+
+let master;
+let droneGain;
+let heartbeatGain;
+
+function startAudio(){
+
+    if(audioStarted)
+        return;
+
+    audioStarted = true;
+
+    audio =
+        new (
+            window.AudioContext ||
+            window.webkitAudioContext
+        )();
+
+    master =
+        audio.createGain();
+
+    master.gain.value =
+        .18;
+
+    master.connect(
+        audio.destination
     );
 
 
-const slots =
-    [0,1,2,3].map(
-        i =>
-            document.getElementById(
-                "slot"+i
-            )
+    /* LOW HORROR DRONE */
+
+    const osc1 =
+        audio.createOscillator();
+
+    const gain1 =
+        audio.createGain();
+
+    osc1.type =
+        "sine";
+
+    osc1.frequency.value =
+        43;
+
+    gain1.gain.value =
+        .08;
+
+    osc1.connect(gain1);
+
+    gain1.connect(master);
+
+    osc1.start();
+
+
+    const osc2 =
+        audio.createOscillator();
+
+    const gain2 =
+        audio.createGain();
+
+    osc2.type =
+        "triangle";
+
+    osc2.frequency.value =
+        86.4;
+
+    gain2.gain.value =
+        .025;
+
+    osc2.connect(gain2);
+
+    gain2.connect(master);
+
+    osc2.start();
+
+
+    droneGain =
+        gain1;
+
+
+    /* VERY LOW PULSE */
+
+    heartbeatGain =
+        audio.createGain();
+
+    heartbeatGain.gain.value =
+        0;
+
+    heartbeatGain.connect(
+        master
     );
 
+    heartbeatLoop();
 
-const button =
-    document.getElementById("go");
-
-
-const result =
-    document.getElementById("result");
-
-
-const machine =
-    document.getElementById("machine");
-
-
-const overlay =
-    document.getElementById("overlay");
-
-
-const flash =
-    document.getElementById("flash");
-
-
-const canvas =
-    document.getElementById("particles");
-
-
-const ctx =
-    canvas.getContext("2d");
-
-
-let audioContext = null;
-
-let spinAudio = null;
-
-let spinTimer = null;
-
-let playing = false;
-
-let particles = [];
-
-
-/* =================================================
-   AUDIO
-================================================= */
-
-function getAudio(){
-
-    if(!audioContext){
-
-        audioContext =
-            new (
-                window.AudioContext ||
-                window.webkitAudioContext
-            )();
-
-    }
-
-    return audioContext;
 }
 
 
-/* =================================================
-   CREATE CLICK
-================================================= */
+/* =====================================================
+   HEARTBEAT
+===================================================== */
 
-function reelClick(
-    volume = .05,
-    frequency = 150
-){
+function heartbeatLoop(){
 
-    const ac =
-        getAudio();
+    if(!audioStarted)
+        return;
 
+    const now =
+        audio.currentTime;
 
     const osc =
-        ac.createOscillator();
-
+        audio.createOscillator();
 
     const gain =
-        ac.createGain();
+        audio.createGain();
 
+    osc.type =
+        "sine";
+
+    osc.frequency.value =
+        55;
+
+    gain.gain.setValueAtTime(
+        0,
+        now
+    );
+
+    gain.gain.linearRampToValueAtTime(
+        .15,
+        now+.04
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .001,
+        now+.16
+    );
+
+    osc.connect(gain);
+
+    gain.connect(
+        heartbeatGain
+    );
+
+    osc.start(now);
+
+    osc.stop(now+.2);
+
+
+    setTimeout(
+        heartbeatLoop,
+        900 - Math.min(
+            horrorLevel*50,
+            350
+        )
+    );
+}
+
+
+/* =====================================================
+   RADIO NOISE
+===================================================== */
+
+function radioNoise(
+    duration=350
+){
+
+    if(!audioStarted)
+        return;
+
+    const buffer =
+        audio.createBuffer(
+            1,
+            audio.sampleRate *
+            (duration/1000),
+            audio.sampleRate
+        );
+
+    const data =
+        buffer.getChannelData(0);
+
+    for(
+        let i=0;
+        i<data.length;
+        i++
+    ){
+
+        data[i] =
+            (
+                Math.random() * 2 - 1
+            ) *
+            .45;
+    }
+
+    const source =
+        audio.createBufferSource();
+
+    const filter =
+        audio.createBiquadFilter();
+
+    const gain =
+        audio.createGain();
+
+    filter.type =
+        "bandpass";
+
+    filter.frequency.value =
+        900;
+
+    filter.Q.value =
+        1.2;
+
+    gain.gain.value =
+        .12;
+
+    source.buffer =
+        buffer;
+
+    source.connect(filter);
+
+    filter.connect(gain);
+
+    gain.connect(master);
+
+    source.start();
+
+}
+
+
+/* =====================================================
+   METAL / CLICK
+===================================================== */
+
+function clickSound(){
+
+    if(!audioStarted)
+        return;
+
+    const osc =
+        audio.createOscillator();
+
+    const gain =
+        audio.createGain();
 
     osc.type =
         "square";
 
-
     osc.frequency.value =
-        frequency +
-        Math.random()*80;
-
+        1200;
 
     gain.gain.setValueAtTime(
-        .0001,
-        ac.currentTime
+        .001,
+        audio.currentTime
     );
-
 
     gain.gain.exponentialRampToValueAtTime(
-        volume,
-        ac.currentTime+.002
+        .035,
+        audio.currentTime+.002
     );
-
 
     gain.gain.exponentialRampToValueAtTime(
-        .0001,
-        ac.currentTime+.035
+        .001,
+        audio.currentTime+.035
     );
-
 
     osc.connect(gain);
 
-    gain.connect(
-        ac.destination
-    );
-
+    gain.connect(master);
 
     osc.start();
 
     osc.stop(
-        ac.currentTime+.04
+        audio.currentTime+.04
     );
 }
 
 
-/* =================================================
-   SPIN SOUND
-================================================= */
+/* =====================================================
+   DEEP HIT
+===================================================== */
 
-function startSpinSound(){
+function deepHit(){
 
-    stopSpinSound();
-
-
-    const ac =
-        getAudio();
-
-
-    let interval =
-        30;
-
-
-    /*
-       빠른 시작음
-    */
-
-    spinTimer =
-        setInterval(
-            () => {
-
-                reelClick(
-                    .075,
-                    125
-                );
-
-            },
-            interval
-        );
-
-
-    /*
-       별도 저음 레이어
-       -> 기계가 실제로 도는 느낌
-    */
+    if(!audioStarted)
+        return;
 
     const osc =
-        ac.createOscillator();
-
+        audio.createOscillator();
 
     const gain =
-        ac.createGain();
-
+        audio.createGain();
 
     osc.type =
-        "sawtooth";
+        "sine";
 
+    osc.frequency.setValueAtTime(
+        75,
+        audio.currentTime
+    );
 
-    osc.frequency.value =
-        58;
+    osc.frequency.exponentialRampToValueAtTime(
+        28,
+        audio.currentTime+.8
+    );
 
+    gain.gain.setValueAtTime(
+        .001,
+        audio.currentTime
+    );
 
-    gain.gain.value =
-        .025;
+    gain.gain.exponentialRampToValueAtTime(
+        .32,
+        audio.currentTime+.03
+    );
 
+    gain.gain.exponentialRampToValueAtTime(
+        .001,
+        audio.currentTime+.9
+    );
 
     osc.connect(gain);
 
-    gain.connect(
-        ac.destination
-    );
-
+    gain.connect(master);
 
     osc.start();
 
-
-    spinAudio = {
-        osc,
-        gain
-    };
+    osc.stop(
+        audio.currentTime+1
+    );
 }
 
 
-/* =================================================
-   STOP SPIN SOUND
-================================================= */
+/* =====================================================
+   UI
+===================================================== */
 
-function stopSpinSound(){
+const pages =
+    document.querySelectorAll(
+        ".page"
+    );
 
-    if(spinTimer){
-
-        clearInterval(
-            spinTimer
-        );
-
-        spinTimer = null;
-    }
-
-
-    if(spinAudio){
-
-        try{
-
-            const ac =
-                getAudio();
+const navButtons =
+    document.querySelectorAll(
+        ".nav button"
+    );
 
 
-            spinAudio.gain.gain.exponentialRampToValueAtTime(
-                .0001,
-                ac.currentTime+.15
-            );
-
-
-            spinAudio.osc.stop(
-                ac.currentTime+.18
-            );
-
-        }catch(e){}
-
-
-        spinAudio = null;
-    }
-}
-
-
-/* =================================================
-   METAL TING
-================================================= */
-
-function metalTing(
-    strength = 1
+function openPage(
+    name
 ){
 
-    const ac =
-        getAudio();
+    pages.forEach(
+        page => {
 
-
-    /*
-       여러 고조파를 겹쳐
-       금속판을 치는 느낌.
-    */
-
-    [
-        740,
-        1480,
-        2220,
-        2960
-    ].forEach(
-        (frequency,index) => {
-
-            const osc =
-                ac.createOscillator();
-
-
-            const gain =
-                ac.createGain();
-
-
-            const start =
-                ac.currentTime +
-                index*.004;
-
-
-            osc.type =
-                "sine";
-
-
-            osc.frequency.value =
-                frequency;
-
-
-            gain.gain.setValueAtTime(
-                .001,
-                start
+            page.classList.remove(
+                "active"
             );
 
-
-            gain.gain.exponentialRampToValueAtTime(
-                (
-                    index === 0
-                        ? .20
-                        : .07
-                ) * strength,
-                start+.006
-            );
-
-
-            gain.gain.exponentialRampToValueAtTime(
-                .001,
-                start+.6
-            );
+            if(
+                page.id === name
+            ){
+                page.classList.add(
+                    "active"
+                );
+            }
+        }
+    );
 
 
-            osc.connect(gain);
+    navButtons.forEach(
+        button => {
 
-            gain.connect(
-                ac.destination
-            );
-
-
-            osc.start(start);
-
-            osc.stop(
-                start+.65
+            button.classList.toggle(
+                "active",
+                button.dataset.page === name
             );
 
         }
     );
+
+
+    clickSound();
+
+
+    if(name === "board"){
+
+        visited.board = true;
+
+        loadBoard();
+
+    }
+
+
+    if(name === "cams"){
+
+        startCameraPage();
+
+    }
+
+
+    if(
+        name === "archive"
+    ){
+
+        visited.archive = true;
+
+    }
+
+
+    horrorCheck();
 }
 
 
-/* =================================================
-   JACKPOT SOUND
-================================================= */
+navButtons.forEach(
+    button => {
 
-function jackpotSound(){
+        button.addEventListener(
+            "click",
+            () => {
 
-    const ac =
-        getAudio();
+                openPage(
+                    button.dataset.page
+                );
 
+            }
+        );
 
-    /*
-       점점 올라가는 카지노식
-       상승 멜로디.
-    */
-
-    const notes = [
-        392,
-        494,
-        587,
-        659,
-        784,
-        988,
-        1175,
-        1319
-    ];
+    }
+);
 
 
-    notes.forEach(
-        (frequency,index) => {
+/* =====================================================
+   BOARD
+===================================================== */
 
-            const osc =
-                ac.createOscillator();
+function loadBoard(){
 
-
-            const gain =
-                ac.createGain();
-
-
-            const start =
-                ac.currentTime +
-                index*.095;
+    const posts =
+        document.getElementById(
+            "posts"
+        );
 
 
-            osc.type =
-                "triangle";
+    posts.innerHTML = `
+
+        <div class="panel-body">
+
+            <div class="post">
+
+                <div class="post-user">
+                    user_0192
+                </div>
+
+                <div class="post-text">
+                    who made this?
+                </div>
+
+                <div class="post-time">
+                    2014-11-03 02:51
+                </div>
+
+            </div>
 
 
-            osc.frequency.value =
-                frequency;
+            <div class="post">
+
+                <div class="post-user">
+                    user_7731
+                </div>
+
+                <div class="post-text">
+                    don't access camera 04
+                </div>
+
+                <div class="post-time">
+                    2014-11-03 02:54
+                </div>
+
+            </div>
 
 
-            gain.gain.setValueAtTime(
-                .001,
-                start
-            );
+            <div class="post">
+
+                <div class="post-user">
+                    user_0192
+                </div>
+
+                <div class="post-text">
+                    why?
+                </div>
+
+                <div class="post-time">
+                    2014-11-03 02:56
+                </div>
+
+            </div>
 
 
-            gain.gain.exponentialRampToValueAtTime(
-                .14,
-                start+.025
-            );
+        </div>
+    `;
 
-
-            gain.gain.exponentialRampToValueAtTime(
-                .001,
-                start+.42
-            );
-
-
-            osc.connect(gain);
-
-            gain.connect(
-                ac.destination
-            );
-
-
-            osc.start(start);
-
-            osc.stop(
-                start+.45
-            );
-
-        }
-    );
-
-
-    /*
-       JACKPOT 화음
-    */
 
     setTimeout(
         () => {
 
-            [
-                523,
-                659,
-                784,
-                1047,
-                1319
-            ].forEach(
-                frequency => {
+            posts
+                .querySelector(
+                    ".panel-body"
+                )
+                .insertAdjacentHTML(
+                    "beforeend",
+                    `
+                    <div class="post">
 
-                    const osc =
-                        ac.createOscillator();
+                        <div class="post-user">
+                            user_7731
+                        </div>
 
+                        <div
+                            class="post-text"
+                            style="color:#8c5755">
+                            because he answers.
+                        </div>
 
-                    const gain =
-                        ac.createGain();
+                        <div class="post-time">
+                            2014-11-03 02:57
+                        </div>
 
+                    </div>
+                    `
+                );
 
-                    osc.type =
-                        "sine";
-
-
-                    osc.frequency.value =
-                        frequency;
-
-
-                    gain.gain.setValueAtTime(
-                        .001,
-                        ac.currentTime
-                    );
-
-
-                    gain.gain.exponentialRampToValueAtTime(
-                        .14,
-                        ac.currentTime+.03
-                    );
-
-
-                    gain.gain.exponentialRampToValueAtTime(
-                        .001,
-                        ac.currentTime+.9
-                    );
-
-
-                    osc.connect(gain);
-
-                    gain.connect(
-                        ac.destination
-                    );
-
-
-                    osc.start();
-
-                    osc.stop(
-                        ac.currentTime+1
-                    );
-
-                }
-            );
+            radioNoise(500);
 
         },
-        850
+        3500
     );
-}
 
 
-/* =================================================
-   WAIT
-================================================= */
+    setTimeout(
+        () => {
 
-function wait(ms){
+            posts
+                .querySelector(
+                    ".panel-body"
+                )
+                .insertAdjacentHTML(
+                    "beforeend",
+                    `
+                    <div class="post">
 
-    return new Promise(
-        resolve =>
-            setTimeout(
-                resolve,
-                ms
-            )
-    );
-}
+                        <div class="post-user">
+                            user_0000
+                        </div>
 
+                        <div
+                            class="post-text"
+                            style="color:#9a5b57">
+                            HE IS HERE.
+                        </div>
 
-/* =================================================
-   RANDOM
-================================================= */
+                        <div class="post-time">
+                            NOW
+                        </div>
 
-function randomSymbol(){
-
-    return SYMBOLS[
-        Math.floor(
-            Math.random() *
-            SYMBOLS.length
-        )
-    ];
-}
-
-
-/* =================================================
-   BUILD REEL
-================================================= */
-
-function buildReel(
-    reel,
-    finalSymbol
-){
-
-    reel.innerHTML = "";
-
-
-    /*
-       릴 길이.
-    */
-
-    const total =
-        80;
-
-
-    for(
-        let i=0;
-        i<total;
-        i++
-    ){
-
-        const element =
-            document.createElement(
-                "div"
-            );
-
-
-        element.className =
-            "symbol";
-
-
-        /*
-           마지막 칸은 반드시
-           실제 결과.
-        */
-
-        element.textContent =
-            i === total-1
-                ? finalSymbol
-                : randomSymbol();
-
-
-        reel.appendChild(
-            element
-        );
-    }
-
-
-    return total-1;
-}
-
-
-/* =================================================
-   SPIN REEL
-================================================= */
-
-function spinReel(
-    index,
-    finalSymbol,
-    duration
-){
-
-    return new Promise(
-        resolve => {
-
-            const reel =
-                reels[index];
-
-
-            const slot =
-                slots[index];
-
-
-            const finalIndex =
-                buildReel(
-                    reel,
-                    finalSymbol
+                    </div>
+                    `
                 );
 
+            deepHit();
 
-            const symbol =
-                reel.querySelector(
-                    ".symbol"
+            horrorLevel++;
+
+        },
+        8000
+    );
+
+}
+
+
+/* =====================================================
+   FILES
+===================================================== */
+
+document
+.querySelectorAll(".file")
+.forEach(
+    file => {
+
+        file.addEventListener(
+            "click",
+            () => {
+
+                const type =
+                    file.dataset.file;
+
+                openFile(
+                    type
                 );
 
-
-            const height =
-                symbol.getBoundingClientRect()
-                    .height;
-
-
-            /*
-               마지막 심볼을
-               정확하게 중앙에 놓는다.
-            */
-
-            const target =
-                -(
-                    finalIndex * height
-                ) +
-                (
-                    slot.clientHeight -
-                    height
-                ) / 2;
-
-
-            const start =
-                performance.now();
-
-
-            slot.classList.add(
-                "spinning"
-            );
-
-
-            function frame(now){
-
-                const elapsed =
-                    now - start;
-
-
-                const progress =
-                    Math.min(
-                        elapsed / duration,
-                        1
-                    );
-
-
-                /*
-                   빠르게 출발
-                   마지막에 부드럽게 감속
-                */
-
-                const eased =
-                    1 -
-                    Math.pow(
-                        1-progress,
-                        5
-                    );
-
-
-                const position =
-                    target * eased;
-
-
-                reel.style.transform =
-                    `translate3d(
-                        0,
-                        ${position}px,
-                        0
-                    )`;
-
-
-                if(progress < 1){
-
-                    requestAnimationFrame(
-                        frame
-                    );
-
-                }else{
-
-                    /*
-                       최종 위치 고정
-                    */
-
-                    reel.style.transform =
-                        `translate3d(
-                            0,
-                            ${target}px,
-                            0
-                        )`;
-
-
-                    slot.classList.remove(
-                        "spinning"
-                    );
-
-
-                    /*
-                       릴 정지음
-                    */
-
-                    metalTing(
-                        index === 3
-                            ? 1.45
-                            : 1
-                    );
-
-
-                    resolve();
-                }
             }
+        );
 
-
-            requestAnimationFrame(
-                frame
-            );
-
-        }
-    );
-}
-
-
-/* =================================================
-   PARTICLES
-================================================= */
-
-function resizeCanvas(){
-
-    canvas.width =
-        window.innerWidth;
-
-    canvas.height =
-        window.innerHeight;
-}
-
-
-resizeCanvas();
-
-
-window.addEventListener(
-    "resize",
-    resizeCanvas
+    }
 );
 
 
-/* =================================================
-   COINS
-================================================= */
+function openFile(type){
 
-function createCoins(){
+    const alert =
+        document.getElementById(
+            "alert"
+        );
 
-    const rect =
-        machine.getBoundingClientRect();
-
-
-    for(
-        let i=0;
-        i<260;
-        i++
-    ){
-
-        const angle =
-            Math.random() *
-            Math.PI *
-            2;
-
-
-        const speed =
-            Math.random()*14+5;
-
-
-        particles.push({
-
-            x:
-                rect.left +
-                rect.width/2,
-
-            y:
-                rect.top +
-                rect.height/2,
-
-            vx:
-                Math.cos(angle) *
-                speed,
-
-            vy:
-                Math.sin(angle) *
-                speed,
-
-            size:
-                Math.random()*7+3,
-
-            life:1,
-
-            rotation:
-                Math.random()*6,
-
-            spin:
-                Math.random()*.25+.08
-        });
-    }
-}
-
-
-/* =================================================
-   PARTICLE LOOP
-================================================= */
-
-function particleLoop(){
-
-    ctx.clearRect(
-        0,
-        0,
-        canvas.width,
-        canvas.height
-    );
-
-
-    particles =
-        particles.filter(
-            particle =>
-                particle.life > 0
+    const text =
+        document.getElementById(
+            "alertText"
         );
 
 
-    particles.forEach(
-        particle => {
-
-            particle.x +=
-                particle.vx;
+    alert.style.display =
+        "block";
 
 
-            particle.y +=
-                particle.vy;
+    if(type === "incident"){
+
+        text.textContent =
+`
+INCIDENT_001
+
+03:17:22
+
+Camera 04 reported
+a continuous static frame.
+
+No hardware failure
+was found.
+
+Operator reported
+hearing footsteps.
+
+There was no one
+inside the building.
+`;
+
+    }
 
 
-            particle.vy +=
-                .23;
+    if(type === "camera"){
+
+        text.textContent =
+`
+INCIDENT_002
+
+The camera was moved
+approximately 3.7 meters.
+
+No movement was recorded.
+
+The camera was later
+found facing the wall.
+
+The wall contained
+a message.
+
+The message was removed.
+`;
+
+    }
 
 
-            particle.rotation +=
-                particle.spin;
+    if(type === "readme"){
+
+        text.textContent =
+`
+README
+
+If you found this directory,
+
+do not open the last file.
+
+It is not a file.
+
+It is a record.
+`;
+
+    }
 
 
-            particle.life -=
-                .012;
+    if(type === "last"){
+
+        visited.lastFile =
+            true;
 
 
-            ctx.save();
+        text.textContent =
+`
+██████████.dat
 
+OPENED.
 
-            ctx.globalAlpha =
-                particle.life;
+You should not have
+opened this.
 
+SESSION RECORD:
 
-            ctx.translate(
-                particle.x,
-                particle.y
-            );
+USER: guest
+TIME: ${getTime()}
+CAMERA: 04
 
+...
 
-            ctx.rotate(
-                particle.rotation
-            );
+The camera is currently
+watching this page.
 
+Do not look behind you.
+`;
 
-            ctx.fillStyle =
-                "#ffd84a";
+        radioNoise(1000);
 
+        deepHit();
 
-            ctx.fillRect(
-                -particle.size,
-                -particle.size*.55,
-                particle.size*2,
-                particle.size*1.1
-            );
+        horrorLevel += 2;
 
+    }
 
-            ctx.restore();
-
-        }
-    );
-
-
-    requestAnimationFrame(
-        particleLoop
-    );
 }
 
 
-particleLoop();
+/* CLOSE ALERT */
+
+document
+.getElementById("alert")
+.addEventListener(
+    "click",
+    function(){
+
+        this.style.display =
+            "none";
+
+    }
+);
 
 
-/* =================================================
-   JACKPOT
-================================================= */
+/* =====================================================
+   CAMERA
+===================================================== */
 
-function jackpotEffect(){
-
-    result.textContent =
-        "JACKPOT!";
+let cameraStarted =
+    false;
 
 
-    result.classList.add(
-        "jackpot"
-    );
+function startCameraPage(){
 
-
-    flash.classList.remove(
-        "show"
-    );
-
-
-    void flash.offsetWidth;
-
-
-    flash.classList.add(
-        "show"
-    );
-
-
-    overlay.classList.remove(
-        "show"
-    );
-
-
-    void overlay.offsetWidth;
-
-
-    overlay.classList.add(
-        "show"
-    );
-
-
-    createCoins();
-
-
-    jackpotSound();
-
-
-    /*
-       실제 슬롯머신처럼
-       기계가 흔들린다.
-    */
-
-    machine.animate(
-        [
-            {
-                transform:
-                    "translate(0,0)"
-            },
-
-            {
-                transform:
-                    "translate(-9px,4px)"
-            },
-
-            {
-                transform:
-                    "translate(10px,-4px)"
-            },
-
-            {
-                transform:
-                    "translate(-8px,3px)"
-            },
-
-            {
-                transform:
-                    "translate(7px,-3px)"
-            },
-
-            {
-                transform:
-                    "translate(-3px,2px)"
-            },
-
-            {
-                transform:
-                    "translate(0,0)"
-            }
-        ],
-        {
-            duration:900,
-
-            easing:
-                "ease-out"
-        }
-    );
-}
-
-
-/* =================================================
-   GAME
-================================================= */
-
-async function startGame(){
-
-    if(playing)
+    if(cameraStarted)
         return;
 
-
-    playing = true;
-
-    button.disabled = true;
+    cameraStarted = true;
 
 
-    result.classList.remove(
-        "jackpot"
+    const cam04 =
+        document.getElementById(
+            "cam04"
+        );
+
+
+    setTimeout(
+        () => {
+
+            cam04.classList.add(
+                "camera-haunted"
+            );
+
+            radioNoise(400);
+
+            horrorLevel++;
+
+        },
+        5000
     );
 
 
-    result.textContent =
-        "GOOD LUCK...";
+    setTimeout(
+        () => {
 
+            const figure =
+                cam04.querySelector(
+                    ".figure"
+                );
 
-    /*
-       브라우저 오디오 활성화
-    */
+            figure.style.left =
+                "72%";
 
-    const ac =
-        getAudio();
+            figure.style.top =
+                "25%";
 
-
-    if(ac.state === "suspended"){
-
-        await ac.resume();
-    }
-
-
-    /*
-       =========================================
-       결과를 먼저 결정한다.
-       화면도 이 값을 사용한다.
-       =========================================
-    */
-
-    let results;
-
-
-    /*
-       테스트하기 편하게
-       가끔 JACKPOT이 나오도록 설정.
-
-       확률은 1/64.
-    */
-
-    const jackpotChance =
-        Math.random() < 1/64;
-
-
-    if(jackpotChance){
-
-        const symbol =
-            randomSymbol();
-
-
-        results = [
-            symbol,
-            symbol,
-            symbol,
-            symbol
-        ];
-
-    }else{
-
-        results = [
-            randomSymbol(),
-            randomSymbol(),
-            randomSymbol(),
-            randomSymbol()
-        ];
-
-
-        /*
-           혹시 일반 결과가 우연히
-           4개 동일이면 그대로 JACKPOT.
-        */
-
-    }
-
-
-    /*
-       =========================================
-       회전 시작
-       =========================================
-    */
-
-    startSpinSound();
-
-
-    /*
-       1번째 릴
-    */
-
-    await spinReel(
-        0,
-        results[0],
-        950
+        },
+        6000
     );
 
 
-    await wait(70);
+    setTimeout(
+        () => {
 
+            const figure =
+                cam04.querySelector(
+                    ".figure"
+                );
 
-    /*
-       2번째
-    */
+            figure.style.left =
+                "48%";
 
-    await spinReel(
-        1,
-        results[1],
-        1150
+            figure.style.top =
+                "20%";
+
+            deepHit();
+
+        },
+        11000
     );
 
 
-    await wait(70);
+    setTimeout(
+        () => {
 
+            unlockCam07();
 
-    /*
-       3번째
-    */
-
-    await spinReel(
-        2,
-        results[2],
-        1350
+        },
+        15000
     );
 
-
-    await wait(70);
-
-
-    /*
-       4번째
-
-       가장 오래 끌어서
-       마지막 긴장감을 만든다.
-    */
-
-    await spinReel(
-        3,
-        results[3],
-        1650
-    );
-
-
-    /*
-       모든 릴 정지
-    */
-
-    stopSpinSound();
-
-
-    await wait(350);
-
-
-    /*
-       =========================================
-       당첨 판정
-       =========================================
-
-       중요:
-       results는 실제 화면을 만들 때 사용한
-       바로 그 값이다.
-    */
-
-    const jackpot =
-        results[0] === results[1] &&
-        results[1] === results[2] &&
-        results[2] === results[3];
-
-
-    if(jackpot){
-
-        jackpotEffect();
-
-    }else{
-
-        result.textContent =
-            "★ BETTER LUCK NEXT TIME ★";
-    }
-
-
-    playing = false;
-
-    button.disabled = false;
 }
 
 
-/* =================================================
-   INITIAL
-================================================= */
+/* =====================================================
+   CAM 07
+===================================================== */
 
-function initialize(){
+function unlockCam07(){
 
-    const initial = [
-        "🐉",
-        "🐯",
-        "🐢",
-        "🔥"
-    ];
+    const cam07 =
+        document.getElementById(
+            "cam07"
+        );
 
 
-    reels.forEach(
-        (reel,index) => {
-
-            const finalIndex =
-                buildReel(
-                    reel,
-                    initial[index]
-                );
+    cam07.style.display =
+        "block";
 
 
-            const symbol =
-                reel.querySelector(
-                    ".symbol"
-                );
+    const screen =
+        cam07.querySelector(
+            ".camera-screen"
+        );
 
 
-            const height =
-                symbol.getBoundingClientRect()
-                    .height;
+    screen.firstChild.textContent =
+        "";
 
 
-            const slot =
-                slots[index];
+    setTimeout(
+        () => {
 
+            screen.innerHTML =
+                `
+                <span>
+                    SIGNAL FOUND
+                </span>
 
-            const target =
-                -(
-                    finalIndex * height
-                ) +
-                (
-                    slot.clientHeight -
-                    height
-                ) / 2;
+                <div class="figure"></div>
+                `;
 
+            radioNoise(800);
 
-            reel.style.transform =
-                `translate3d(
-                    0,
-                    ${target}px,
-                    0
-                )`;
-        }
+        },
+        1800
     );
+
+
+    horrorLevel += 2;
 }
 
 
-/* =================================================
-   GO
-================================================= */
+/* =====================================================
+   HORROR CHECK
+===================================================== */
 
-button.addEventListener(
+function horrorCheck(){
+
+    if(
+        visited.cam04 &&
+        visited.archive &&
+        visited.lastFile &&
+        visited.board
+    ){
+
+        finalSequence();
+
+        return;
+    }
+
+
+    if(
+        horrorLevel >= 5
+    ){
+
+        document.body
+            .classList.add(
+                "glitch"
+            );
+
+        setTimeout(
+            () => {
+
+                document.body
+                    .classList.remove(
+                        "glitch"
+                    );
+
+            },
+            400
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   CAMERA CLICK
+===================================================== */
+
+document
+.getElementById("cam04")
+.addEventListener(
     "click",
-    startGame
+    () => {
+
+        visited.cam04 =
+            true;
+
+        clickSound();
+
+        horrorLevel++;
+
+        if(
+            horrorLevel > 2
+        ){
+
+            const figure =
+                document
+                .getElementById(
+                    "cam04"
+                )
+                .querySelector(
+                    ".figure"
+                );
+
+            figure.style.left =
+                "40%";
+
+            figure.style.top =
+                "16%";
+
+        }
+
+        horrorCheck();
+
+    }
 );
 
 
-initialize();
+/* =====================================================
+   CLOCK
+===================================================== */
+
+function getTime(){
+
+    const h =
+        Math.floor(
+            clockSeconds / 3600
+        );
+
+    const m =
+        Math.floor(
+            (clockSeconds % 3600) / 60
+        );
+
+    const s =
+        clockSeconds % 60;
+
+
+    return [
+        h,
+        m,
+        s
+    ]
+    .map(
+        n =>
+            String(n)
+            .padStart(2,"0")
+    )
+    .join(":");
+}
+
+
+setInterval(
+    () => {
+
+        clockSeconds++;
+
+        document
+            .getElementById(
+                "clock"
+            )
+            .textContent =
+                getTime();
+
+    },
+    1000
+);
+
+
+/* =====================================================
+   USER COUNT
+===================================================== */
+
+setTimeout(
+    () => {
+
+        document
+            .getElementById(
+                "users"
+            )
+            .textContent =
+                "1";
+
+    },
+    3000
+);
+
+
+setTimeout(
+    () => {
+
+        document
+            .getElementById(
+                "users"
+            )
+            .textContent =
+                "2";
+
+        document
+            .getElementById(
+                "unknownUser"
+            )
+            .innerHTML =
+                `
+                unknown_01
+                <span
+                    style="color:#8b504c">
+                    [ONLINE]
+                </span>
+                `;
+
+        radioNoise(300);
+
+    },
+    9000
+);
+
+
+/* =====================================================
+   RANDOM BACKGROUND EVENTS
+===================================================== */
+
+setInterval(
+    () => {
+
+        if(
+            !audioStarted
+        )
+            return;
+
+
+        const chance =
+            Math.random();
+
+
+        if(
+            chance < .16
+        ){
+
+            radioNoise(
+                120 +
+                Math.random()*500
+            );
+
+        }
+
+
+        if(
+            chance > .91 &&
+            horrorLevel > 2
+        ){
+
+            document.body
+                .classList.add(
+                    "glitch"
+                );
+
+            setTimeout(
+                () => {
+
+                    document.body
+                        .classList.remove(
+                            "glitch"
+                        );
+
+                },
+                180
+            );
+
+        }
+
+    },
+    7000
+);
+
+
+/* =====================================================
+   FINAL SEQUENCE
+===================================================== */
+
+function finalSequence(){
+
+    const final =
+        document.getElementById(
+            "final"
+        );
+
+
+    final.style.display =
+        "flex";
+
+
+    /*
+       모든 소리를 잠시 끊음.
+       공포에서는 정적이 중요함.
+    */
+
+    if(
+        droneGain
+    ){
+
+        droneGain.gain.exponentialRampToValueAtTime(
+            .001,
+            audio.currentTime + .2
+        );
+
+    }
+
+
+    setTimeout(
+        () => {
+
+            deepHit();
+
+        },
+        1800
+    );
+
+
+    setTimeout(
+        () => {
+
+            radioNoise(700);
+
+        },
+        2600
+    );
+
+}
+
+
+/* =====================================================
+   BOOT
+===================================================== */
+
+const bootLines =
+    document.querySelectorAll(
+        ".boot-line"
+    );
+
+
+bootLines.forEach(
+    (line,index) => {
+
+        setTimeout(
+            () => {
+
+                line.classList.add(
+                    "show"
+                );
+
+            },
+            500 +
+            index*650
+        );
+
+    }
+);
+
+
+document
+.getElementById("enter")
+.addEventListener(
+    "click",
+    async () => {
+
+        startAudio();
+
+
+        if(
+            audio.state ===
+            "suspended"
+        ){
+
+            await audio.resume();
+
+        }
+
+
+        document
+            .getElementById(
+                "boot"
+            )
+            .style.display =
+                "none";
+
+
+        document
+            .getElementById(
+                "app"
+            )
+            .style.display =
+                "block";
+
+
+        radioNoise(250);
+
+        clickSound();
+
+    }
+);
 
 </script>
 
 </body>
 </html>
+
