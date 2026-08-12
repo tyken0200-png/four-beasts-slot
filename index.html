@@ -35,9 +35,9 @@ body {
     background:
         radial-gradient(
             ellipse at 50% 35%,
-            #50151a 0%,
-            #210b12 38%,
-            #08070b 75%,
+            #55151d 0%,
+            #250b12 38%,
+            #09070b 75%,
             #020204 100%
         );
 
@@ -75,8 +75,6 @@ body::before {
 
     z-index: -2;
 }
-
-/* Vegas 네온 */
 
 .neon-left,
 .neon-right {
@@ -148,9 +146,6 @@ body::before {
     transform-origin: center;
 }
 
-
-/* 금속 내부 테두리 */
-
 .machine::before {
     content: "";
 
@@ -221,7 +216,7 @@ body::before {
 
 
 /* =====================================================
-   DECORATION
+   ORNAMENT
 ===================================================== */
 
 .ornament {
@@ -345,9 +340,6 @@ body::before {
         inset 0 3px 0 rgba(255,255,255,.9);
 }
 
-
-/* 위아래 음영 */
-
 .slot::before {
     content: "";
 
@@ -431,12 +423,6 @@ body::before {
 
 /* =====================================================
    REEL
-
-   핵심:
-   CSS transition으로 한 번에 이동하지 않고
-   JS requestAnimationFrame으로 계속 이동시킨다.
-
-   그래서 "지지직" 없이 부드럽게 돈다.
 ===================================================== */
 
 .reel {
@@ -477,15 +463,11 @@ body::before {
     backface-visibility:
         hidden;
 
-    /* 기존 blur 제거 */
     filter:
         drop-shadow(
             0 5px 4px rgba(0,0,0,.35)
         );
 }
-
-
-/* 회전 중 살짝만 밝게 */
 
 .slot.spinning {
     box-shadow:
@@ -495,7 +477,7 @@ body::before {
 
 
 /* =====================================================
-   STOP IMPACT
+   STOP BOUNCE
 ===================================================== */
 
 .reel.stop {
@@ -663,7 +645,7 @@ body::before {
 
 
 /* =====================================================
-   JACKPOT FLASH
+   FLASH
 ===================================================== */
 
 .flash {
@@ -824,50 +806,23 @@ body::before {
             <div class="slots">
 
                 <div class="slot" id="slot0">
-
-                    <div
-                        class="reel"
-                        id="reel0">
-                    </div>
-
+                    <div class="reel" id="reel0"></div>
                     <div class="payline"></div>
-
                 </div>
-
 
                 <div class="slot" id="slot1">
-
-                    <div
-                        class="reel"
-                        id="reel1">
-                    </div>
-
+                    <div class="reel" id="reel1"></div>
                     <div class="payline"></div>
-
                 </div>
-
 
                 <div class="slot" id="slot2">
-
-                    <div
-                        class="reel"
-                        id="reel2">
-                    </div>
-
+                    <div class="reel" id="reel2"></div>
                     <div class="payline"></div>
-
                 </div>
 
-
                 <div class="slot" id="slot3">
-
-                    <div
-                        class="reel"
-                        id="reel3">
-                    </div>
-
+                    <div class="reel" id="reel3"></div>
                     <div class="payline"></div>
-
                 </div>
 
             </div>
@@ -904,7 +859,7 @@ body::before {
 <script>
 
 /* =====================================================
-   SETTINGS
+   SYMBOLS
 ===================================================== */
 
 const SYMBOLS = [
@@ -913,6 +868,11 @@ const SYMBOLS = [
     "🐢",
     "🔥"
 ];
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
 const reels = [
     document.getElementById("reel0"),
@@ -940,11 +900,12 @@ const machine =
 const flash =
     document.getElementById("flash");
 
+
 let spinning = false;
 
 
 /* =====================================================
-   RANDOM
+   RANDOM SYMBOL
 ===================================================== */
 
 function randomSymbol() {
@@ -959,7 +920,7 @@ function randomSymbol() {
 
 
 /* =====================================================
-   REEL SETUP
+   BUILD REEL
 ===================================================== */
 
 function buildReel(
@@ -970,11 +931,11 @@ function buildReel(
     reel.innerHTML = "";
 
     /*
-        많은 심볼을 연결해서
-        실제 릴처럼 계속 이어진다.
-    */
+     * 충분히 많은 심볼을 만들어
+     * 여러 바퀴 회전하는 느낌을 만든다.
+     */
 
-    const count = 80;
+    const count = 100;
 
     for (
         let i = 0;
@@ -983,10 +944,17 @@ function buildReel(
     ) {
 
         const div =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         div.className =
             "symbol";
+
+        /*
+         * 마지막 심볼은
+         * 실제 결과
+         */
 
         div.textContent =
             i === count - 1
@@ -1014,7 +982,7 @@ function wait(ms) {
 
 
 /* =====================================================
-   SMOOTH REEL ANIMATION
+   SMOOTH SPIN
 ===================================================== */
 
 function spinReel(
@@ -1051,23 +1019,9 @@ function spinReel(
 
 
         /*
-            시작 위치
-        */
-
-        let position = 0;
-
-        let lastTime = null;
-
-        const startTime =
-            performance.now();
-
-
-        /*
-            최종 위치
-
-            몇 바퀴 충분히 돈 뒤
-            마지막 심볼에 도착
-        */
+         * 마지막 심볼이
+         * 중앙에 오도록 계산
+         */
 
         const target =
             -(
@@ -1076,36 +1030,16 @@ function spinReel(
             );
 
 
-        /*
-            실제 회전 속도
+        const startTime =
+            performance.now();
 
-            처음에는 빠르게
-            마지막에는 자연스럽게 감속
-        */
-
-        const totalDistance =
-            Math.abs(target);
-
-
-        /*
-            슬롯 활성화
-        */
 
         slot.classList.add(
             "spinning"
         );
 
 
-        /*
-            부드러운 애니메이션
-        */
-
         function animate(time) {
-
-            if (!lastTime) {
-                lastTime = time;
-            }
-
 
             const elapsed =
                 time -
@@ -1120,11 +1054,9 @@ function spinReel(
 
 
             /*
-                cubic easing
-
-                처음 빠르게
-                마지막 부드럽게 정지
-            */
+             * 빠르게 시작해서
+             * 부드럽게 감속
+             */
 
             const eased =
                 1 -
@@ -1134,9 +1066,8 @@ function spinReel(
                 );
 
 
-            position =
-                target *
-                eased;
+            const position =
+                target * eased;
 
 
             reel.style.transform =
@@ -1151,18 +1082,11 @@ function spinReel(
                 progress < 1
             ) {
 
-                lastTime =
-                    time;
-
                 requestAnimationFrame(
                     animate
                 );
 
             } else {
-
-                /*
-                    정확한 최종 위치
-                */
 
                 reel.style.transform =
                     `translate3d(
@@ -1192,6 +1116,7 @@ function spinReel(
 
 
                 playStopSound();
+
 
                 resolve();
             }
@@ -1234,15 +1159,8 @@ function getAudio() {
 
 
 /* =====================================================
-   CASINO ROLL SOUND
+   CONTINUOUS ROLLING SOUND
 ===================================================== */
-
-/*
-    기존의 지지직 소리를 제거하고
-
-    짧은 고음/저음을 빠르게 반복해서
-    "도르르르르..." 느낌을 만든다.
-*/
 
 function startRollSound() {
 
@@ -1256,8 +1174,16 @@ function startRollSound() {
         ctx.createGain();
 
 
-    rollingGain.gain.value =
-        0.025;
+    rollingGain.gain.setValueAtTime(
+        0.0001,
+        ctx.currentTime
+    );
+
+
+    rollingGain.gain.exponentialRampToValueAtTime(
+        0.055,
+        ctx.currentTime + 0.12
+    );
 
 
     rollingGain.connect(
@@ -1265,8 +1191,26 @@ function startRollSound() {
     );
 
 
+    /*
+     * 중요:
+     *
+     * 그림이 바뀔 때마다 소리를 내는 게 아니다.
+     *
+     * 슬롯이 돌아가는 전체 시간 동안
+     * 짧은 소리를 빠르게 이어 붙여서
+     *
+     * "또르르르르르르르르"
+     *
+     * 느낌을 만든다.
+     */
+
     rollingTimer =
         setInterval(() => {
+
+            if (!rollingGain) {
+                return;
+            }
+
 
             const osc =
                 ctx.createOscillator();
@@ -1276,34 +1220,35 @@ function startRollSound() {
 
 
             osc.type =
-                "sine";
+                "triangle";
 
 
             const frequency =
-                170 +
-                Math.random() *
-                100;
+                260 +
+                Math.random() * 90;
 
 
-            osc.frequency.value =
-                frequency;
+            osc.frequency.setValueAtTime(
+                frequency,
+                ctx.currentTime
+            );
 
 
             gain.gain.setValueAtTime(
-                0.001,
+                0.0001,
                 ctx.currentTime
             );
 
 
             gain.gain.exponentialRampToValueAtTime(
-                0.045,
-                ctx.currentTime + .008
+                0.065,
+                ctx.currentTime + 0.008
             );
 
 
             gain.gain.exponentialRampToValueAtTime(
-                0.001,
-                ctx.currentTime + .065
+                0.0001,
+                ctx.currentTime + 0.055
             );
 
 
@@ -1314,13 +1259,16 @@ function startRollSound() {
             );
 
 
-            osc.start();
-
-            osc.stop(
-                ctx.currentTime + .07
+            osc.start(
+                ctx.currentTime
             );
 
-        }, 72);
+
+            osc.stop(
+                ctx.currentTime + 0.06
+            );
+
+        }, 48);
 }
 
 
@@ -1336,25 +1284,49 @@ function stopRollSound() {
             rollingTimer
         );
 
-        rollingTimer =
-            null;
+        rollingTimer = null;
     }
 
 
     if (rollingGain) {
 
+        const ctx =
+            getAudio();
+
+
         try {
 
-            rollingGain.gain
-                .exponentialRampToValueAtTime(
-                    0.001,
-                    getAudio().currentTime + .08
-                );
+            rollingGain.gain.cancelScheduledValues(
+                ctx.currentTime
+            );
 
-        } catch(e) {}
 
-        rollingGain =
-            null;
+            rollingGain.gain.setValueAtTime(
+                rollingGain.gain.value,
+                ctx.currentTime
+            );
+
+
+            rollingGain.gain.exponentialRampToValueAtTime(
+                0.0001,
+                ctx.currentTime + 0.12
+            );
+
+        } catch (e) {}
+
+
+        setTimeout(() => {
+
+            if (rollingGain) {
+
+                try {
+                    rollingGain.disconnect();
+                } catch (e) {}
+
+                rollingGain = null;
+            }
+
+        }, 180);
     }
 }
 
@@ -1388,19 +1360,19 @@ function playStopSound() {
 
     osc.frequency.exponentialRampToValueAtTime(
         120,
-        ctx.currentTime + .09
+        ctx.currentTime + 0.09
     );
 
 
     gain.gain.setValueAtTime(
-        .07,
+        0.07,
         ctx.currentTime
     );
 
 
     gain.gain.exponentialRampToValueAtTime(
-        .001,
-        ctx.currentTime + .12
+        0.001,
+        ctx.currentTime + 0.12
     );
 
 
@@ -1413,8 +1385,9 @@ function playStopSound() {
 
     osc.start();
 
+
     osc.stop(
-        ctx.currentTime + .13
+        ctx.currentTime + 0.13
     );
 }
 
@@ -1454,7 +1427,7 @@ function jackpotSound() {
 
             const start =
                 ctx.currentTime +
-                index * .11;
+                index * 0.11;
 
 
             osc.frequency.value =
@@ -1462,20 +1435,20 @@ function jackpotSound() {
 
 
             gain.gain.setValueAtTime(
-                .001,
+                0.001,
                 start
             );
 
 
             gain.gain.exponentialRampToValueAtTime(
-                .12,
-                start + .02
+                0.12,
+                start + 0.02
             );
 
 
             gain.gain.exponentialRampToValueAtTime(
-                .001,
-                start + .4
+                0.001,
+                start + 0.4
             );
 
 
@@ -1489,7 +1462,7 @@ function jackpotSound() {
             osc.start(start);
 
             osc.stop(
-                start + .45
+                start + 0.45
             );
 
         }
@@ -1519,10 +1492,10 @@ function resizeCanvas() {
 
     canvas.height =
         window.innerHeight;
-
 }
 
 resizeCanvas();
+
 
 window.addEventListener(
     "resize",
@@ -1619,22 +1592,24 @@ function particleLoop() {
                 particle.vy;
 
             particle.vy +=
-                .22;
+                0.22;
 
             particle.life -=
-                .018;
+                0.018;
 
 
             ctx.globalAlpha =
                 particle.life;
 
+
             ctx.fillStyle =
-                Math.random() > .5
+                Math.random() > 0.5
                     ? "#ffd84a"
                     : "#fff1a0";
 
 
             ctx.beginPath();
+
 
             ctx.arc(
                 particle.x,
@@ -1643,6 +1618,7 @@ function particleLoop() {
                 0,
                 Math.PI * 2
             );
+
 
             ctx.fill();
 
@@ -1658,6 +1634,7 @@ function particleLoop() {
         particleLoop
     );
 }
+
 
 particleLoop();
 
@@ -1697,18 +1674,22 @@ function jackpotEffect() {
                 transform:
                     "translateX(0)"
             },
+
             {
                 transform:
                     "translateX(-4px)"
             },
+
             {
                 transform:
                     "translateX(4px)"
             },
+
             {
                 transform:
                     "translateX(-3px)"
             },
+
             {
                 transform:
                     "translateX(0)"
@@ -1754,8 +1735,8 @@ async function startGame() {
 
 
     /*
-        브라우저 오디오 활성화
-    */
+     * 브라우저 오디오 시작
+     */
 
     const ctx =
         getAudio();
@@ -1767,13 +1748,12 @@ async function startGame() {
     ) {
 
         await ctx.resume();
-
     }
 
 
     /*
-        결과를 먼저 결정
-    */
+     * 결과 결정
+     */
 
     const results = [
 
@@ -1786,71 +1766,78 @@ async function startGame() {
 
 
     /*
-        도르르르 소리 시작
-    */
+     * 회전음 시작
+     */
 
     startRollSound();
 
 
     /*
-        1번
-    */
+     * 1번
+     */
 
     await spinReel(
         0,
         results[0],
-        2100
+        1650
     );
 
 
-    await wait(220);
+    await wait(150);
 
 
     /*
-        2번
-    */
+     * 2번
+     */
 
     await spinReel(
         1,
         results[1],
-        2350
+        1850
     );
 
 
-    await wait(220);
+    await wait(150);
 
 
     /*
-        3번
-    */
+     * 3번
+     */
 
     await spinReel(
         2,
         results[2],
-        2600
+        2050
     );
 
 
-    await wait(220);
+    await wait(150);
 
 
     /*
-        4번
-    */
+     * 4번
+     */
 
     await spinReel(
         3,
         results[3],
-        2850
+        2250
     );
 
+
+    /*
+     * 모든 릴 정지
+     */
 
     stopRollSound();
 
 
+    await wait(250);
+
+
     /*
-        당첨 판정
-    */
+     * 당첨 판정
+     */
 
     const jackpot =
         results.every(
@@ -1860,13 +1847,11 @@ async function startGame() {
         );
 
 
-    await wait(250);
-
-
     if (jackpot) {
 
         result.textContent =
             "🎉 JACKPOT! 🎉";
+
 
         jackpotEffect();
 
@@ -1923,11 +1908,6 @@ function initialize() {
                     .height;
 
 
-            /*
-                마지막에서 한 칸 위에 위치시켜
-                중앙에 심볼이 보이게 함
-            */
-
             reel.style.transform =
                 `translate3d(
                     0,
@@ -1939,11 +1919,19 @@ function initialize() {
 }
 
 
+/* =====================================================
+   BUTTON
+===================================================== */
+
 button.addEventListener(
     "click",
     startGame
 );
 
+
+/* =====================================================
+   START
+===================================================== */
 
 initialize();
 
