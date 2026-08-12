@@ -2,2498 +2,892 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#020303">
-<title>THE LAST LINK</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NODE_07</title>
 
 <style>
 *{box-sizing:border-box}
-:root{
-  --bg:#020303;
-  --panel:#070a09;
-  --panel2:#0a0e0d;
-  --line:#18211e;
-  --text:#a9b8b1;
-  --dim:#52625b;
-  --green:#80ffb0;
-  --red:#ff405d;
-  --yellow:#d5d08a;
-  --shadow:0 0 30px rgba(0,255,120,.035);
-}
+html,body{margin:0;background:#030404;color:#b9c0be;font-family:monospace}
+body{min-height:100vh;overflow-x:hidden}
 
-html,body{
-  margin:0;
-  width:100%;
-  min-height:100%;
-  background:#010202;
-  color:var(--text);
-  font-family:
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Monaco,
-    Consolas,
-    "Liberation Mono",
-    monospace;
-}
-
-body{
-  overflow-x:hidden;
-}
-
-/* CRT */
 body:before{
-  content:"";
-  pointer-events:none;
-  position:fixed;
-  inset:0;
-  z-index:9998;
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      rgba(255,255,255,.018) 0px,
-      rgba(255,255,255,.018) 1px,
-      transparent 2px,
-      transparent 4px
-    );
-  mix-blend-mode:overlay;
-  opacity:.32;
+ content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;
+ background:repeating-linear-gradient(0deg,transparent 0 3px,
+ rgba(255,255,255,.025) 4px);
 }
-
 body:after{
-  content:"";
-  pointer-events:none;
-  position:fixed;
-  inset:-20%;
-  z-index:9997;
-  background:
-    radial-gradient(
-      ellipse at center,
-      transparent 45%,
-      rgba(0,0,0,.72) 100%
-    );
+ content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;
+ background:radial-gradient(circle,transparent 40%,rgba(0,0,0,.75));
 }
 
-button,input{
-  font:inherit;
-}
-
-button{
-  color:inherit;
-}
-
-a{
-  color:inherit;
-}
-
-/* BOOT */
+button,input{font:inherit}
+button{cursor:pointer}
 
 #boot{
-  position:fixed;
-  inset:0;
-  z-index:10000;
-  background:#000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:25px;
+ position:fixed;inset:0;background:#020303;z-index:10000;
+ display:flex;align-items:center;justify-content:center;padding:25px
+}
+.bootbox{width:min(700px,100%)}
+.boottitle{font-size:30px;letter-spacing:7px;color:#ddd;margin-bottom:25px}
+#log{height:210px;color:#596360;font-size:12px;line-height:1.9}
+.progress{height:2px;background:#111}
+.progress i{display:block;width:0;height:100%;background:#aaa}
+#enter{
+ display:none;margin-top:25px;background:#080a0a;color:#aaa;
+ border:1px solid #444;padding:13px 25px
 }
 
-.bootBox{
-  width:min(720px,100%);
-  color:#7cffaa;
-  font-size:13px;
-  line-height:1.8;
+#app{display:none}
+
+header{
+ height:58px;border-bottom:1px solid #181f1f;
+ display:flex;justify-content:space-between;align-items:center;
+ padding:0 18px;position:sticky;top:0;z-index:100;
+ background:rgba(3,5,5,.95);backdrop-filter:blur(8px)
+}
+.logo{letter-spacing:3px;color:#ddd;font-size:13px}
+.topstatus{font-size:10px;color:#596360}
+
+.layout{
+ max-width:1450px;margin:auto;display:grid;
+ grid-template-columns:200px 1fr 250px;min-height:calc(100vh - 58px)
 }
 
-.bootTitle{
-  font-size:clamp(25px,6vw,58px);
-  letter-spacing:.2em;
-  margin-bottom:25px;
-  text-shadow:0 0 15px rgba(80,255,140,.3);
+aside{border-right:1px solid #181f1f;padding:15px 10px}
+.right{border-left:1px solid #181f1f;padding:15px}
+
+.navtitle,.sidetitle{
+ color:#46504e;font-size:10px;letter-spacing:2px;margin-bottom:10px
 }
-
-#bootLog{
-  min-height:170px;
-  color:#71847a;
+.nav{
+ width:100%;display:block;text-align:left;background:transparent;
+ border:0;color:#697370;padding:11px;border-left:2px solid transparent
 }
+.nav:hover,.nav.active{background:#090c0c;color:#ddd;border-left-color:#777}
 
-.bootEnter{
-  margin-top:20px;
-  border:1px solid #294334;
-  background:#061009;
-  color:#8dffb2;
-  padding:13px 18px;
-  cursor:pointer;
-  letter-spacing:.12em;
-}
+main{min-width:0}
+.page{display:none;padding:25px;animation:fade .3s}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1}}
 
-.bootEnter:hover{
-  background:#0b1a10;
-  border-color:#4b8d62;
-}
-
-.hidden{
-  display:none!important;
-}
-
-/* APP */
-
-#app{
-  min-height:100vh;
-  display:flex;
-}
-
-.sidebar{
-  width:245px;
-  min-height:100vh;
-  position:fixed;
-  left:0;
-  top:0;
-  bottom:0;
-  background:#030605;
-  border-right:1px solid var(--line);
-  padding:22px 16px;
-  z-index:100;
-}
-
-.brand{
-  padding:8px 10px 25px;
-  border-bottom:1px solid var(--line);
-  margin-bottom:15px;
-}
-
-.brandName{
-  color:#c9d5cf;
-  font-size:18px;
-  letter-spacing:.18em;
-}
-
-.brandSub{
-  color:#435149;
-  font-size:9px;
-  margin-top:8px;
-}
-
-.navBtn{
-  width:100%;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  text-align:left;
-  background:transparent;
-  border:0;
-  color:#64746c;
-  padding:12px 10px;
-  margin:2px 0;
-  cursor:pointer;
-  font-size:12px;
-  transition:.15s;
-}
-
-.navBtn:hover,
-.navBtn.active{
-  color:#b5ffc9;
-  background:#08100b;
-}
-
-.navDot{
-  width:5px;
-  height:5px;
-  background:#304036;
-  display:inline-block;
-}
-
-.navBtn.active .navDot{
-  background:var(--green);
-  box-shadow:0 0 9px var(--green);
-}
-
-.sideStatus{
-  position:absolute;
-  bottom:20px;
-  left:16px;
-  right:16px;
-  padding:12px;
-  border:1px solid var(--line);
-  font-size:9px;
-  color:#45544d;
-  line-height:1.8;
-}
-
-.liveDot{
-  display:inline-block;
-  width:5px;
-  height:5px;
-  border-radius:50%;
-  background:#ff3654;
-  box-shadow:0 0 8px #ff3654;
-  margin-right:5px;
-}
-
-.main{
-  margin-left:245px;
-  width:calc(100% - 245px);
-  min-height:100vh;
-}
-
-.topbar{
-  height:58px;
-  border-bottom:1px solid var(--line);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 25px;
-  color:#53625b;
-  font-size:10px;
-}
-
-.topLeft{
-  display:flex;
-  align-items:center;
-  gap:15px;
-}
-
-.status{
-  color:#71e79b;
-}
-
-.session{
-  color:#36433d;
-}
-
-.page{
-  display:none;
-  padding:30px;
-  max-width:1250px;
-  margin:auto;
-}
-
-.page.active{
-  display:block;
-  animation:pageIn .35s ease;
-}
-
-@keyframes pageIn{
-  from{opacity:0;transform:translateY(5px)}
-  to{opacity:1;transform:none}
-}
-
-.pageTitle{
-  font-size:clamp(24px,4vw,42px);
-  color:#c8d3ce;
-  letter-spacing:.12em;
-  margin:0 0 8px;
-}
-
-.pageDesc{
-  color:#45544d;
-  font-size:11px;
-  margin-bottom:28px;
-}
-
-/* HOME */
+h1{font-size:clamp(24px,5vw,42px);letter-spacing:4px;color:#e0e5e3;margin:0 0 7px}
+.sub{font-size:10px;color:#505a57;margin-bottom:22px}
 
 .hero{
-  min-height:62vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  border:1px solid var(--line);
-  background:
-    linear-gradient(135deg,rgba(20,40,28,.16),transparent 45%),
-    #040706;
-  padding:clamp(25px,6vw,75px);
-  position:relative;
-  overflow:hidden;
-  box-shadow:var(--shadow);
+ min-height:350px;border:1px solid #171e1e;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ text-align:center;background:radial-gradient(circle,#121919,#030505 65%);
+ position:relative;overflow:hidden
 }
-
 .hero:before{
-  content:"";
-  position:absolute;
-  width:320px;
-  height:320px;
-  right:-140px;
-  top:-140px;
-  border:1px solid rgba(100,255,150,.06);
-  border-radius:50%;
-  box-shadow:
-    0 0 0 40px rgba(100,255,150,.015),
-    0 0 0 80px rgba(100,255,150,.01);
+ content:"";position:absolute;width:240px;height:240px;border:1px solid #222;
+ border-radius:50%;animation:pulse 3s infinite
 }
-
-.kicker{
-  color:#5f7669;
-  font-size:10px;
-  letter-spacing:.25em;
-  margin-bottom:20px;
+@keyframes pulse{50%{transform:scale(1.15);opacity:.2}}
+.hero h2{position:relative;font-size:clamp(27px,6vw,58px);letter-spacing:8px;margin:0}
+.hero p{position:relative;color:#505b58;font-size:10px}
+.big{
+ position:relative;margin-top:25px;padding:13px 22px;
+ color:#aaa;background:#070909;border:1px solid #343c3c
 }
+.big:hover{background:#ddd;color:#000}
 
-.hero h1{
-  margin:0;
-  font-size:clamp(42px,9vw,100px);
-  line-height:.9;
-  color:#d5dfda;
-  letter-spacing:.06em;
-  text-shadow:
-    0 0 25px rgba(110,255,160,.08);
-}
-
-.hero h1 span{
-  color:#607269;
-}
-
-.heroText{
-  max-width:610px;
-  margin:30px 0;
-  line-height:1.9;
-  color:#68776f;
-  font-size:12px;
-}
-
-.enterBtn{
-  width:max-content;
-  padding:14px 20px;
-  background:#08120b;
-  border:1px solid #294b35;
-  color:#8effb2;
-  cursor:pointer;
-  letter-spacing:.15em;
-}
-
-.enterBtn:hover{
-  background:#0d1d12;
-  box-shadow:0 0 25px rgba(90,255,140,.08);
-}
-
-.statGrid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;
-  margin-top:10px;
-}
-
-.stat{
-  border:1px solid var(--line);
-  padding:16px;
-  background:#040706;
-}
-
-.statLabel{
-  font-size:9px;
-  color:#46534d;
-}
-
-.statValue{
-  color:#9aaea4;
-  font-size:17px;
-  margin-top:7px;
-}
-
-/* DIRECTORY */
-
-.directory{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
-
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
 .card{
-  border:1px solid var(--line);
-  background:#050807;
-  padding:18px;
-  min-height:145px;
-  cursor:pointer;
-  transition:.2s;
-  position:relative;
+ border:1px solid #181f1f;background:#070909;padding:16px;cursor:pointer
+}
+.card:hover{border-color:#555}
+.card b{display:block;color:#c8cfcd;margin-bottom:9px}
+.card small{color:#505a57;line-height:1.8}
+
+.panel{border:1px solid #181f1f;background:#060808;margin-bottom:15px}
+.panelhead{
+ padding:12px;border-bottom:1px solid #181f1f;
+ display:flex;justify-content:space-between;font-size:10px;color:#68716f
+}
+.panelbody{padding:14px}
+
+/* LIVE */
+.live{
+ height:390px;border:1px solid #252c2c;
+ position:relative;overflow:hidden;
+ background:
+ radial-gradient(circle at 50% 50%,#151b1b,#030505 65%)
+}
+.noise{
+ position:absolute;inset:0;opacity:.13;
+ background:repeating-linear-gradient(90deg,
+ transparent 0 5px,#fff 6px,transparent 7px 12px);
+ animation:noise .08s infinite
+}
+@keyframes noise{
+ 25%{transform:translate(2px,-1px)}
+ 50%{transform:translate(-2px,2px)}
+ 75%{transform:translate(1px,1px)}
+}
+.livebadge{position:absolute;top:12px;left:12px;font-size:10px}
+.livebadge i{
+ display:inline-block;width:7px;height:7px;border-radius:50%;
+ background:#aaa;margin-right:5px;animation:blink 1s infinite
+}
+@keyframes blink{50%{opacity:.15}}
+.viewers{position:absolute;right:12px;top:12px;font-size:10px}
+.cammsg{
+ position:absolute;inset:0;display:flex;flex-direction:column;
+ justify-content:center;align-items:center;text-align:center
+}
+.camicon{
+ width:120px;height:75px;border:1px solid #343d3d;margin-bottom:17px;
+ position:relative
+}
+.camicon:after{
+ content:"";width:20px;height:20px;border:1px solid #68716f;
+ border-radius:50%;position:absolute;left:50%;top:50%;
+ transform:translate(-50%,-50%)
+}
+.cammsg span{font-size:10px;color:#707a77;letter-spacing:2px}
+
+.chat{height:350px;border:1px solid #181f1f;background:#040606}
+.chathead{height:40px;border-bottom:1px solid #181f1f;padding:12px;font-size:10px}
+#chat{height:308px;padding:8px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
+.msg{font-size:10px;line-height:1.65;color:#6f7976;animation:msg .12s}
+.msg strong{color:#a5aeab}
+.msg.unk{color:#d4dad8}
+@keyframes msg{from{opacity:0;transform:translateX(8px)}to{opacity:1}}
+
+.search{display:flex;gap:7px}
+.search input{
+ flex:1;background:#060808;border:1px solid #222a29;
+ color:#ddd;padding:12px;outline:0
+}
+.search button,.buy{
+ background:#080b0b;border:1px solid #303737;color:#999;padding:10px 15px
+}
+.result{
+ margin-top:12px;border:1px solid #181f1f;padding:16px;
+ min-height:110px;color:#858f8c;font-size:11px;line-height:1.9
 }
 
-.card:hover{
-  border-color:#294534;
-  background:#071009;
-  transform:translateY(-2px);
+/* MARKET */
+.markettabs{display:flex;gap:5px;overflow:auto;margin-bottom:13px}
+.markettabs button{
+ white-space:nowrap;background:#080a0a;border:1px solid #202727;
+ color:#737d7a;padding:9px 12px
 }
 
-.cardDanger:hover{
-  border-color:#4c2029;
+.marketgrid{
+ display:grid;grid-template-columns:repeat(2,1fr);gap:12px
 }
 
-.cardIcon{
-  color:#596a61;
-  font-size:18px;
-  margin-bottom:20px;
+.item{
+ border:1px solid #1b2222;background:#070909;overflow:hidden
+}
+.itemphoto{
+ height:180px;position:relative;overflow:hidden;
+ background:#101313
 }
 
-.cardTitle{
-  color:#aab8b1;
-  font-size:12px;
-  letter-spacing:.1em;
+/* 가상 소품 "사진" */
+.sugarphoto{
+ background:
+ radial-gradient(circle at 38% 45%,#eee 0 2px,transparent 3px),
+ radial-gradient(circle at 55% 60%,#ddd 0 2px,transparent 3px),
+ radial-gradient(circle at 63% 35%,#fff 0 2px,transparent 3px),
+ linear-gradient(135deg,#1a1b1b,#050606)
+}
+.sugarphoto:after{
+ content:"";position:absolute;width:125px;height:85px;
+ left:50%;top:50%;transform:translate(-50%,-50%) rotate(-8deg);
+ background:linear-gradient(145deg,#eee,#aaa);
+ border:1px solid #777;
+ box-shadow:0 15px 35px #000
+}
+.gunphoto{
+ background:radial-gradient(circle,#292d2d,#050606 70%)
+}
+.gunphoto:after{
+ content:"";position:absolute;width:180px;height:28px;
+ background:linear-gradient(#252828,#080909);
+ left:50%;top:50%;transform:translate(-50%,-50%) rotate(-12deg);
+ box-shadow:45px 10px 0 -5px #111;
+ border-radius:3px
+}
+.packagephoto{
+ background:radial-gradient(circle at 50% 45%,#292d2c,#060707 70%)
+}
+.packagephoto:after{
+ content:"";position:absolute;width:115px;height:125px;
+ background:#bbb;left:50%;top:50%;transform:translate(-50%,-50%) rotate(5deg);
+ box-shadow:0 20px 40px #000
+}
+.evidencephoto{
+ background:
+ repeating-linear-gradient(135deg,#161919 0 8px,#0a0c0c 9px 16px)
+}
+.evidencephoto:after{
+ content:"████";position:absolute;color:#999;font-size:45px;
+ left:50%;top:50%;transform:translate(-50%,-50%)
 }
 
-.cardDesc{
-  color:#46534d;
-  font-size:10px;
-  line-height:1.6;
-  margin-top:8px;
+.photo-label{
+ position:absolute;bottom:8px;left:9px;font-size:8px;
+ color:#777;background:#050606;padding:4px
 }
 
-.cardStatus{
-  position:absolute;
-  right:13px;
-  top:13px;
-  font-size:8px;
-  color:#4d5c54;
-}
-
-.cardStatus.red{
-  color:#b6374b;
-}
+.itembody{padding:15px}
+.itemname{color:#c3cbc8;font-size:13px}
+.itemdesc{color:#535d5a;font-size:9px;line-height:1.7;margin-top:8px}
+.meta{margin-top:10px;color:#78817e;font-size:9px}
+.buy{width:100%;margin-top:11px}
+.buy:hover{background:#ddd;color:#000}
 
 /* ARCHIVE */
-
-.archiveList{
-  border:1px solid var(--line);
+.archive{
+ border-left:2px solid #303737;background:#070909;
+ padding:14px;margin-bottom:10px
 }
+.archive small{color:#434c4a}
+.archive p{font-size:11px;line-height:1.8;color:#8b9592}
 
-.archiveRow{
-  display:grid;
-  grid-template-columns:80px 1fr 120px;
-  gap:15px;
-  align-items:center;
-  padding:16px;
-  border-bottom:1px solid #0e1512;
-  cursor:pointer;
-}
-
-.archiveRow:last-child{
-  border-bottom:0;
-}
-
-.archiveRow:hover{
-  background:#071009;
-}
-
-.fileId{
-  color:#3d4b44;
-  font-size:10px;
-}
-
-.fileTitle{
-  color:#9ba9a2;
-  font-size:11px;
-}
-
-.fileMeta{
-  color:#46534d;
-  font-size:9px;
-  text-align:right;
-}
-
-/* STREAM */
-
-.streamWrap{
-  display:grid;
-  grid-template-columns:1fr 330px;
-  gap:10px;
-}
-
-.screen{
-  min-height:450px;
-  border:1px solid var(--line);
-  background:#010202;
-  position:relative;
-  overflow:hidden;
-}
-
-.screenNoise{
-  position:absolute;
-  inset:0;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      rgba(255,255,255,.02) 0,
-      rgba(255,255,255,.02) 1px,
-      transparent 1px,
-      transparent 5px
-    );
-}
-
-.screenCenter{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  gap:14px;
-  color:#303c36;
-  font-size:10px;
-  text-align:center;
-}
-
-.cameraCircle{
-  width:75px;
-  height:75px;
-  border:1px solid #1b2922;
-  border-radius:50%;
-  position:relative;
-}
-
-.cameraCircle:after{
-  content:"";
-  position:absolute;
-  width:7px;
-  height:7px;
-  background:#1e3025;
-  border-radius:50%;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
-}
-
-.streamTop{
-  position:absolute;
-  left:15px;
-  right:15px;
-  top:14px;
-  display:flex;
-  justify-content:space-between;
-  color:#4c5a53;
-  font-size:9px;
-  z-index:2;
-}
-
-.chat{
-  border:1px solid var(--line);
-  background:#040605;
-  min-height:450px;
-  display:flex;
-  flex-direction:column;
-}
-
-.chatHead{
-  padding:14px;
-  border-bottom:1px solid var(--line);
-  color:#69786f;
-  font-size:10px;
-}
-
-.chatBody{
-  padding:14px;
-  flex:1;
-  overflow:hidden;
-  font-size:10px;
-  line-height:1.7;
-}
-
-.chatLine{
-  margin-bottom:12px;
-}
-
-.user{
-  color:#5f806d;
-}
-
-.msg{
-  color:#68756f;
-}
-
-.system{
-  color:#9b4b59;
-}
-
-.chatInput{
-  border-top:1px solid var(--line);
-  display:flex;
-}
-
-.chatInput input{
-  flex:1;
-  background:transparent;
-  border:0;
-  outline:0;
-  color:#8e9e96;
-  padding:12px;
-  min-width:0;
-}
-
-.chatInput button{
-  background:#071009;
-  border:0;
-  border-left:1px solid var(--line);
-  color:#688a75;
-  padding:0 13px;
-}
-
-/* SEARCH */
-
-.searchBox{
-  display:flex;
-  border:1px solid var(--line);
-  background:#040605;
-  margin-bottom:15px;
-}
-
-.searchBox input{
-  flex:1;
-  background:transparent;
-  border:0;
-  outline:0;
-  color:#a9b8b1;
-  padding:17px;
-  min-width:0;
-}
-
-.searchBox button{
-  background:#08110b;
-  border:0;
-  border-left:1px solid var(--line);
-  color:#79a889;
-  padding:0 22px;
-  cursor:pointer;
-}
-
-.results{
-  display:grid;
-  gap:8px;
-}
-
-.result{
-  border:1px solid var(--line);
-  background:#040605;
-  padding:15px;
-  cursor:pointer;
-}
-
-.result:hover{
-  border-color:#34523e;
-}
-
-.resultTitle{
-  color:#8fa197;
-  font-size:11px;
-}
-
-.resultMeta{
-  color:#46534d;
-  font-size:9px;
-  margin-top:7px;
-}
-
-/* CHAT PAGE */
-
-.fullChat{
-  border:1px solid var(--line);
-  background:#040605;
-  min-height:500px;
-  display:flex;
-  flex-direction:column;
-}
-
-.fullChatBody{
-  flex:1;
-  padding:20px;
-  overflow:auto;
-  min-height:420px;
-}
-
-.fullMessage{
-  margin-bottom:18px;
-  max-width:760px;
-}
-
-.fullMessage .who{
-  color:#5f7969;
-  font-size:9px;
-  margin-bottom:5px;
-}
-
-.fullMessage .text{
-  color:#78867f;
-  font-size:11px;
-  line-height:1.8;
-}
-
-.fullMessage.unknown .who{
-  color:#a94a5b;
-}
-
-/* MODAL */
-
-#modal{
-  position:fixed;
-  inset:0;
-  z-index:9000;
-  background:rgba(0,0,0,.82);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  backdrop-filter:blur(5px);
-}
-
-#modal.show{
-  display:flex;
-}
-
-.modalBox{
-  width:min(700px,100%);
-  max-height:85vh;
-  overflow:auto;
-  border:1px solid #27342e;
-  background:#050807;
-  box-shadow:0 0 70px rgba(0,0,0,.8);
-}
-
-.modalHead{
-  padding:15px;
-  border-bottom:1px solid var(--line);
-  display:flex;
-  justify-content:space-between;
-  color:#65746c;
-  font-size:10px;
-}
-
-.close{
-  border:0;
-  background:transparent;
-  color:#65746c;
-  cursor:pointer;
-}
-
-.modalBody{
-  padding:22px;
-  line-height:1.9;
-  color:#68776f;
-  font-size:11px;
-}
-
-.modalBody pre{
-  white-space:pre-wrap;
-  color:#82968b;
-  font:inherit;
-}
-
-/* TOAST */
+/* RIGHT */
+.track{font-size:10px;color:#555f5c;line-height:2}
+.track span{color:#a1aaa7}
+hr{border:0;border-top:1px solid #181f1f;margin:17px 0}
 
 #toast{
-  position:fixed;
-  left:50%;
-  bottom:30px;
-  transform:translateX(-50%) translateY(20px);
-  background:#071009;
-  border:1px solid #294334;
-  color:#86ad93;
-  padding:12px 18px;
-  font-size:10px;
-  opacity:0;
-  pointer-events:none;
-  transition:.3s;
-  z-index:9500;
-  max-width:90vw;
-  text-align:center;
+ position:fixed;right:15px;bottom:15px;width:min(350px,calc(100% - 30px));
+ z-index:5000
+}
+.toast{
+ background:rgba(5,7,7,.97);border:1px solid #333b3a;
+ color:#929b98;padding:12px;margin-top:6px;font-size:10px
 }
 
-#toast.show{
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
+@media(max-width:1000px){
+ .layout{grid-template-columns:170px 1fr}
+ .right{display:none}
 }
-
-/* MOBILE */
-
-.mobileNav{
-  display:none;
-}
-
-@media(max-width:850px){
-
-  .sidebar{
-    display:none;
-  }
-
-  .main{
-    margin-left:0;
-    width:100%;
-    padding-bottom:68px;
-  }
-
-  .topbar{
-    padding:0 14px;
-    height:50px;
-  }
-
-  .session{
-    display:none;
-  }
-
-  .page{
-    padding:16px;
-  }
-
-  .hero{
-    min-height:calc(100vh - 105px);
-    padding:25px 20px;
-  }
-
-  .hero h1{
-    font-size:clamp(39px,15vw,72px);
-  }
-
-  .heroText{
-    font-size:11px;
-  }
-
-  .statGrid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .directory{
-    grid-template-columns:1fr;
-  }
-
-  .card{
-    min-height:125px;
-  }
-
-  .streamWrap{
-    grid-template-columns:1fr;
-  }
-
-  .screen{
-    min-height:54vh;
-  }
-
-  .chat{
-    min-height:300px;
-  }
-
-  .archiveRow{
-    grid-template-columns:55px 1fr;
-  }
-
-  .fileMeta{
-    display:none;
-  }
-
-  .mobileNav{
-    display:flex;
-    position:fixed;
-    left:0;
-    right:0;
-    bottom:0;
-    height:62px;
-    background:rgba(3,6,5,.96);
-    border-top:1px solid var(--line);
-    z-index:500;
-    padding-bottom:env(safe-area-inset-bottom);
-  }
-
-  .mobileNav button{
-    flex:1;
-    background:transparent;
-    border:0;
-    color:#4c5a53;
-    font-size:8px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:6px;
-  }
-
-  .mobileNav button.active{
-    color:#9bffb6;
-  }
-
-  .mobileNav span:first-child{
-    font-size:15px;
-  }
-
-  #modal{
-    padding:10px;
-  }
-
-  .modalBox{
-    max-height:88vh;
-  }
-}
-
-@media(max-width:420px){
-
-  .topbar{
-    font-size:8px;
-  }
-
-  .hero{
-    padding:22px 16px;
-  }
-
-  .hero h1{
-    letter-spacing:.02em;
-  }
-
-  .stat{
-    padding:12px;
-  }
-
-  .statValue{
-    font-size:14px;
-  }
-
-  .screen{
-    min-height:48vh;
-  }
-}
-
-/* subtle corruption */
-
-.glitch{
-  animation:glitch 4s infinite;
-}
-
-@keyframes glitch{
-  0%,92%,100%{transform:none;opacity:1}
-  93%{transform:translateX(1px);opacity:.8}
-  94%{transform:translateX(-2px);opacity:.95}
-  95%{transform:none}
-}
-
-.redFlash{
-  animation:redFlash .7s ease;
-}
-
-@keyframes redFlash{
-  0%{box-shadow:inset 0 0 0 rgba(255,0,40,0)}
-  35%{box-shadow:inset 0 0 100px rgba(255,0,40,.05)}
-  100%{box-shadow:none}
+@media(max-width:700px){
+ header{padding:0 12px}
+ .topstatus{display:none}
+ .layout{display:block}
+ aside{
+  display:flex;overflow:auto;border-right:0;border-bottom:1px solid #181f1f;
+  padding:5px
+ }
+ .navtitle{display:none}
+ .nav{white-space:nowrap;width:auto;border:0;padding:9px 11px}
+ .nav.active{border-bottom:2px solid #777}
+ .page{padding:14px}
+ .grid,.marketgrid{grid-template-columns:1fr}
+ .live{height:300px}
+ .chat{height:310px}
+ #chat{height:268px}
 }
 </style>
 </head>
 
 <body>
 
-<!-- BOOT SCREEN -->
 <div id="boot">
-  <div class="bootBox">
-    <div class="bootTitle">THE LAST LINK</div>
-    <div id="bootLog"></div>
-    <button class="bootEnter" id="bootEnter">
-      ENTER ARCHIVE
-    </button>
-  </div>
+ <div class="bootbox">
+  <div class="boottitle">NODE_07</div>
+  <div id="log"></div>
+  <div class="progress"><i id="bar"></i></div>
+  <button id="enter">ENTER NODE</button>
+ </div>
 </div>
 
-<div id="app" class="hidden">
+<div id="app">
 
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="brandName">THE LAST LINK</div>
-      <div class="brandSub">UNINDEXED ARCHIVE // NODE 7</div>
+<header>
+ <div class="logo">NODE_07 // PRIVATE RELAY</div>
+ <div class="topstatus">
+  SESSION <span id="session">--------</span> /
+  STATUS <b>CONNECTED</b>
+ </div>
+</header>
+
+<div class="layout">
+
+<aside>
+ <div class="navtitle">DIRECTORY</div>
+ <button class="nav active" data-page="home">HOME</button>
+ <button class="nav" data-page="live">LIVE_CAM</button>
+ <button class="nav" data-page="market">MARKET</button>
+ <button class="nav" data-page="archive">ARCHIVE</button>
+ <button class="nav" data-page="search">SEARCH</button>
+ <button class="nav" data-page="unknown">UNKNOWN</button>
+ <button class="nav" data-page="exit">EXIT</button>
+</aside>
+
+<main>
+
+<section class="page active" id="home">
+ <div class="hero">
+  <h2>NODE_07</h2>
+  <p>PRIVATE NETWORK // ACCESS RESTRICTED</p>
+  <button class="big" onclick="go('live')">CONNECT TO LIVE NODE</button>
+ </div>
+
+ <div class="grid">
+  <div class="card" onclick="go('live')">
+   <b>LIVE_CAM_07</b>
+   <small>ACTIVE STREAM<br>VIEWERS: <span id="homeview">1,284</span><br>STATUS: WATCHED</small>
+  </div>
+
+  <div class="card" onclick="go('market')">
+   <b>BLACK MARKET</b>
+   <small>PRIVATE NODE<br>LISTINGS: 247<br>ACCESS: UNVERIFIED</small>
+  </div>
+
+  <div class="card" onclick="go('archive')">
+   <b>ARCHIVE</b>
+   <small>RECORDS: 8,731<br>LAST UPDATE: NOW</small>
+  </div>
+
+  <div class="card" onclick="go('unknown')">
+   <b>UNKNOWN</b>
+   <small>NODE: ██████<br>STATUS: ACTIVE<br>DO NOT CONNECT</small>
+  </div>
+ </div>
+</section>
+
+<section class="page" id="live">
+ <h1>LIVE_CAM_07</h1>
+ <div class="sub">PRIVATE STREAM / CHANNEL OPEN</div>
+
+ <div class="panel">
+  <div class="panelhead">
+   <span>LIVE SIGNAL</span>
+   <span id="timer">00:00</span>
+  </div>
+
+  <div class="panelbody">
+   <div class="live">
+    <div class="noise"></div>
+    <div class="livebadge"><i></i> LIVE</div>
+    <div class="viewers">VIEWERS: <span id="viewers">1,284</span></div>
+
+    <div class="cammsg">
+     <div class="camicon"></div>
+     <span id="camtext">SIGNAL CONNECTED</span>
     </div>
+   </div>
 
-    <button class="navBtn active" data-page="home">
-      <span class="navDot"></span> HOME
-    </button>
+   <br>
 
-    <button class="navBtn" data-page="directory">
-      <span class="navDot"></span> DIRECTORY
-    </button>
+   <div class="chat">
+    <div class="chathead">LIVE CHAT // <span id="chatcount">0</span> MESSAGES</div>
+    <div id="chat"></div>
+   </div>
+  </div>
+ </div>
+</section>
 
-    <button class="navBtn" data-page="archive">
-      <span class="navDot"></span> ARCHIVE
-    </button>
+<section class="page" id="market">
+ <h1>BLACK MARKET</h1>
+ <div class="sub">NODE 04 / FICTIONAL PROPS DATABASE</div>
 
-    <button class="navBtn" data-page="stream">
-      <span class="navDot"></span> STREAM
-    </button>
+ <div class="markettabs">
+  <button>ALL</button>
+  <button>WEAPONS</button>
+  <button>CONTRABAND</button>
+  <button>DOCUMENTS</button>
+ </div>
 
-    <button class="navBtn" data-page="chat">
-      <span class="navDot"></span> CHAT
-    </button>
+ <div class="marketgrid">
 
-    <button class="navBtn" data-page="search">
-      <span class="navDot"></span> SEARCH
-    </button>
-
-    <div class="sideStatus">
-      <span class="liveDot"></span> NODE STATUS: ACTIVE<br>
-      SESSION: <span id="sideSession">7A91</span><br>
-      VISITORS: <span id="sideVisitors">1,284</span>
+  <div class="item">
+   <div class="itemphoto gunphoto">
+    <span class="photo-label">PROP_IMAGE // 017</span>
+   </div>
+   <div class="itembody">
+    <div class="itemname">BLACK FRAME_017</div>
+    <div class="itemdesc">
+     UNREGISTERED OBJECT.<br>
+     ORIGIN UNKNOWN.<br>
+     FOR CINEMATIC USE ONLY.
     </div>
-  </aside>
+    <div class="meta">STATUS: SOLD OUT</div>
+    <button class="buy" onclick="fakeOrder(this)">PURCHASE</button>
+   </div>
+  </div>
 
-  <main class="main">
-
-    <div class="topbar">
-      <div class="topLeft">
-        <span class="status">● CONNECTED</span>
-        <span>NODE_07</span>
-      </div>
-      <span class="session">SESSION // <span id="sessionId">7A91-03F2</span></span>
+  <div class="item">
+   <div class="itemphoto sugarphoto">
+    <span class="photo-label">PROP_IMAGE // 031</span>
+   </div>
+   <div class="itembody">
+    <div class="itemname">WHITE PACKAGE_031</div>
+    <div class="itemdesc">
+     SEALED WHITE CRYSTALS.<br>
+     LABEL: "SUGAR"<br>
+     CONTENTS VERIFIED AS PROP MATERIAL.
     </div>
-
-    <!-- HOME -->
-    <section class="page active" id="page-home">
-
-      <div class="hero">
-        <div class="kicker">UNINDEXED NETWORK / ARCHIVE ENTRY</div>
-
-        <h1 class="glitch">
-          THE LAST<br>
-          <span>LINK</span>
-        </h1>
-
-        <div class="heroText">
-          This directory is not indexed.<br>
-          Some links are dead. Some were never alive.<br>
-          Do not open a stream marked <b>07</b>.
-        </div>
-
-        <button class="enterBtn" onclick="navigate('directory')">
-          OPEN DIRECTORY →
-        </button>
-      </div>
-
-      <div class="statGrid">
-        <div class="stat">
-          <div class="statLabel">ACTIVE NODES</div>
-          <div class="statValue" id="nodes">03</div>
-        </div>
-
-        <div class="stat">
-          <div class="statLabel">VISITORS</div>
-          <div class="statValue" id="visitors">1,284</div>
-        </div>
-
-        <div class="stat">
-          <div class="statLabel">ARCHIVED FILES</div>
-          <div class="statValue">4,891</div>
-        </div>
-
-        <div class="stat">
-          <div class="statLabel">LAST UPDATE</div>
-          <div class="statValue" id="lastUpdate">00:47:13</div>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- DIRECTORY -->
-    <section class="page" id="page-directory">
-
-      <h2 class="pageTitle">DIRECTORY</h2>
-      <div class="pageDesc">
-        unverified links // enter at your own discretion
-      </div>
-
-      <div class="directory">
-
-        <div class="card" onclick="openModal('MARKET')">
-          <div class="cardStatus">ONLINE</div>
-          <div class="cardIcon">▦</div>
-          <div class="cardTitle">MARKET</div>
-          <div class="cardDesc">
-            This section is currently unavailable.
-            Last indexed: 2019.
-          </div>
-        </div>
-
-        <div class="card" onclick="navigate('archive')">
-          <div class="cardStatus">4,891</div>
-          <div class="cardIcon">▤</div>
-          <div class="cardTitle">ARCHIVE</div>
-          <div class="cardDesc">
-            Deleted pages, lost conversations,
-            corrupted records.
-          </div>
-        </div>
-
-        <div class="card cardDanger" onclick="navigate('stream')">
-          <div class="cardStatus red">LIVE</div>
-          <div class="cardIcon">◉</div>
-          <div class="cardTitle">STREAM</div>
-          <div class="cardDesc">
-            7 active streams.
-            One of them should not be accessible.
-          </div>
-        </div>
-
-        <div class="card" onclick="navigate('chat')">
-          <div class="cardStatus">12</div>
-          <div class="cardIcon">□</div>
-          <div class="cardTitle">CHAT</div>
-          <div class="cardDesc">
-            Anonymous relay.
-            Messages are not stored.
-          </div>
-        </div>
-
-        <div class="card" onclick="navigate('search')">
-          <div class="cardStatus">INDEXED</div>
-          <div class="cardIcon">⌕</div>
-          <div class="cardTitle">SEARCH</div>
-          <div class="cardDesc">
-            Search the local archive.
-          </div>
-        </div>
-
-        <div class="card cardDanger" onclick="openUnknown()">
-          <div class="cardStatus red">UNKNOWN</div>
-          <div class="cardIcon">?</div>
-          <div class="cardTitle">UNKNOWN</div>
-          <div class="cardDesc">
-            This entry has no registered owner.
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ARCHIVE -->
-    <section class="page" id="page-archive">
-
-      <h2 class="pageTitle">ARCHIVE</h2>
-      <div class="pageDesc">
-        deleted records // some entries may be incomplete
-      </div>
-
-      <div class="archiveList">
-
-        <div class="archiveRow" onclick="archiveOpen(1)">
-          <div class="fileId">#001</div>
-          <div class="fileTitle">THE ROOM</div>
-          <div class="fileMeta">UNRESOLVED</div>
-        </div>
-
-        <div class="archiveRow" onclick="archiveOpen(2)">
-          <div class="fileId">#002</div>
-          <div class="fileTitle">03:14</div>
-          <div class="fileMeta">DELETED</div>
-        </div>
-
-        <div class="archiveRow" onclick="archiveOpen(3)">
-          <div class="fileId">#003</div>
-          <div class="fileTitle">LAST VISITOR</div>
-          <div class="fileMeta">ACTIVE</div>
-        </div>
-
-        <div class="archiveRow" onclick="archiveOpen(4)">
-          <div class="fileId">#004</div>
-          <div class="fileTitle">STREAM_07</div>
-          <div class="fileMeta">RESTRICTED</div>
-        </div>
-
-        <div class="archiveRow" onclick="archiveOpen(5)">
-          <div class="fileId">#005</div>
-          <div class="fileTitle">USER_0000</div>
-          <div class="fileMeta">UNKNOWN</div>
-        </div>
-
-        <div class="archiveRow" onclick="archiveOpen(6)">
-          <div class="fileId">#006</div>
-          <div class="fileTitle">EXIT</div>
-          <div class="fileMeta">CORRUPTED</div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- STREAM -->
-    <section class="page" id="page-stream">
-
-      <h2 class="pageTitle">STREAM</h2>
-      <div class="pageDesc">
-        live relay // signal integrity: 71%
-      </div>
-
-      <div class="streamWrap">
-
-        <div class="screen" id="screen">
-
-          <div class="streamTop">
-            <span>STREAM_07</span>
-            <span><span class="liveDot"></span>LIVE</span>
-          </div>
-
-          <div class="screenNoise"></div>
-
-          <div class="screenCenter" id="screenCenter">
-            <div class="cameraCircle"></div>
-            <div id="streamText">
-              VIDEO SIGNAL LOST
-            </div>
-            <small>
-              AUDIO CHANNEL CONNECTED
-            </small>
-          </div>
-
-        </div>
-
-        <div class="chat">
-
-          <div class="chatHead">
-            STREAM CHAT — <span id="streamViewers">1,284</span> VIEWERS
-          </div>
-
-          <div class="chatBody" id="streamChat">
-
-            <div class="chatLine">
-              <span class="user">anon_482:</span>
-              <span class="msg">anyone else seeing this?</span>
-            </div>
-
-            <div class="chatLine">
-              <span class="user">anon_912:</span>
-              <span class="msg">yes</span>
-            </div>
-
-            <div class="chatLine">
-              <span class="user">anon_301:</span>
-              <span class="msg">don't type anything</span>
-            </div>
-
-          </div>
-
-          <div class="chatInput">
-            <input id="streamInput" placeholder="message..." maxlength="80">
-            <button onclick="sendStream()">SEND</button>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- CHAT -->
-    <section class="page" id="page-chat">
-
-      <h2 class="pageTitle">CHAT</h2>
-      <div class="pageDesc">
-        anonymous relay // messages may disappear
-      </div>
-
-      <div class="fullChat">
-
-        <div class="fullChatBody" id="fullChatBody">
-
-          <div class="fullMessage">
-            <div class="who">anon_482 // 00:31</div>
-            <div class="text">
-              anyone know who owns this directory?
-            </div>
-          </div>
-
-          <div class="fullMessage">
-            <div class="who">anon_912 // 00:32</div>
-            <div class="text">
-              nobody.
-            </div>
-          </div>
-
-          <div class="fullMessage">
-            <div class="who">anon_301 // 00:33</div>
-            <div class="text">
-              then why is it still updating?
-            </div>
-          </div>
-
-          <div class="fullMessage unknown">
-            <div class="who">UNKNOWN // 00:34</div>
-            <div class="text">
-              it wasn't updating before you arrived.
-            </div>
-          </div>
-
-        </div>
-
-        <div class="chatInput">
-          <input id="fullInput" placeholder="type a message..." maxlength="100">
-          <button onclick="sendFullChat()">SEND</button>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- SEARCH -->
-    <section class="page" id="page-search">
-
-      <h2 class="pageTitle">SEARCH</h2>
-      <div class="pageDesc">
-        local archive index // 12,491 entries
-      </div>
-
-      <div class="searchBox">
-        <input
-          id="searchInput"
-          placeholder="search archive..."
-          autocomplete="off"
-        >
-        <button onclick="doSearch()">SEARCH</button>
-      </div>
-
-      <div class="results" id="results">
-
-        <div class="result" onclick="openModal('SEARCH_DEFAULT')">
-          <div class="resultTitle">ARCHIVE INDEX</div>
-          <div class="resultMeta">Try searching: room / visitor / stream / exit</div>
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
+    <div class="meta">STATUS: 2 LEFT</div>
+    <button class="buy" onclick="fakeOrder(this)">PURCHASE</button>
+   </div>
+  </div>
+
+  <div class="item">
+   <div class="itemphoto packagephoto">
+    <span class="photo-label">PROP_IMAGE // 052</span>
+   </div>
+   <div class="itembody">
+    <div class="itemname">RED PACKAGE_052</div>
+    <div class="itemdesc">
+     SEALED CONTRABAND PROP.<br>
+     CONTENTS: UNKNOWN<br>
+     NO REAL-WORLD TRANSACTION.
+    </div>
+    <div class="meta">STATUS: 1 LEFT</div>
+    <button class="buy" onclick="fakeOrder(this)">PURCHASE</button>
+   </div>
+  </div>
+
+  <div class="item">
+   <div class="itemphoto evidencephoto">
+    <span class="photo-label">PROP_IMAGE // 099</span>
+   </div>
+   <div class="itembody">
+    <div class="itemname">████████_099</div>
+    <div class="itemdesc">
+     RECORD CORRUPTED.<br>
+     DO NOT OPEN.<br>
+     LAST ACCESS: 00:03 AGO.
+    </div>
+    <div class="meta">STATUS: DO NOT PURCHASE</div>
+    <button class="buy" onclick="fakeOrder(this)">OPEN</button>
+   </div>
+  </div>
+
+ </div>
+</section>
+
+<section class="page" id="archive">
+ <h1>ARCHIVE</h1>
+ <div class="sub">RECOVERED RECORDS / INDEX DAMAGED</div>
+
+ <div class="archive">
+  <small>RECORD_031 // 11 DAYS AGO</small>
+  <p>THE ROOM WAS EMPTY.</p>
+ </div>
+
+ <div class="archive">
+  <small>RECORD_032 // 08 DAYS AGO</small>
+  <p>THE ROOM WAS STILL EMPTY.</p>
+ </div>
+
+ <div class="archive">
+  <small>RECORD_033 // 02 DAYS AGO</small>
+  <p>SOMETHING WAS INSIDE.</p>
+ </div>
+
+ <div class="archive">
+  <small>RECORD_034 // 31 MINUTES AGO</small>
+  <p>THE CAMERA TURNED TOWARD THE DOOR.</p>
+ </div>
+
+ <div class="archive">
+  <small>RECORD_035 // NOW</small>
+  <p id="lastrecord">SOMEONE IS INSIDE NOW.</p>
+ </div>
+</section>
+
+<section class="page" id="search">
+ <h1>SEARCH</h1>
+ <div class="sub">INDEX QUERY</div>
+
+ <div class="search">
+  <input id="query" placeholder="search archive...">
+  <button onclick="search()">SEARCH</button>
+ </div>
+
+ <div class="result" id="result">
+  READY.
+ </div>
+</section>
+
+<section class="page" id="unknown">
+ <h1>UNKNOWN</h1>
+ <div class="sub">NODE: █████████</div>
+
+ <div class="panel">
+  <div class="panelbody" style="min-height:350px">
+   <div style="font-size:11px;line-height:2;color:#737d7a">
+    CONNECTION: ACTIVE<br>
+    NODE: UNKNOWN<br>
+    VIEWERS: 1<br>
+    STATUS: WATCHING
+   </div>
+
+   <br>
+
+   <div id="unknownText"
+        style="font-size:clamp(18px,4vw,30px);line-height:1.7;color:#cbd2d0">
+    WHO ARE YOU?
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="page" id="exit">
+ <h1>EXIT</h1>
+ <div class="sub">TERMINATE SESSION</div>
+
+ <div class="panel">
+  <div class="panelbody" style="text-align:center;padding:70px 15px">
+   <div id="exittext" style="font-size:11px;line-height:2.5;color:#858f8c">
+    CLOSE SESSION?
+   </div>
+   <br>
+   <button class="big" onclick="attemptExit()">CLOSE CONNECTION</button>
+  </div>
+ </div>
+</section>
+
+</main>
+
+<div class="right">
+ <div class="sidetitle">CONNECTION MONITOR</div>
+
+ <div class="track">
+  SESSION: <span id="rSession">--------</span><br>
+  REGION: <span>KOREA</span><br>
+  NODE: <span>07</span><br>
+  STATUS: <span>WATCHED</span><br>
+  SIGNAL: <span>ACTIVE</span>
+ </div>
+
+ <hr>
+
+ <div class="sidetitle">ACTIVITY</div>
+ <div class="track" id="activity">
+  NO RECENT EVENTS
+ </div>
 </div>
 
-<!-- MOBILE NAV -->
-
-<nav class="mobileNav">
-
-  <button data-page="home" class="active">
-    <span>⌂</span>
-    HOME
-  </button>
-
-  <button data-page="directory">
-    <span>▦</span>
-    DIR
-  </button>
-
-  <button data-page="archive">
-    <span>▤</span>
-    ARCHIVE
-  </button>
-
-  <button data-page="stream">
-    <span>◉</span>
-    LIVE
-  </button>
-
-  <button data-page="search">
-    <span>⌕</span>
-    SEARCH
-  </button>
-
-</nav>
-
-<!-- MODAL -->
-
-<div id="modal">
-  <div class="modalBox">
-
-    <div class="modalHead">
-      <span id="modalTitle">ARCHIVE</span>
-      <button class="close" onclick="closeModal()">[ CLOSE ]</button>
-    </div>
-
-    <div class="modalBody" id="modalBody"></div>
-
-  </div>
+</div>
 </div>
 
 <div id="toast"></div>
 
 <script>
+const $=id=>document.getElementById(id);
 
-/* =========================================
-   STATE
-========================================= */
+let session=Math.random().toString(36).slice(2,10).toUpperCase();
+$("session").textContent=session;
+$("rSession").textContent=session;
 
-const state = {
-  page:"home",
-  visitors:1284,
-  nodes:3,
-  session:"7A91-03F2",
-  entered:false,
-  streamEvents:0,
-  searched:false,
-  visitorTouched:false
-};
+let audioCtx=null;
 
-/* =========================================
-   BOOT
-========================================= */
+function sound(freq=180,duration=.08,type="sine"){
+ try{
+  if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  const o=audioCtx.createOscillator();
+  const g=audioCtx.createGain();
+  o.type=type;o.frequency.value=freq;
+  g.gain.setValueAtTime(.035,audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);
+  o.connect(g);g.connect(audioCtx.destination);
+  o.start();o.stop(audioCtx.currentTime+duration);
+ }catch(e){}
+}
 
-const bootLog = document.getElementById("bootLog");
-const bootEnter = document.getElementById("bootEnter");
+function toast(t){
+ const x=document.createElement("div");
+ x.className="toast";
+ x.textContent=t;
+ $("toast").appendChild(x);
+ setTimeout(()=>x.remove(),3500);
+}
 
-const bootLines = [
-  "initializing relay...",
-  "checking local archive...",
-  "loading unindexed nodes...",
-  "node_07 connected.",
-  "anonymous session created.",
-  "warning: archive contains restricted entries.",
-  "warning: stream_07 is active.",
-  "..."
+function go(page){
+ sound(150,.06);
+ document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));
+ document.querySelectorAll(".nav").forEach(x=>x.classList.remove("active"));
+
+ $(page).classList.add("active");
+ document.querySelector(`[data-page="${page}"]`).classList.add("active");
+
+ if(page==="live")startLive();
+ if(page==="unknown")unknown();
+ if(page==="exit")toast("SESSION REMAINS ACTIVE");
+}
+
+document.querySelectorAll(".nav").forEach(btn=>{
+ btn.onclick=()=>go(btn.dataset.page);
+});
+
+/* BOOT */
+const lines=[
+"initializing relay...",
+"checking node integrity...",
+"loading encrypted directory...",
+"connecting to private relay...",
+"session watcher: active",
+"camera channel: available",
+"archive index: corrupted",
+"unknown node detected.",
+"connection established."
 ];
 
-let bootIndex = 0;
-
-function bootWrite(){
-
-  if(bootIndex >= bootLines.length){
-    bootEnter.classList.remove("hidden");
-    return;
-  }
-
-  const line = document.createElement("div");
-  line.textContent = "> " + bootLines[bootIndex];
-  bootLog.appendChild(line);
-
-  bootIndex++;
-
-  setTimeout(bootWrite, 180 + Math.random()*280);
-}
-
-bootWrite();
-
-/* =========================================
-   AUDIO
-   ========================================= */
-
-let audioCtx = null;
-let ambientStarted = false;
-
-function startAudio(){
-
-  if(ambientStarted) return;
-
-  ambientStarted = true;
-
-  try{
-    audioCtx = new (
-      window.AudioContext ||
-      window.webkitAudioContext
-    )();
-
-    const master = audioCtx.createGain();
-    master.gain.value = 0.035;
-    master.connect(audioCtx.destination);
-
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-
-    osc.type = "sine";
-    osc.frequency.value = 47;
-
-    gain.gain.value = 0.12;
-
-    osc.connect(gain);
-    gain.connect(master);
-
-    osc.start();
-
-    /* tiny electronic pulse */
-
-    setInterval(()=>{
-
-      if(!audioCtx) return;
-
-      const o = audioCtx.createOscillator();
-      const g = audioCtx.createGain();
-
-      o.type = "triangle";
-      o.frequency.value = 75 + Math.random()*20;
-
-      g.gain.setValueAtTime(0.0001,audioCtx.currentTime);
-      g.gain.exponentialRampToValueAtTime(
-        0.025,
-        audioCtx.currentTime + .02
-      );
-
-      g.gain.exponentialRampToValueAtTime(
-        0.0001,
-        audioCtx.currentTime + .35
-      );
-
-      o.connect(g);
-      g.connect(master);
-
-      o.start();
-      o.stop(audioCtx.currentTime+.4);
-
-    },5200);
-
-  }catch(e){}
-}
-
-/* click sound */
-
-function clickSound(){
-
-  if(!audioCtx) return;
-
-  const o = audioCtx.createOscillator();
-  const g = audioCtx.createGain();
-
-  o.type="square";
-  o.frequency.value=720;
-
-  g.gain.setValueAtTime(.0001,audioCtx.currentTime);
-  g.gain.exponentialRampToValueAtTime(
-    .025,
-    audioCtx.currentTime+.01
-  );
-  g.gain.exponentialRampToValueAtTime(
-    .0001,
-    audioCtx.currentTime+.07
-  );
-
-  o.connect(g);
-  g.connect(audioCtx.destination);
-
-  o.start();
-  o.stop(audioCtx.currentTime+.08);
-}
-
-bootEnter.addEventListener("click",()=>{
-
-  startAudio();
-
-  document.getElementById("boot").classList.add("hidden");
-  document.getElementById("app").classList.remove("hidden");
-
-  state.entered=true;
-
-  toast("SESSION ESTABLISHED");
-
-});
-
-/* =========================================
-   NAVIGATION
-========================================= */
-
-function navigate(page){
-
-  clickSound();
-
-  state.page=page;
-
-  document.querySelectorAll(".page").forEach(p=>{
-    p.classList.remove("active");
-  });
-
-  const target=document.getElementById("page-"+page);
-
-  if(target) target.classList.add("active");
-
-  document.querySelectorAll(".navBtn").forEach(btn=>{
-    btn.classList.toggle(
-      "active",
-      btn.dataset.page===page
-    );
-  });
-
-  document.querySelectorAll(".mobileNav button").forEach(btn=>{
-    btn.classList.toggle(
-      "active",
-      btn.dataset.page===page
-    );
-  });
-
-  if(page==="stream"){
-    streamEntered();
-  }
-
-}
-
-/* desktop nav */
-
-document.querySelectorAll(".navBtn").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    navigate(btn.dataset.page);
-  });
-});
-
-/* mobile nav */
-
-document.querySelectorAll(".mobileNav button").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    navigate(btn.dataset.page);
-  });
-});
-
-/* =========================================
-   MODAL
-========================================= */
-
-function openModal(type){
-
-  clickSound();
-
-  const modal=document.getElementById("modal");
-  const title=document.getElementById("modalTitle");
-  const body=document.getElementById("modalBody");
-
-  modal.classList.add("show");
-
-  if(type==="MARKET"){
-
-    title.textContent="MARKET";
-
-    body.innerHTML=`
-      <pre>
-CONNECTION REFUSED
-
-This service is no longer available.
-
-Last successful connection:
-2019-11-03 04:21:19
-
-Owner:
-UNKNOWN
-
-Reason for shutdown:
-[ REDACTED ]
-
-...
-
-Wait.
-
-This page should not be reachable.
-      </pre>
-    `;
-
-  }else if(type==="SEARCH_DEFAULT"){
-
-    title.textContent="SEARCH";
-
-    body.innerHTML=`
-      <pre>
-SEARCH INDEX
-
-Try:
-
-room
-visitor
-stream
-exit
-
-Some results may not belong to this archive.
-      </pre>
-    `;
-
-  }else{
-
-    title.textContent="UNKNOWN ENTRY";
-
-    body.innerHTML=`
-      <pre>
-ENTRY HAS NO OWNER.
-
-NODE:
-07
-
-STATUS:
-ACTIVE
-
-CREATED:
-UNKNOWN
-
-LAST MODIFIED:
-JUST NOW
-
-...
-
-The archive is currently being accessed.
-
-ACCESSOR:
-1
-
-      </pre>
-    `;
-
-    setTimeout(()=>{
-      toast("UNKNOWN NODE IS WATCHING");
-    },1400);
-  }
-
-}
-
-function closeModal(){
-  document.getElementById("modal").classList.remove("show");
-}
-
-document.getElementById("modal").addEventListener("click",e=>{
-  if(e.target.id==="modal") closeModal();
-});
-
-/* =========================================
-   ARCHIVE
-========================================= */
-
-function archiveOpen(id){
-
-  clickSound();
-
-  const contents={
-
-    1:{
-      title:"ARCHIVE #001 // THE ROOM",
-      text:`
-FILE STATUS: UNRESOLVED
-
-A room was repeatedly reported
-to appear in different locations.
-
-No address was attached to the file.
-
-Last note:
-
-"the room is empty."
-
-Later correction:
-
-"the room was empty when we checked."
-
-Final entry:
-
-"someone is inside now."
-      `
-    },
-
-    2:{
-      title:"ARCHIVE #002 // 03:14",
-      text:`
-FILE STATUS: DELETED
-
-03:14:01
-connection established
-
-03:14:02
-visitor detected
-
-03:14:03
-visitor count: 1
-
-03:14:04
-visitor count: 2
-
-03:14:05
-visitor count: 1
-
-03:14:06
-connection terminated
-
-No second visitor was registered.
-      `
-    },
-
-    3:{
-      title:"ARCHIVE #003 // LAST VISITOR",
-      text:`
-VISITOR LOG
-
-#01 — 11 days ago
-#02 — 8 days ago
-#03 — 2 days ago
-#04 — 31 minutes ago
-#05 — NOW
-
-The fifth visitor has not disconnected.
-
-Current status:
-
-ONLINE
-      `
-    },
-
-    4:{
-      title:"ARCHIVE #004 // STREAM_07",
-      text:`
-RESTRICTED
-
-The video signal is unavailable.
-
-Audio remains active.
-
-Last recorded message:
-
-"anyone else seeing this?"
-
-Second message:
-
-"don't type anything."
-
-Third message:
-
-"too late."
-      `
-    },
-
-    5:{
-      title:"ARCHIVE #005 // USER_0000",
-      text:`
-USER PROFILE
-
-NAME:
--
-
-STATUS:
-ONLINE
-
-FIRST SEEN:
-BEFORE ARCHIVE CREATION
-
-LAST SEEN:
-NOW
-
-The account predates
-the directory itself.
-      `
-    },
-
-    6:{
-      title:"ARCHIVE #006 // EXIT",
-      text:`
-EXIT PROCEDURE
-
-1. Close the archive.
-2. Disconnect the session.
-3. Do not reconnect.
-
-STATUS:
-
-STEP 1 ........ COMPLETE
-STEP 2 ........ COMPLETE
-STEP 3 ........ FAILED
-
-SESSION REMAINS ACTIVE.
-      `
-    }
-
-  };
-
-  const item=contents[id];
-
-  document.getElementById("modalTitle").textContent=item.title;
-
-  document.getElementById("modalBody").innerHTML=
-    "<pre>"+item.text+"</pre>";
-
-  document.getElementById("modal").classList.add("show");
-
-}
-
-/* =========================================
-   UNKNOWN
-========================================= */
-
-function openUnknown(){
-
-  clickSound();
-
-  openModal("UNKNOWN");
-
-  setTimeout(()=>{
-
-    document.getElementById("modalBody").innerHTML=`
-      <pre>
-ENTRY:
-UNKNOWN
-
-OWNER:
-UNKNOWN
-
-ACCESS:
-GRANTED
-
-...
-
-WHY?
-
-You weren't supposed to find this.
-
-SESSION:
-${state.session}
-
-CURRENT VIEWER:
-1
-
-CURRENT VIEWER:
-1
-
-CURRENT VIEWER:
-2
-      </pre>
-    `;
-
-    document.getElementById("screen")?.classList.add("redFlash");
-
-  },1800);
-}
-
-/* =========================================
-   SEARCH
-========================================= */
-
-const searchData={
-
-  room:{
-    title:"THE ROOM",
-    meta:"ARCHIVE #001 // UNRESOLVED",
-    body:`
-THE ROOM
-
-No location.
-No owner.
-
-The archive contains 17 references
-to this room.
-
-Every reference was created
-by a different user.
-
-All descriptions are identical.
-    `
-  },
-
-  visitor:{
-    title:"LAST VISITOR",
-    meta:"ARCHIVE #003 // ACTIVE",
-    body:`
-LAST VISITOR
-
-The current visitor has been online
-for longer than the session allows.
-
-Connection:
-ACTIVE
-
-Disconnect:
-FAILED
-    `
-  },
-
-  stream:{
-    title:"STREAM_07",
-    meta:"RESTRICTED // LIVE",
-    body:`
-STREAM_07
-
-Signal:
-LOST
-
-Audio:
-CONNECTED
-
-Viewer count:
-1,285
-
-The number changed while you
-were reading this.
-    `
-  },
-
-  exit:{
-    title:"EXIT",
-    meta:"CORRUPTED",
-    body:`
-EXIT PROCEDURE
-
-The archive cannot determine
-whether the session ended.
-
-Try again later.
-
-Do not refresh.
-    `
-  }
-
+let li=0;
+
+const bootTimer=setInterval(()=>{
+ if(li<lines.length){
+  $("log").innerHTML+=lines[li]+"<br>";
+  $("bar").style.width=((li+1)/lines.length*100)+"%";
+  li++;
+ }else{
+  clearInterval(bootTimer);
+  $("enter").style.display="inline-block";
+ }
+},420);
+
+$("enter").onclick=()=>{
+ $("boot").style.display="none";
+ $("app").style.display="block";
+ sound(80,.3,"sawtooth");
+ toast("SESSION "+session+" CONNECTED");
 };
 
-function doSearch(){
+/* LIVE CHAT */
+const phrases=[
+"WHO IS THIS",
+"new visitor",
+"HE FOUND IT",
+"don't answer",
+"where are you from",
+"korea?",
+"someone tell him to leave",
+"WE CAN SEE YOU",
+"why is he still here",
+"NEW SESSION",
+"check the archive",
+"STREAM 07",
+"don't open 03:14",
+"too late",
+"who sent the link",
+"he is still connected",
+"IS THAT HIM",
+"wait",
+"look at the viewer count",
+"there are two sessions",
+"NO THERE ARE THREE",
+"don't type anything",
+"leave the window open",
+"who invited him",
+"NEW USER DETECTED",
+"can you see the camera",
+"he can see us",
+"this wasn't here yesterday",
+"someone is typing",
+"STOP",
+"UNKNOWN:",
+"hello."
+];
 
-  clickSound();
+let liveStarted=false;
+let liveSeconds=0;
+let chatCount=0;
 
-  const q=document.getElementById("searchInput")
-    .value
-    .trim()
-    .toLowerCase();
+function startLive(){
+ if(liveStarted)return;
+ liveStarted=true;
 
-  const results=document.getElementById("results");
+ const start=Date.now();
 
-  if(!q){
+ const timer=setInterval(()=>{
+  liveSeconds=Math.floor((Date.now()-start)/1000);
 
-    results.innerHTML=`
-      <div class="result">
-        <div class="resultTitle">NO QUERY</div>
-        <div class="resultMeta">Enter a search term.</div>
-      </div>
-    `;
+  $("timer").textContent=
+   "00:"+String(Math.min(liveSeconds,59)).padStart(2,"0");
 
-    return;
+  let v=1284+
+   Math.floor(liveSeconds*(
+    8+Math.random()*20
+   ));
+
+  if(liveSeconds>20)v+=Math.floor(Math.random()*400);
+
+  $("viewers").textContent=v.toLocaleString();
+  $("homeview").textContent=v.toLocaleString();
+
+  if(liveSeconds===4){
+   $("camtext").textContent="SIGNAL IS WATCHING";
+   toast("UNKNOWN NODE CONNECTED");
   }
 
-  state.searched=true;
-
-  if(q==="me" || q==="i" || q==="myself"){
-
-    results.innerHTML=`
-      <div class="result" onclick="openMe()">
-        <div class="resultTitle">USER_████</div>
-        <div class="resultMeta">
-          STATUS: ONLINE // SOURCE: THIS PAGE
-        </div>
-      </div>
-    `;
-
-    return;
+  if(liveSeconds===12){
+   $("camtext").textContent="WHO ARE YOU?";
+   document.body.classList.add("glitch");
+   setTimeout(()=>document.body.classList.remove("glitch"),150);
   }
 
-  const key=Object.keys(searchData)
-    .find(k=>q.includes(k));
-
-  if(key){
-
-    const item=searchData[key];
-
-    results.innerHTML=`
-      <div class="result" onclick="openSearchResult('${key}')">
-        <div class="resultTitle">${item.title}</div>
-        <div class="resultMeta">${item.meta}</div>
-      </div>
-    `;
-
-  }else{
-
-    results.innerHTML=`
-      <div class="result">
-        <div class="resultTitle">0 RESULTS</div>
-        <div class="resultMeta">
-          No indexed records found.
-        </div>
-      </div>
-    `;
-
-    setTimeout(()=>{
-
-      results.insertAdjacentHTML(
-        "beforeend",
-        `
-        <div class="result" onclick="openUnknown()">
-          <div class="resultTitle">1 RESULT</div>
-          <div class="resultMeta">
-            This result was added after the search.
-          </div>
-        </div>
-        `
-      );
-
-    },1800);
-
+  if(liveSeconds===22){
+   $("camtext").textContent="YOUR SESSION HAS BEEN LOGGED";
+   toast("SESSION WATCHER ACTIVE");
   }
 
+  if(liveSeconds>=30){
+   clearInterval(timer);
+   $("camtext").textContent="WE KNOW YOU ARE HERE";
+   addMsg("UNKNOWN","you have been here for 00:30",true);
+  }
+
+ },1000);
+
+ const chatTimer=setInterval(()=>{
+  if(liveSeconds>=30){
+   clearInterval(chatTimer);
+   return;
+  }
+
+  const name=
+   Math.random()<.08 ? "UNKNOWN" :
+   "anon_"+Math.random().toString(36).slice(2,7);
+
+  let text=phrases[Math.floor(Math.random()*phrases.length)];
+
+  if(Math.random()<.18)
+   text=text+".";
+
+  addMsg(name,text,name==="UNKNOWN");
+
+ },Math.random()*400+180);
 }
 
-function openSearchResult(key){
+function addMsg(name,text,unknown=false){
+ const div=document.createElement("div");
+ div.className="msg"+(unknown?" unk":"");
+ div.innerHTML="<strong>"+name+":</strong> "+text;
 
-  const item=searchData[key];
+ $("chat").appendChild(div);
+ chatCount++;
+ $("chatcount").textContent=chatCount;
 
-  document.getElementById("modalTitle")
-    .textContent=item.title;
+ while($("chat").children.length>55)
+   $("chat").firstChild.remove();
 
-  document.getElementById("modalBody")
-    .innerHTML="<pre>"+item.body+"</pre>";
-
-  document.getElementById("modal")
-    .classList.add("show");
-
+ sound(70+Math.random()*80,.025);
 }
 
-function openMe(){
+/* MARKET */
+function fakeOrder(btn){
+ sound(90,.12,"square");
+ btn.disabled=true;
 
-  document.getElementById("modalTitle")
-    .textContent="USER PROFILE";
+ const old=btn.textContent;
+ btn.textContent="PROCESSING...";
 
-  document.getElementById("modalBody")
-    .innerHTML=`
-      <pre>
-USER_████
+ setTimeout(()=>{
+  btn.textContent="ORDER FAILED";
 
-STATUS:
-ONLINE
-
-LAST SEEN:
-NOW
-
-CONNECTED FROM:
-THIS PAGE
-
-SESSION:
-${state.session}
-
-...
-
-You searched for yourself.
-
-That was the first thing
-the archive learned about you.
-      </pre>
-    `;
-
-  document.getElementById("modal")
-    .classList.add("show");
+  toast("ORDER REJECTED // UNKNOWN USER");
 
   setTimeout(()=>{
-    toast("PROFILE UPDATED");
-  },1500);
-}
-
-/* =========================================
-   STREAM
-========================================= */
-
-function streamEntered(){
-
-  if(state.streamEvents>0) return;
-
-  state.streamEvents=1;
-
-  setTimeout(()=>{
-
-    const chat=document.getElementById("streamChat");
-
-    chat.insertAdjacentHTML(
-      "beforeend",
-      `
-      <div class="chatLine">
-        <span class="user">anon_482:</span>
-        <span class="msg">why did the viewer count change?</span>
-      </div>
-      `
-    );
-
+   btn.textContent=old;
+   btn.disabled=false;
   },2500);
-
-  setTimeout(()=>{
-
-    const chat=document.getElementById("streamChat");
-
-    chat.insertAdjacentHTML(
-      "beforeend",
-      `
-      <div class="chatLine">
-        <span class="user">anon_301:</span>
-        <span class="msg">don't type anything</span>
-      </div>
-      `
-    );
-
-  },5200);
-
-  setTimeout(()=>{
-
-    const chat=document.getElementById("streamChat");
-
-    chat.insertAdjacentHTML(
-      "beforeend",
-      `
-      <div class="chatLine system">
-        SYSTEM:
-        <span class="msg">viewer detected.</span>
-      </div>
-      `
-    );
-
-    document.getElementById("streamViewers")
-      .textContent="1,285";
-
-  },8200);
-
-  setTimeout(()=>{
-
-    document.getElementById("streamText")
-      .textContent="CAMERA IS WORKING";
-
-    document.getElementById("screen")
-      .classList.add("redFlash");
-
-  },11500);
-
+ },1200);
 }
 
-/* =========================================
-   CHAT
-========================================= */
+/* SEARCH */
+function search(){
+ const q=$("query").value.trim().toLowerCase();
+ sound(180,.07);
 
-function sendStream(){
+ if(!q){
+  $("result").textContent="NO QUERY.";
+  return;
+ }
 
-  const input=document.getElementById("streamInput");
+ if(q==="me"||q==="myself"||q==="you"){
+  $("result").innerHTML=
+   "1 RESULT FOUND<br><br>"+
+   "USER_████████<br>"+
+   "STATUS: <b>ONLINE</b><br>"+
+   "SOURCE: CURRENT SESSION<br>"+
+   "NODE: 07<br>"+
+   "LAST SEEN: NOW";
 
-  const text=input.value.trim();
-
-  if(!text) return;
-
-  const chat=document.getElementById("streamChat");
-
-  chat.insertAdjacentHTML(
-    "beforeend",
-    `
-    <div class="chatLine">
-      <span class="user">you:</span>
-      <span class="msg">${escapeHTML(text)}</span>
-    </div>
-    `
-  );
-
-  input.value="";
-
-  setTimeout(()=>{
-
-    chat.insertAdjacentHTML(
-      "beforeend",
-      `
-      <div class="chatLine system">
-        SYSTEM:
-        <span class="msg">message received.</span>
-      </div>
-      `
-    );
-
-  },1000);
-
-  setTimeout(()=>{
-
-    chat.insertAdjacentHTML(
-      "beforeend",
-      `
-      <div class="chatLine">
-        <span class="user">UNKNOWN:</span>
-        <span class="msg">we saw that.</span>
-      </div>
-      `
-    );
-
-  },3000);
-
+  toast("SEARCH RESULT ADDED AFTER QUERY");
+ }else if(q==="exit"){
+  $("result").innerHTML=
+   "0 RESULTS<br><br>"+
+   "...<br><br>"+
+   "WAIT.<br><br>"+
+   "1 RESULT ADDED.";
+ }else{
+  $("result").innerHTML=
+   "SEARCH COMPLETE<br>"+
+   "RESULTS: 0<br><br>"+
+   "INDEX STATUS: CORRUPTED";
+ }
 }
 
-function sendFullChat(){
+/* UNKNOWN */
+function unknown(){
+ const arr=[
+  "WHO ARE YOU?",
+  "WHY DID YOU COME HERE?",
+  "WE SAW YOUR SESSION.",
+  "YOU OPENED THE CAMERA.",
+  "YOU SEARCHED THE ARCHIVE.",
+  "YOU ARE STILL HERE.",
+  "DON'T CLOSE THE WINDOW."
+ ];
 
-  const input=document.getElementById("fullInput");
+ let i=0;
 
-  const text=input.value.trim();
+ const t=setInterval(()=>{
+  $("unknownText").textContent=arr[i++];
+  sound(55,.1);
 
-  if(!text) return;
+  if(i>=arr.length)clearInterval(t);
+ },1400);
+}
 
-  const body=document.getElementById("fullChatBody");
+/* EXIT */
+function attemptExit(){
+ sound(45,.2,"sawtooth");
 
-  body.insertAdjacentHTML(
-    "beforeend",
-    `
-    <div class="fullMessage">
-      <div class="who">YOU // NOW</div>
-      <div class="text">${escapeHTML(text)}</div>
-    </div>
-    `
-  );
+ $("exittext").innerHTML=
+  "CLOSING SESSION...<br>"+
+  "████████████████ 100%";
 
-  input.value="";
-
-  body.scrollTop=body.scrollHeight;
+ setTimeout(()=>{
+  $("exittext").innerHTML=
+   "SESSION CLOSED.<br><br>...";
 
   setTimeout(()=>{
+   $("exittext").innerHTML=
+    "CONNECTION RESTORED.<br><br>"+
+    "WELCOME BACK.<br><br>"+
+    "LAST VISITOR: YOU";
+   toast("CONNECTION RESTORED");
+  },2200);
 
-    body.insertAdjacentHTML(
-      "beforeend",
-      `
-      <div class="fullMessage unknown">
-        <div class="who">UNKNOWN // NOW</div>
-        <div class="text">
-          you shouldn't have sent that.
-        </div>
-      </div>
-      `
-    );
-
-    body.scrollTop=body.scrollHeight;
-
-  },2800);
-
+ },1600);
 }
 
-/* =========================================
-   TIME / LIVE STATE
-========================================= */
-
-function updateClock(){
-
-  const now=new Date();
-
-  const h=String(now.getHours()).padStart(2,"0");
-  const m=String(now.getMinutes()).padStart(2,"0");
-  const s=String(now.getSeconds()).padStart(2,"0");
-
-  document.getElementById("lastUpdate")
-    .textContent=`${h}:${m}:${s}`;
-
-}
-
-setInterval(updateClock,1000);
-updateClock();
-
-/* visitors */
-
+/* random system events */
 setInterval(()=>{
+ const events=[
+  "ARCHIVE INDEX UPDATED",
+  "UNKNOWN NODE CONNECTED",
+  "SESSION WATCHER ACTIVE",
+  "RECORD RESTORED",
+  "VIEWER COUNT DESYNC",
+  "STREAM PACKET RECEIVED"
+ ];
 
-  if(!state.entered) return;
-
-  const change=Math.random()<.7 ? 1 : -1;
-
-  state.visitors += change;
-
-  if(state.visitors<1270)
-    state.visitors=1270;
-
-  document.getElementById("visitors")
-    .textContent=state.visitors.toLocaleString();
-
-  document.getElementById("sideVisitors")
-    .textContent=state.visitors.toLocaleString();
-
-  if(Math.random()<.12){
-
-    state.nodes++;
-
-    if(state.nodes>5)
-      state.nodes=3;
-
-    document.getElementById("nodes")
-      .textContent=String(state.nodes).padStart(2,"0");
-
-  }
-
-},4300);
-
-/* =========================================
-   OCCASIONAL EVENTS
-========================================= */
-
-setInterval(()=>{
-
-  if(!state.entered) return;
-
-  const events=[
-
-    "UNKNOWN NODE CONNECTED",
-    "ARCHIVE INDEX UPDATED",
-    "STREAM_07 REQUESTED ACCESS",
-    "VISITOR COUNT DESYNC",
-    "DELETED RECORD RESTORED",
-    "SESSION WATCHER ACTIVE"
-
-  ];
-
-  if(Math.random()<.35){
-
-    toast(
-      events[Math.floor(Math.random()*events.length)]
-    );
-
-  }
-
-},11000);
-
-/* =========================================
-   KEYBOARD
-========================================= */
-
-document.addEventListener("keydown",e=>{
-
-  if(e.key==="Escape"){
-    closeModal();
-  }
-
-  if(e.key==="/" &&
-     document.activeElement.tagName!=="INPUT"){
-    e.preventDefault();
-    navigate("search");
-    document.getElementById("searchInput").focus();
-  }
-
-});
-
-/* =========================================
-   TOAST
-========================================= */
-
-let toastTimer;
-
-function toast(text){
-
-  const el=document.getElementById("toast");
-
-  el.textContent=text;
-
-  el.classList.add("show");
-
-  clearTimeout(toastTimer);
-
-  toastTimer=setTimeout(()=>{
-    el.classList.remove("show");
-  },2600);
-
-}
-
-/* =========================================
-   SAFETY / HTML
-========================================= */
-
-function escapeHTML(str){
-
-  return str
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
-
-}
-
-/* =========================================
-   RANDOM SESSION
-========================================= */
-
-function makeSession(){
-
-  const chars="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-
-  let out="";
-
-  for(let i=0;i<4;i++)
-    out+=chars[Math.floor(Math.random()*chars.length)];
-
-  out+="-";
-
-  for(let i=0;i<4;i++)
-    out+=chars[Math.floor(Math.random()*chars.length)];
-
-  return out;
-
-}
-
-state.session=makeSession();
-
-document.getElementById("sessionId")
-  .textContent=state.session;
-
-document.getElementById("sideSession")
-  .textContent=state.session.slice(0,4);
-
-/* =========================================
-   DELAYED FIRST MESSAGE
-========================================= */
-
-setTimeout(()=>{
-
-  if(!state.entered) return;
-
-  toast("NEW MESSAGE: UNKNOWN");
-
-},18000);
-
+ const e=events[Math.floor(Math.random()*events.length)];
+ $("activity").innerHTML=
+  e+"<br>TIME: "+new Date().toLocaleTimeString();
+},6500);
 </script>
 
 </body>
