@@ -2,1233 +2,2331 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NODE_0 // ARCHIVE</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>NODE_0 // NIGHTMARE</title>
 
 <style>
-*{box-sizing:border-box}
-html,body{margin:0;background:#020202;color:#aaa;font-family:Consolas,"Courier New",monospace}
-body{min-height:100vh;overflow-x:hidden}
-
-body:before{
-content:"";position:fixed;inset:0;pointer-events:none;z-index:99;
-background:repeating-linear-gradient(
-0deg,rgba(255,255,255,.025) 0px,
-rgba(255,255,255,.025) 1px,
-transparent 1px,transparent 4px);
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
 }
 
-body:after{
-content:"";position:fixed;inset:0;pointer-events:none;z-index:98;
-background:radial-gradient(circle,transparent 40%,rgba(0,0,0,.8));
+html,body{
+  margin:0;
+  width:100%;
+  min-height:100%;
+  background:#020202;
+  color:#aaa;
+  font-family:Consolas,"Courier New",monospace;
 }
 
-button{
-font-family:inherit;
-background:#080908;
-color:#777;
-border:1px solid #272927;
-padding:9px 13px;
-cursor:pointer;
+body{
+  overflow-x:hidden;
 }
 
-button:hover{
-background:#151715;
-color:#ccc;
+/* =========================
+   CRT / VHS
+========================= */
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:999;
+  pointer-events:none;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,.025) 0,
+      rgba(255,255,255,.025) 1px,
+      transparent 1px,
+      transparent 4px
+    );
 }
+
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:998;
+  pointer-events:none;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 35%,
+      rgba(0,0,0,.78) 100%
+    );
+}
+
+/* =========================
+   BOOT
+========================= */
 
 #boot{
-position:fixed;inset:0;background:#000;z-index:1000;
-display:flex;align-items:center;justify-content:center;
+  position:fixed;
+  inset:0;
+  z-index:2000;
+  background:#000;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:25px;
 }
 
-.boot{
-width:min(720px,90vw);
-font-size:13px;
-line-height:2;
+.boot-inner{
+  width:min(700px,100%);
+  font-size:13px;
+  line-height:2;
 }
 
-.boot p{opacity:0}
-.boot p.on{opacity:1}
+.boot-line{
+  opacity:0;
+  transition:opacity .2s;
+}
+
+.boot-line.show{
+  opacity:1;
+}
+
 #enter{
-display:none;
-color:#aaa;
-cursor:pointer;
-animation:blink 1s infinite;
+  display:none;
+  margin-top:20px;
+  color:#aaa;
+  cursor:pointer;
+  animation:blink 1s infinite;
 }
 
-@keyframes blink{50%{opacity:.1}}
-
-#app{display:none;min-height:100vh}
-
-.shell{
-max-width:1250px;
-margin:auto;
-display:grid;
-grid-template-columns:200px 1fr;
-min-height:100vh;
+@keyframes blink{
+  50%{opacity:.1}
 }
 
-aside{
-border-right:1px solid #222;
-padding:25px 14px;
+/* =========================
+   APP
+========================= */
+
+#app{
+  display:none;
+  min-height:100vh;
+}
+
+.layout{
+  width:100%;
+  max-width:1500px;
+  min-height:100vh;
+  margin:auto;
+
+  display:grid;
+  grid-template-columns:210px minmax(0,1fr);
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+  position:relative;
+  border-right:1px solid #202220;
+  padding:25px 15px;
 }
 
 .logo{
-font-size:20px;
-letter-spacing:5px;
-color:#ccc;
-margin-bottom:5px;
+  color:#ddd;
+  font-size:21px;
+  letter-spacing:5px;
 }
 
-.small{
-font-size:9px;
-color:#444;
+.sublogo{
+  margin-top:4px;
+  color:#444;
+  font-size:9px;
 }
 
-nav{
-margin-top:40px;
-display:flex;
-flex-direction:column;
-gap:3px;
+.nav{
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+  margin-top:40px;
 }
 
-nav button{
-text-align:left;
-border:0;
-background:transparent;
+.nav button{
+  width:100%;
+  padding:12px 10px;
+
+  border:0;
+  background:transparent;
+
+  color:#555;
+  font-family:inherit;
+  font-size:10px;
+
+  text-align:left;
+  cursor:pointer;
 }
 
-nav button.active{
-background:#101210;
-color:#ddd;
+.nav button:hover,
+.nav button.active{
+  background:#101210;
+  color:#ccc;
 }
 
 .session{
-position:fixed;
-bottom:20px;
-font-size:9px;
-line-height:1.8;
-color:#444;
+  position:absolute;
+  bottom:20px;
+  left:15px;
+
+  color:#414441;
+  font-size:8px;
+  line-height:1.8;
 }
 
-main{padding:25px;max-width:1000px}
+/* =========================
+   MAIN
+========================= */
 
-.top{
-display:flex;
-justify-content:space-between;
-border-bottom:1px solid #222;
-padding-bottom:12px;
-font-size:10px;
-color:#555;
+main{
+  min-width:0;
+  padding:25px;
 }
 
-.page{display:none;padding-top:25px}
-.page.active{display:block}
+.topbar{
+  display:flex;
+  justify-content:space-between;
+
+  padding-bottom:12px;
+  border-bottom:1px solid #202220;
+
+  color:#555;
+  font-size:9px;
+}
+
+.page{
+  display:none;
+  padding-top:25px;
+}
+
+.page.active{
+  display:block;
+}
 
 h1{
-font-weight:normal;
-font-size:21px;
-color:#ccc;
-margin:0 0 7px;
+  margin:0 0 7px;
+  color:#ccc;
+  font-size:22px;
+  font-weight:normal;
 }
 
 .desc{
-font-size:10px;
-color:#494d48;
-margin-bottom:25px;
+  margin-bottom:25px;
+  color:#4c504c;
+  font-size:10px;
 }
+
+/* =========================
+   PANELS
+========================= */
 
 .panel{
-border:1px solid #242724;
-background:#050605;
-margin-bottom:15px;
+  margin-bottom:15px;
+  border:1px solid #242724;
+  background:#050605;
 }
 
-.head{
-padding:10px;
-border-bottom:1px solid #202320;
-font-size:10px;
-color:#666;
+.panel-head{
+  padding:11px;
+  border-bottom:1px solid #202320;
+
+  color:#666;
+  font-size:10px;
 }
 
-.body{padding:15px}
+.panel-body{
+  padding:16px;
+  font-size:11px;
+  line-height:1.9;
+}
+
+/* =========================
+   CAMERAS
+========================= */
 
 .camera-grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:12px;
+  display:grid;
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap:12px;
 }
 
-.cam{
-border:1px solid #292c29;
-background:#000;
-position:relative;
-cursor:pointer;
-overflow:hidden;
+.camera{
+  position:relative;
+  min-width:0;
+
+  border:1px solid #292c29;
+  background:#000;
+
+  cursor:pointer;
+  overflow:hidden;
 }
 
-.cam video{
-width:100%;
-display:block;
-aspect-ratio:16/10;
-object-fit:cover;
-filter:
-grayscale(.75)
-contrast(1.25)
-brightness(.62);
+.camera video{
+  display:block;
+
+  width:100%;
+  height:auto;
+
+  /*
+    핵심:
+    cover 사용 안 함.
+    원본 비율 유지.
+  */
+
+  object-fit:contain;
+
+  background:#000;
+
+  filter:
+    grayscale(.8)
+    contrast(1.25)
+    brightness(.62);
+
+  transition:
+    filter .3s,
+    transform .3s;
 }
 
-.cam:hover video{
-filter:grayscale(.45) contrast(1.35) brightness(.72);
+.camera:hover video{
+  filter:
+    grayscale(.45)
+    contrast(1.35)
+    brightness(.72);
 }
 
-.cam .label{
-position:absolute;
-top:8px;
-left:9px;
-z-index:4;
-font-size:9px;
-color:#bbb;
-text-shadow:0 1px 4px #000;
+.camera-label{
+  position:absolute;
+  top:9px;
+  left:10px;
+  z-index:5;
+
+  color:#ccc;
+  font-size:9px;
+
+  text-shadow:
+    0 1px 5px #000;
 }
 
-.cam .rec{
-position:absolute;
-top:8px;
-right:9px;
-z-index:4;
-font-size:9px;
-color:#784545;
+.camera-rec{
+  position:absolute;
+  top:9px;
+  right:10px;
+  z-index:5;
+
+  color:#824848;
+  font-size:9px;
 }
 
-.cam .stamp{
-position:absolute;
-bottom:8px;
-left:9px;
-z-index:4;
-font-size:9px;
-color:#aaa;
+.camera-time{
+  position:absolute;
+  bottom:9px;
+  left:10px;
+  z-index:5;
+
+  color:#aaa;
+  font-size:9px;
+
+  text-shadow:
+    0 1px 5px #000;
 }
 
 .scan{
-position:absolute;
-inset:0;
-z-index:3;
-pointer-events:none;
-background:
-repeating-linear-gradient(
-0deg,
-transparent 0px,
-transparent 5px,
-rgba(255,255,255,.025) 6px
-);
-mix-blend-mode:screen;
+  position:absolute;
+  inset:0;
+  z-index:4;
+  pointer-events:none;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 5px,
+      rgba(255,255,255,.025) 6px
+    );
 }
 
-.vhs{
-position:absolute;
-inset:0;
-z-index:5;
-pointer-events:none;
-opacity:.35;
-background:
-linear-gradient(
-90deg,
-transparent 0%,
-rgba(255,255,255,.07) 49%,
-transparent 51%
-);
-animation:vhs 5s infinite;
+.vhs-line{
+  position:absolute;
+  left:-100%;
+  top:0;
+
+  width:50%;
+  height:100%;
+
+  z-index:6;
+  pointer-events:none;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.08),
+      transparent
+    );
+
+  animation:vhs-scan 5s infinite;
 }
 
-@keyframes vhs{
-0%{transform:translateX(-100%)}
-30%{transform:translateX(100%)}
-100%{transform:translateX(100%)}
+@keyframes vhs-scan{
+  0%{
+    left:-100%;
+  }
+
+  35%{
+    left:120%;
+  }
+
+  100%{
+    left:120%;
+  }
 }
 
-.list{
-display:flex;
-flex-direction:column;
+/* =========================
+   FILE LIST
+========================= */
+
+.file{
+  padding:16px 10px;
+
+  border-bottom:1px solid #171917;
+
+  cursor:pointer;
 }
 
-.item{
-padding:15px 10px;
-border-bottom:1px solid #171917;
-cursor:pointer;
+.file:last-child{
+  border-bottom:0;
 }
 
-.item:hover{
-background:#0c0e0c;
+.file:hover{
+  background:#0b0d0b;
 }
 
-.item b{color:#aaa;font-weight:normal}
-.item span{float:right;color:#444;font-size:9px}
+.file-name{
+  color:#aaa;
+  font-size:11px;
+}
+
+.file-size{
+  float:right;
+  color:#444;
+  font-size:9px;
+}
+
+/* =========================
+   BOARD
+========================= */
 
 .post{
-padding:16px 0;
-border-bottom:1px solid #171917;
-line-height:1.7;
+  padding:15px 0;
+  border-bottom:1px solid #171917;
 }
 
-.post:last-child{border:0}
+.post:last-child{
+  border-bottom:0;
+}
 
-.user{font-size:10px;color:#666}
-.msg{margin-top:6px;color:#999}
+.post-user{
+  color:#555;
+  font-size:9px;
+}
 
-.viewer{
-display:none;
-position:fixed;
-z-index:300;
-inset:0;
-background:rgba(0,0,0,.96);
-padding:4vh 5vw;
+.post-text{
+  margin-top:5px;
+
+  color:#999;
+  font-size:11px;
+  line-height:1.7;
+}
+
+/* =========================
+   VIEWER
+========================= */
+
+#viewer{
+  position:fixed;
+  inset:0;
+  z-index:1200;
+
+  display:none;
+
+  padding:
+    max(18px,env(safe-area-inset-top))
+    max(15px,env(safe-area-inset-right))
+    max(18px,env(safe-area-inset-bottom))
+    max(15px,env(safe-area-inset-left));
+
+  background:rgba(0,0,0,.97);
 }
 
 .viewer-inner{
-max-width:1100px;
-margin:auto;
-height:92vh;
-display:flex;
-flex-direction:column;
+  width:100%;
+  max-width:1200px;
+  height:100%;
+  margin:auto;
+
+  display:flex;
+  flex-direction:column;
 }
 
-.viewer video{
-width:100%;
-max-height:70vh;
-background:#000;
-object-fit:contain;
-border:1px solid #333;
+.viewer-top{
+  flex:0 0 auto;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:10px;
+
+  padding-bottom:12px;
+
+  color:#aaa;
+  font-size:10px;
 }
 
-.viewer-title{
-display:flex;
-justify-content:space-between;
-padding:12px 0;
-color:#aaa;
-font-size:11px;
+.viewer-video-wrap{
+  width:100%;
+  min-height:0;
+  flex:1;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:#000;
+  border:1px solid #282a28;
 }
 
-.controls{
-display:flex;
-gap:6px;
-flex-wrap:wrap;
-margin-top:10px;
+#mainVideo{
+  display:block;
+
+  /*
+    영상 잘림 방지
+  */
+
+  width:100%;
+  height:100%;
+
+  object-fit:contain;
+
+  background:#000;
 }
 
-.controls button{
-font-size:10px;
+.viewer-controls{
+  flex:0 0 auto;
+
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+
+  padding-top:10px;
+}
+
+button{
+  min-height:40px;
+
+  padding:8px 12px;
+
+  border:1px solid #292c29;
+  background:#070807;
+
+  color:#777;
+  font-family:inherit;
+  font-size:9px;
+
+  cursor:pointer;
+}
+
+button:hover{
+  background:#121412;
+  color:#ccc;
 }
 
 #frameInfo{
-font-size:9px;
-color:#555;
-margin-top:9px;
+  flex:0 0 auto;
+
+  padding-top:8px;
+
+  color:#444;
+  font-size:9px;
 }
 
-.warning{
-color:#85504d;
-}
+/* =========================
+   POPUP
+========================= */
 
 #popup{
-display:none;
-position:fixed;
-z-index:500;
-left:50%;
-top:50%;
-transform:translate(-50%,-50%);
-width:min(600px,90vw);
-padding:28px;
-border:1px solid #5c3836;
-background:#030403;
-box-shadow:0 0 100px rgba(80,0,0,.25);
+  position:fixed;
+  z-index:1500;
+
+  left:50%;
+  top:50%;
+
+  width:min(
+    600px,
+    calc(100vw - 30px)
+  );
+
+  max-height:
+    calc(100vh - 30px);
+
+  overflow:auto;
+
+  transform:translate(-50%,-50%);
+
+  padding:25px;
+
+  border:1px solid #533331;
+
+  background:#030403;
+
+  box-shadow:
+    0 0 100px rgba(70,0,0,.25);
+
+  display:none;
 }
 
-#popupTitle{color:#9b5c57;margin-bottom:18px}
-#popupText{font-size:12px;line-height:1.9;white-space:pre-line}
+.popup-title{
+  margin-bottom:18px;
+
+  color:#9b5b56;
+  font-size:11px;
+}
+
+#popupText{
+  white-space:pre-line;
+
+  color:#999;
+  font-size:11px;
+  line-height:1.9;
+}
+
+/* =========================
+   FINAL
+========================= */
 
 #final{
-display:none;
-position:fixed;
-inset:0;
-z-index:900;
-background:#000;
-align-items:center;
-justify-content:center;
-text-align:center;
+  position:fixed;
+  inset:0;
+  z-index:1900;
+
+  display:none;
+
+  align-items:center;
+  justify-content:center;
+
+  padding:30px;
+
+  background:#000;
+
+  text-align:center;
 }
 
-.finalText{
-line-height:2.4;
-font-size:12px;
-color:#888;
+.final-text{
+  color:#777;
+  font-size:11px;
+  line-height:2.4;
 }
 
-.finalBig{
-font-size:22px;
-color:#ccc;
-letter-spacing:3px;
+.final-big{
+  color:#ccc;
+  font-size:22px;
+  letter-spacing:3px;
 }
+
+/* =========================
+   GLITCH
+========================= */
 
 .glitch{
-animation:glitch .08s steps(2) 4;
+  animation:
+    glitch .08s steps(2) 5;
 }
 
 @keyframes glitch{
-0%{transform:translate(0)}
-25%{transform:translate(-5px,2px)}
-50%{transform:translate(4px,-3px)}
-75%{transform:translate(-2px,4px)}
-100%{transform:translate(0)}
+
+  0%{
+    transform:translate(0);
+  }
+
+  25%{
+    transform:translate(-4px,2px);
+  }
+
+  50%{
+    transform:translate(4px,-2px);
+  }
+
+  75%{
+    transform:translate(-2px,3px);
+  }
+
+  100%{
+    transform:translate(0);
+  }
+
 }
 
-@media(max-width:700px){
-.shell{display:block}
-aside{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-height:58px;
-z-index:100;
-background:#050605;
-border-right:0;
-border-top:1px solid #222;
-padding:3px;
+/* =========================
+   TABLET
+========================= */
+
+@media(max-width:900px){
+
+  .layout{
+    grid-template-columns:170px minmax(0,1fr);
+  }
+
+  main{
+    padding:20px;
+  }
+
+  .camera-grid{
+    grid-template-columns:1fr;
+  }
+
 }
-.logo,.session{display:none}
-nav{margin:0;flex-direction:row;justify-content:space-around}
-nav button{font-size:8px}
-main{padding:18px 12px 75px}
-.camera-grid{grid-template-columns:1fr}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:700px){
+
+  body{
+    padding-bottom:
+      calc(62px + env(safe-area-inset-bottom));
+  }
+
+  .layout{
+    display:block;
+    min-height:100vh;
+  }
+
+  .sidebar{
+    position:fixed;
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    z-index:1000;
+
+    height:
+      calc(60px + env(safe-area-inset-bottom));
+
+    padding:
+      4px
+      4px
+      env(safe-area-inset-bottom)
+      4px;
+
+    border-top:1px solid #222;
+    border-right:0;
+
+    background:#050605;
+  }
+
+  .logo,
+  .sublogo,
+  .session{
+    display:none;
+  }
+
+  .nav{
+    height:56px;
+    margin:0;
+
+    display:grid;
+    grid-template-columns:
+      repeat(4,1fr);
+
+    gap:3px;
+  }
+
+  .nav button{
+    min-height:48px;
+
+    padding:5px 2px;
+
+    text-align:center;
+
+    font-size:8px;
+  }
+
+  main{
+    width:100%;
+    padding:15px 12px 20px;
+  }
+
+  .topbar{
+    font-size:8px;
+  }
+
+  h1{
+    font-size:19px;
+  }
+
+  .desc{
+    margin-bottom:18px;
+    font-size:9px;
+  }
+
+  .camera-grid{
+    grid-template-columns:1fr;
+    gap:9px;
+  }
+
+  .camera video{
+    width:100%;
+    height:auto;
+  }
+
+  .panel-body{
+    padding:13px;
+    font-size:10px;
+  }
+
+  /*
+    모바일 viewer:
+    영상에 가능한 한 많은 공간 사용
+  */
+
+  #viewer{
+    padding:
+      env(safe-area-inset-top)
+      env(safe-area-inset-right)
+      env(safe-area-inset-bottom)
+      env(safe-area-inset-left);
+  }
+
+  .viewer-inner{
+    height:100%;
+  }
+
+  .viewer-top{
+    min-height:48px;
+    padding:7px 10px;
+
+    font-size:8px;
+  }
+
+  .viewer-video-wrap{
+    border-left:0;
+    border-right:0;
+  }
+
+  #mainVideo{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+  }
+
+  .viewer-controls{
+    padding:7px;
+
+    gap:4px;
+
+    background:#030403;
+  }
+
+  .viewer-controls button{
+    flex:1 1 calc(33.333% - 4px);
+
+    min-height:42px;
+
+    padding:5px 3px;
+
+    font-size:8px;
+  }
+
+  #frameInfo{
+    padding:4px 7px 7px;
+    font-size:8px;
+  }
+
+  #popup{
+    padding:20px;
+  }
+
+}
+
+/* =========================
+   SMALL PHONE
+========================= */
+
+@media(max-width:380px){
+
+  main{
+    padding-left:9px;
+    padding-right:9px;
+  }
+
+  .camera-label,
+  .camera-rec,
+  .camera-time{
+    font-size:8px;
+  }
+
+  .viewer-controls button{
+    font-size:7px;
+  }
+
+}
+
+/* =========================
+   LANDSCAPE PHONE
+========================= */
+
+@media(max-width:700px) and (orientation:landscape){
+
+  body{
+    padding-bottom:0;
+  }
+
+  .sidebar{
+    top:0;
+    bottom:auto;
+    left:auto;
+    width:70px;
+    height:100vh;
+
+    padding:5px;
+
+    border-top:0;
+    border-left:1px solid #222;
+  }
+
+  .nav{
+    height:auto;
+
+    display:flex;
+    flex-direction:column;
+  }
+
+  .nav button{
+    min-height:45px;
+  }
+
+  main{
+    padding-right:80px;
+    padding-bottom:10px;
+  }
+
+  .camera-grid{
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+
+}
+
+/* =========================
+   REDUCED MOTION
+========================= */
+
+@media(prefers-reduced-motion:reduce){
+
+  *,
+  *::before,
+  *::after{
+    animation-duration:.001ms!important;
+    animation-iteration-count:1!important;
+    transition:none!important;
+  }
+
 }
 </style>
 </head>
 
 <body>
 
+<!-- =========================
+     BOOT
+========================= -->
+
 <div id="boot">
-<div class="boot">
 
-<p>NODE_0 // RECOVERED ARCHIVE</p>
-<p>checking node integrity...</p>
-<p>loading surveillance index...</p>
-<p>warning: archive contains corrupted media</p>
-<p>warning: timestamps cannot be trusted</p>
-<p>connection established</p>
-<p id="enter">> ENTER ARCHIVE</p>
+  <div class="boot-inner">
+
+    <div class="boot-line">NODE_0 // RECOVERED ARCHIVE</div>
+    <div class="boot-line">initializing connection...</div>
+    <div class="boot-line">checking surveillance index...</div>
+    <div class="boot-line">audio device detected</div>
+    <div class="boot-line">warning: timestamps corrupted</div>
+    <div class="boot-line">warning: active viewer detected</div>
+    <div class="boot-line">connection established</div>
+
+    <div id="enter">
+      &gt; ENTER ARCHIVE
+    </div>
+
+  </div>
 
 </div>
-</div>
 
+
+<!-- =========================
+     APP
+========================= -->
 
 <div id="app">
 
-<div class="shell">
+  <div class="layout">
 
-<aside>
+    <aside class="sidebar">
 
-<div class="logo">NODE_0</div>
-<div class="small">RECOVERED ARCHIVE</div>
+      <div class="logo">
+        NODE_0
+      </div>
 
-<nav>
-<button class="active" data-page="home">[ INDEX ]</button>
-<button data-page="cams">[ CAMERAS ]</button>
-<button data-page="files">[ FILES ]</button>
-<button data-page="board">[ BOARD ]</button>
-</nav>
+      <div class="sublogo">
+        NIGHTMARE ARCHIVE
+      </div>
 
-<div class="session">
-SESSION: 8F2A-19C<br>
-NODE: UNKNOWN<br>
-STATUS: CONNECTED
+      <nav class="nav">
+
+        <button class="active" data-page="home">
+          [ INDEX ]
+        </button>
+
+        <button data-page="cams">
+          [ CAMERAS ]
+        </button>
+
+        <button data-page="files">
+          [ FILES ]
+        </button>
+
+        <button data-page="board">
+          [ BOARD ]
+        </button>
+
+      </nav>
+
+      <div class="session">
+        SESSION: 8F2A-19C<br>
+        NODE: UNKNOWN<br>
+        VIEWER: ACTIVE
+      </div>
+
+    </aside>
+
+
+    <main>
+
+      <div class="topbar">
+
+        <span>
+          NODE_0 / NIGHTMARE
+        </span>
+
+        <span id="clock">
+          03:17:22
+        </span>
+
+      </div>
+
+
+      <!-- HOME -->
+
+      <section id="home" class="page active">
+
+        <h1>
+          CONNECTION ESTABLISHED
+        </h1>
+
+        <div class="desc">
+          The archive was not supposed to be accessible.
+        </div>
+
+
+        <div class="panel">
+
+          <div class="panel-head">
+            LIVE FEED
+          </div>
+
+          <div class="panel-body">
+
+            <div style="
+              position:relative;
+              width:100%;
+              background:#000;
+              border:1px solid #222;
+              overflow:hidden;
+            ">
+
+              <video
+                id="homeVideo"
+                muted
+                autoplay
+                loop
+                playsinline
+                preload="metadata"
+                style="
+                  display:block;
+                  width:100%;
+                  height:auto;
+                  object-fit:contain;
+                  background:#000;
+                  filter:
+                    grayscale(.75)
+                    contrast(1.3)
+                    brightness(.55);
+                "
+              >
+
+                <source
+                  src="/videos/cam04.mp4"
+                  type="video/mp4"
+                >
+
+              </video>
+
+              <div class="scan"></div>
+              <div class="vhs-line"></div>
+
+              <div style="
+                position:absolute;
+                top:10px;
+                left:10px;
+                color:#ccc;
+                font-size:9px;
+              ">
+                CAM_04
+              </div>
+
+              <div style="
+                position:absolute;
+                top:10px;
+                right:10px;
+                color:#824848;
+                font-size:9px;
+              ">
+                ● LIVE
+              </div>
+
+            </div>
+
+            <br>
+
+            <span class="warning">
+              THIS FEED WAS NOT SUPPOSED TO BE PUBLIC.
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="panel">
+
+          <div class="panel-head">
+            SYSTEM
+          </div>
+
+          <div class="panel-body">
+
+            CAMERAS:
+            06
+
+            <br>
+
+            FILES:
+            23
+
+            <br>
+
+            CURRENT VIEWERS:
+            <span id="users">1</span>
+
+            <br><br>
+
+            STATUS:
+            <span id="status">
+              WATCHING
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- CAMERAS -->
+
+      <section id="cams" class="page">
+
+        <h1>
+          SURVEILLANCE
+        </h1>
+
+        <div class="desc">
+          Recovered camera feeds.
+        </div>
+
+
+        <div class="camera-grid">
+
+
+          <div class="camera" data-cam="01">
+
+            <video muted loop playsinline preload="metadata">
+
+              <source
+                src="/videos/cam01.mp4"
+                type="video/mp4"
+              >
+
+            </video>
+
+            <div class="scan"></div>
+            <div class="vhs-line"></div>
+
+            <div class="camera-label">
+              CAM_01
+            </div>
+
+            <div class="camera-rec">
+              ● REC
+            </div>
+
+            <div class="camera-time">
+              03:16:09
+            </div>
+
+          </div>
+
+
+          <div class="camera" data-cam="02">
+
+            <video muted loop playsinline preload="metadata">
+
+              <source
+                src="/videos/cam02.mp4"
+                type="video/mp4"
+              >
+
+            </video>
+
+            <div class="scan"></div>
+            <div class="vhs-line"></div>
+
+            <div class="camera-label">
+              CAM_02
+            </div>
+
+            <div class="camera-rec">
+              ● REC
+            </div>
+
+            <div class="camera-time">
+              03:17:02
+            </div>
+
+          </div>
+
+
+          <div class="camera" data-cam="03">
+
+            <video muted loop playsinline preload="metadata">
+
+              <source
+                src="/videos/cam03.mp4"
+                type="video/mp4"
+              >
+
+            </video>
+
+            <div class="scan"></div>
+            <div class="vhs-line"></div>
+
+            <div class="camera-label">
+              CAM_03
+            </div>
+
+            <div class="camera-rec">
+              ● REC
+            </div>
+
+            <div class="camera-time">
+              03:17:26
+            </div>
+
+          </div>
+
+
+          <div class="camera" data-cam="04">
+
+            <video muted loop playsinline preload="metadata">
+
+              <source
+                src="/videos/cam04.mp4"
+                type="video/mp4"
+              >
+
+            </video>
+
+            <div class="scan"></div>
+            <div class="vhs-line"></div>
+
+            <div class="camera-label">
+              CAM_04
+            </div>
+
+            <div class="camera-rec">
+              ● LIVE
+            </div>
+
+            <div class="camera-time">
+              03:17:26
+            </div>
+
+          </div>
+
+
+          <div class="camera" data-cam="05">
+
+            <video muted loop playsinline preload="metadata">
+
+              <source
+                src="/videos/cam05.mp4"
+                type="video/mp4"
+              >
+
+            </video>
+
+            <div class="scan"></div>
+            <div class="vhs-line"></div>
+
+            <div class="camera-label">
+              CAM_05
+            </div>
+
+            <div class="camera-rec">
+              ● REC
+            </div>
+
+            <div class="camera-time">
+              03:18:44
+            </div>
+
+          </div>
+
+
+          <div class="camera" data-cam="06">
+
+            <video muted loop playsinline preload="metadata">
+
+              <source
+                src="/videos/cam06.mp4"
+                type="video/mp4"
+              >
+
+            </video>
+
+            <div class="scan"></div>
+            <div class="vhs-line"></div>
+
+            <div class="camera-label">
+              CAM_06
+            </div>
+
+            <div class="camera-rec">
+              ● REC
+            </div>
+
+            <div class="camera-time">
+              UNKNOWN
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </section>
+
+
+      <!-- FILES -->
+
+      <section id="files" class="page">
+
+        <h1>
+          FILES
+        </h1>
+
+        <div class="desc">
+          Recovered fragments.
+        </div>
+
+
+        <div class="panel">
+
+          <div class="file" data-file="001">
+            <span class="file-name">
+              incident_001.log
+            </span>
+
+            <span class="file-size">
+              4 KB
+            </span>
+          </div>
+
+
+          <div class="file" data-file="002">
+            <span class="file-name">
+              camera_04_notes.txt
+            </span>
+
+            <span class="file-size">
+              2 KB
+            </span>
+          </div>
+
+
+          <div class="file" data-file="003">
+            <span class="file-name">
+              frame_1837.dat
+            </span>
+
+            <span class="file-size">
+              UNKNOWN
+            </span>
+          </div>
+
+
+          <div class="file" data-file="004">
+            <span class="file-name">
+              observer.log
+            </span>
+
+            <span class="file-size">
+              1 KB
+            </span>
+          </div>
+
+
+          <div class="file" data-file="005">
+            <span class="file-name">
+              ██████████.dat
+            </span>
+
+            <span class="file-size">
+              ???
+            </span>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- BOARD -->
+
+      <section id="board" class="page">
+
+        <h1>
+          BOARD
+        </h1>
+
+        <div class="desc">
+          Recovered messages.
+        </div>
+
+
+        <div class="panel">
+
+          <div class="panel-body">
+
+
+            <div class="post">
+
+              <div class="post-user">
+                user_0192 / 2014-11-03
+              </div>
+
+              <div class="post-text">
+                anyone know what CAM_04 is?
+              </div>
+
+            </div>
+
+
+            <div class="post">
+
+              <div class="post-user">
+                user_7731 / 2014-11-03
+              </div>
+
+              <div class="post-text">
+                don't open it.
+              </div>
+
+            </div>
+
+
+            <div class="post">
+
+              <div class="post-user">
+                user_0192 / 2014-11-03
+              </div>
+
+              <div class="post-text">
+                why?
+              </div>
+
+            </div>
+
+
+            <div class="post">
+
+              <div class="post-user">
+                user_7731 / 2014-11-03
+              </div>
+
+              <div class="post-text">
+                because it changes when you watch it.
+              </div>
+
+            </div>
+
+
+            <div
+              class="post"
+              id="secretPost"
+              style="display:none"
+            >
+
+              <div class="post-user">
+                unknown / NOW
+              </div>
+
+              <div
+                class="post-text warning"
+              >
+                HE CAN SEE YOU THROUGH CAMERA 04.
+              </div>
+
+            </div>
+
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
 </div>
 
-</aside>
+
+<!-- =========================
+     VIEWER
+========================= -->
+
+<div id="viewer">
+
+  <div class="viewer-inner">
+
+    <div class="viewer-top">
+
+      <span id="viewerTitle">
+        CAM_04 // RECOVERED FOOTAGE
+      </span>
+
+      <button id="closeViewer">
+        CLOSE
+      </button>
+
+    </div>
 
 
-<main>
+    <div class="viewer-video-wrap">
 
-<div class="top">
-<span>NODE_0 / ARCHIVE</span>
-<span id="clock">03:17:22</span>
-</div>
+      <video
+        id="mainVideo"
+        controls
+        playsinline
+        preload="metadata"
+      ></video>
 
-
-<section id="home" class="page active">
-
-<h1>RECOVERED NODE</h1>
-<div class="desc">
-The original owner of this node could not be identified.
-</div>
-
-<div class="panel">
-
-<div class="head">SYSTEM</div>
-
-<div class="body">
-
-ARCHIVE STATUS:
-<span id="status">PARTIALLY RECOVERED</span>
-
-<br><br>
-
-CAMERAS:
-07
-
-<br>
-
-FILES:
-23
-
-<br>
-
-ACTIVE CONNECTIONS:
-<span id="users">0</span>
-
-<br><br>
-
-<span class="warning">
-Do not assume the timestamps are correct.
-</span>
-
-</div>
-</div>
-
-<div class="panel">
-
-<div class="head">LAST MESSAGE</div>
-
-<div class="body">
-
-"The footage isn't showing what happened."
-
-<br><br>
-
-"It's showing what is happening."
-
-</div>
-
-</div>
-
-</section>
+    </div>
 
 
-<section id="cams" class="page">
+    <div class="viewer-controls">
 
-<h1>SURVEILLANCE</h1>
+      <button id="minusFrame">
+        - FRAME
+      </button>
 
-<div class="desc">
-Recovered camera feeds. Some footage may have been altered.
-</div>
+      <button id="plusFrame">
+        + FRAME
+      </button>
 
-<div class="camera-grid">
+      <button id="slow">
+        0.35X
+      </button>
 
-<div class="cam" data-video="terror" data-cam="01">
+      <button id="normal">
+        1X
+      </button>
 
-<video muted loop playsinline preload="metadata">
-<source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/0/08/The_Terror_%281963%29.webm/The_Terror_%281963%29.webm.360p.vp9.webm" type="video/webm">
-</video>
+      <button id="pause">
+        PAUSE
+      </button>
 
-<div class="scan"></div>
-<div class="vhs"></div>
+      <button id="enhance">
+        ENHANCE
+      </button>
 
-<div class="label">CAM_01</div>
-<div class="rec">● REC</div>
-<div class="stamp">1987-11-03 03:16:09</div>
+    </div>
+
+
+    <div id="frameInfo">
+      FRAME: 00000
+    </div>
+
+  </div>
 
 </div>
 
 
-<div class="cam" data-video="terror" data-cam="02">
-
-<video muted loop playsinline preload="metadata">
-<source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/0/08/The_Terror_%281963%29.webm/The_Terror_%281963%29.webm.360p.vp9.webm" type="video/webm">
-</video>
-
-<div class="scan"></div>
-<div class="vhs"></div>
-
-<div class="label">CAM_02</div>
-<div class="rec">● REC</div>
-<div class="stamp">1987-11-03 03:17:02</div>
-
-</div>
-
-
-<div class="cam" data-video="terror" data-cam="03">
-
-<video muted loop playsinline preload="metadata">
-<source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/0/08/The_Terror_%281963%29.webm/The_Terror_%281963%29.webm.360p.vp9.webm" type="video/webm">
-</video>
-
-<div class="scan"></div>
-<div class="vhs"></div>
-
-<div class="label">CAM_03</div>
-<div class="rec">● REC</div>
-<div class="stamp">1987-11-03 03:17:26</div>
-
-</div>
-
-
-<div class="cam" data-video="terror" data-cam="04">
-
-<video muted loop playsinline preload="metadata">
-<source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/0/08/The_Terror_%281963%29.webm/The_Terror_%281963%29.webm.360p.vp9.webm" type="video/webm">
-</video>
-
-<div class="scan"></div>
-<div class="vhs"></div>
-
-<div class="label">CAM_04</div>
-<div class="rec">● REC</div>
-<div class="stamp">1987-11-03 03:17:26</div>
-
-</div>
-
-
-<div class="cam" data-video="terror" data-cam="05">
-
-<video muted loop playsinline preload="metadata">
-<source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/0/08/The_Terror_%281963%29.webm/The_Terror_%281963%29.webm.360p.vp9.webm" type="video/webm">
-</video>
-
-<div class="scan"></div>
-<div class="vhs"></div>
-
-<div class="label">CAM_05</div>
-<div class="rec">● REC</div>
-<div class="stamp">1987-11-03 03:18:44</div>
-
-</div>
-
-
-<div class="cam" data-video="terror" data-cam="06">
-
-<video muted loop playsinline preload="metadata">
-<source src="https://upload.wikimedia.org/wikipedia/commons/transcoded/0/08/The_Terror_%281963%29.webm/The_Terror_%281963%29.webm.360p.vp9.webm" type="video/webm">
-</video>
-
-<div class="scan"></div>
-<div class="vhs"></div>
-
-<div class="label">CAM_06</div>
-<div class="rec">● REC</div>
-<div class="stamp">UNKNOWN</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<section id="files" class="page">
-
-<h1>FILES</h1>
-<div class="desc">Recovered fragments.</div>
-
-<div class="panel">
-
-<div class="list">
-
-<div class="item" data-file="001">
-<b>incident_001.log</b>
-<span>4 KB</span>
-</div>
-
-<div class="item" data-file="002">
-<b>camera_04_notes.txt</b>
-<span>2 KB</span>
-</div>
-
-<div class="item" data-file="003">
-<b>frame_1837.dat</b>
-<span>UNKNOWN</span>
-</div>
-
-<div class="item" data-file="004">
-<b>observer.log</b>
-<span>1 KB</span>
-</div>
-
-<div class="item" data-file="005">
-<b>██████████.dat</b>
-<span>???</span>
-</div>
-
-</div>
-</div>
-
-</section>
-
-
-<section id="board" class="page">
-
-<h1>BOARD</h1>
-<div class="desc">Recovered messages.</div>
-
-<div class="panel">
-<div class="body">
-
-<div class="post">
-<div class="user">user_0192 / 2014-11-03</div>
-<div class="msg">who uploaded camera 04?</div>
-</div>
-
-<div class="post">
-<div class="user">user_7731 / 2014-11-03</div>
-<div class="msg">delete the footage.</div>
-</div>
-
-<div class="post">
-<div class="user">user_0192 / 2014-11-03</div>
-<div class="msg">why?</div>
-</div>
-
-<div class="post">
-<div class="user">user_7731 / 2014-11-03</div>
-<div class="msg">because it changes when you watch it.</div>
-</div>
-
-<div class="post" id="secretPost" style="display:none">
-<div class="user">unknown / NOW</div>
-<div class="msg warning">STOP WATCHING CAMERA 04.</div>
-</div>
-
-</div>
-</div>
-
-</section>
-
-</main>
-</div>
-</div>
-
-
-<!-- VIDEO VIEWER -->
-
-<div id="viewer" class="viewer">
-
-<div class="viewer-inner">
-
-<div class="viewer-title">
-
-<span id="viewerTitle">
-CAM_04 // RECOVERED FOOTAGE
-</span>
-
-<button id="closeViewer">
-CLOSE
-</button>
-
-</div>
-
-<video
-id="mainVideo"
-controls
-playsinline>
-</video>
-
-<div class="controls">
-
-<button id="minusFrame">- FRAME</button>
-<button id="plusFrame">+ FRAME</button>
-<button id="slow">SLOW</button>
-<button id="normal">1X</button>
-<button id="pause">PAUSE</button>
-<button id="enhance">ENHANCE</button>
-
-</div>
-
-<div id="frameInfo">
-FRAME: 0000
-</div>
-
-</div>
-</div>
-
+<!-- =========================
+     POPUP
+========================= -->
 
 <div id="popup">
 
-<div id="popupTitle">
-ARCHIVE MESSAGE
+  <div class="popup-title">
+    ARCHIVE MESSAGE
+  </div>
+
+  <div id="popupText"></div>
+
+  <br>
+
+  <button id="closePopup">
+    CLOSE
+  </button>
+
 </div>
 
-<div id="popupText"></div>
 
-<br>
-
-<button id="closePopup">
-CLOSE
-</button>
-
-</div>
-
+<!-- =========================
+     FINAL
+========================= -->
 
 <div id="final">
 
-<div class="finalText">
+  <div class="final-text">
 
-SESSION TERMINATED
+    SESSION TERMINATED
 
-<br><br>
+    <br><br>
 
-<div class="finalBig">
-CONNECTION REESTABLISHED
-</div>
+    <div class="final-big">
+      CONNECTION REESTABLISHED
+    </div>
 
-<br>
+    <br>
 
-CAMERA: 04<br>
-VIEWERS: 1<br>
-STATUS: WATCHING
+    CAMERA: 04<br>
+    VIEWERS: 1<br>
+    STATUS: WATCHING
 
-<br><br>
+    <br><br>
 
-YOU WERE NOT THE ONLY ONE
-WATCHING THE FOOTAGE.
+    YOU WERE NOT THE ONLY ONE
+    WATCHING THE FOOTAGE.
 
-</div>
+  </div>
 
 </div>
 
 
 <script>
 
-/* =========================
+/* ==================================================
    STATE
-========================= */
+================================================== */
 
-const state={
-entered:false,
-camsOpened:0,
-cam04:false,
-file003:false,
-file005:false,
-board:false,
-horror:0,
-final:false
+const state = {
+  entered:false,
+  cam04:false,
+  file003:false,
+  file005:false,
+  board:false,
+  horror:0,
+  final:false
 };
 
 
-/* =========================
+/* ==================================================
    AUDIO
-========================= */
+================================================== */
 
-let ctx;
-let master;
-let drone;
-let started=false;
+let audioCtx = null;
+let master = null;
+let drone = null;
+let audioStarted = false;
 
-function audioStart(){
 
-if(started)return;
+function startAudio(){
 
-started=true;
+  if(audioStarted) return;
 
-ctx=new(window.AudioContext||window.webkitAudioContext)();
+  audioStarted = true;
 
-master=ctx.createGain();
-master.gain.value=.16;
-master.connect(ctx.destination);
+  audioCtx =
+    new (window.AudioContext ||
+         window.webkitAudioContext)();
 
-const o=ctx.createOscillator();
-const g=ctx.createGain();
+  master =
+    audioCtx.createGain();
 
-o.type="sine";
-o.frequency.value=39;
-g.gain.value=.055;
+  master.gain.value = .15;
 
-o.connect(g);
-g.connect(master);
-o.start();
+  master.connect(
+    audioCtx.destination
+  );
 
-drone=g;
 
+  const oscillator =
+    audioCtx.createOscillator();
+
+  const gain =
+    audioCtx.createGain();
+
+  oscillator.type = "sine";
+
+  oscillator.frequency.value = 38;
+
+  gain.gain.value = .045;
+
+  oscillator.connect(gain);
+
+  gain.connect(master);
+
+  oscillator.start();
+
+  drone = gain;
 }
 
-function noise(duration=.25,amount=.12){
 
-if(!started)return;
+function noise(duration=.25, volume=.1){
 
-const buffer=ctx.createBuffer(
-1,
-ctx.sampleRate*duration,
-ctx.sampleRate
-);
+  if(!audioStarted) return;
 
-const d=buffer.getChannelData(0);
+  const buffer =
+    audioCtx.createBuffer(
+      1,
+      audioCtx.sampleRate * duration,
+      audioCtx.sampleRate
+    );
 
-for(let i=0;i<d.length;i++){
-d[i]=(Math.random()*2-1)*amount;
+  const data =
+    buffer.getChannelData(0);
+
+  for(let i=0;i<data.length;i++){
+
+    data[i] =
+      (Math.random()*2-1) * volume;
+
+  }
+
+  const source =
+    audioCtx.createBufferSource();
+
+  const gain =
+    audioCtx.createGain();
+
+  gain.gain.value = .5;
+
+  source.buffer = buffer;
+
+  source.connect(gain);
+
+  gain.connect(master);
+
+  source.start();
 }
 
-const src=ctx.createBufferSource();
-const gain=ctx.createGain();
 
-gain.gain.value=.5;
+function hit(freq=40, volume=.2){
 
-src.buffer=buffer;
-src.connect(gain);
-gain.connect(master);
+  if(!audioStarted) return;
 
-src.start();
+  const osc =
+    audioCtx.createOscillator();
 
+  const gain =
+    audioCtx.createGain();
+
+  osc.type = "sine";
+
+  osc.frequency.setValueAtTime(
+    freq,
+    audioCtx.currentTime
+  );
+
+  osc.frequency.exponentialRampToValueAtTime(
+    20,
+    audioCtx.currentTime + .8
+  );
+
+  gain.gain.setValueAtTime(
+    .001,
+    audioCtx.currentTime
+  );
+
+  gain.gain.exponentialRampToValueAtTime(
+    volume,
+    audioCtx.currentTime + .02
+  );
+
+  gain.gain.exponentialRampToValueAtTime(
+    .001,
+    audioCtx.currentTime + .8
+  );
+
+  osc.connect(gain);
+
+  gain.connect(master);
+
+  osc.start();
+
+  osc.stop(
+    audioCtx.currentTime + .9
+  );
 }
 
-function hit(freq=45,vol=.3){
-
-if(!started)return;
-
-const o=ctx.createOscillator();
-const g=ctx.createGain();
-
-o.type="sine";
-
-o.frequency.setValueAtTime(
-freq,
-ctx.currentTime
-);
-
-o.frequency.exponentialRampToValueAtTime(
-20,
-ctx.currentTime+.8
-);
-
-g.gain.setValueAtTime(
-.001,
-ctx.currentTime
-);
-
-g.gain.exponentialRampToValueAtTime(
-vol,
-ctx.currentTime+.025
-);
-
-g.gain.exponentialRampToValueAtTime(
-.001,
-ctx.currentTime+.8
-);
-
-o.connect(g);
-g.connect(master);
-
-o.start();
-o.stop(ctx.currentTime+.9);
-
-}
 
 function tick(){
 
-if(!started)return;
+  if(!audioStarted) return;
 
-const o=ctx.createOscillator();
-const g=ctx.createGain();
+  const osc =
+    audioCtx.createOscillator();
 
-o.type="square";
-o.frequency.value=900;
+  const gain =
+    audioCtx.createGain();
 
-g.gain.setValueAtTime(.001,ctx.currentTime);
-g.gain.exponentialRampToValueAtTime(.025,ctx.currentTime+.002);
-g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.035);
+  osc.type = "square";
 
-o.connect(g);
-g.connect(master);
+  osc.frequency.value = 800;
 
-o.start();
-o.stop(ctx.currentTime+.04);
+  gain.gain.setValueAtTime(
+    .001,
+    audioCtx.currentTime
+  );
 
+  gain.gain.exponentialRampToValueAtTime(
+    .025,
+    audioCtx.currentTime+.002
+  );
+
+  gain.gain.exponentialRampToValueAtTime(
+    .001,
+    audioCtx.currentTime+.035
+  );
+
+  osc.connect(gain);
+
+  gain.connect(master);
+
+  osc.start();
+
+  osc.stop(
+    audioCtx.currentTime+.04
+  );
 }
 
 
-/* =========================
+/* ==================================================
    BOOT
-========================= */
+================================================== */
 
-const lines=document.querySelectorAll(".boot p");
+const bootLines =
+  document.querySelectorAll(
+    ".boot-line"
+  );
 
-lines.forEach((p,i)=>{
+
+bootLines.forEach((line,index)=>{
+
+  setTimeout(()=>{
+
+    line.classList.add("show");
+
+  },500 + index*550);
+
+});
+
+
 setTimeout(()=>{
-p.classList.add("on");
 
-if(i===lines.length-1){
-document.getElementById("enter").style.display="block";
-}
+  document.getElementById("enter")
+    .style.display = "block";
 
-},500+i*650);
-});
+},500 + bootLines.length*550);
 
 
-document.getElementById("enter").onclick=async()=>{
+document.getElementById("enter")
+.onclick = async ()=>{
 
-audioStart();
+  startAudio();
 
-if(ctx.state==="suspended")
-await ctx.resume();
+  if(audioCtx.state === "suspended"){
+    await audioCtx.resume();
+  }
 
-document.getElementById("boot").style.display="none";
-document.getElementById("app").style.display="block";
+  document.getElementById("boot")
+    .style.display = "none";
 
-noise(.4,.15);
-hit(50,.08);
+  document.getElementById("app")
+    .style.display = "block";
 
-state.entered=true;
+  state.entered = true;
 
-};
+  noise(.35,.15);
 
-
-/* =========================
-   NAV
-========================= */
-
-document.querySelectorAll("nav button").forEach(btn=>{
-
-btn.onclick=()=>{
-
-tick();
-
-document.querySelectorAll(".page")
-.forEach(p=>p.classList.remove("active"));
-
-document.getElementById(btn.dataset.page)
-.classList.add("active");
-
-document.querySelectorAll("nav button")
-.forEach(b=>b.classList.remove("active"));
-
-btn.classList.add("active");
-
-if(btn.dataset.page==="board"){
-state.board=true;
-document.getElementById("secretPost").style.display="block";
-}
-
-checkHorror();
+  setTimeout(()=>{
+    hit(35,.08);
+  },1300);
 
 };
 
+
+/* ==================================================
+   NAVIGATION
+================================================== */
+
+document.querySelectorAll(
+  ".nav button"
+).forEach(button=>{
+
+  button.onclick = ()=>{
+
+    tick();
+
+    document.querySelectorAll(
+      ".page"
+    ).forEach(page=>{
+      page.classList.remove("active");
+    });
+
+
+    document.getElementById(
+      button.dataset.page
+    ).classList.add("active");
+
+
+    document.querySelectorAll(
+      ".nav button"
+    ).forEach(btn=>{
+      btn.classList.remove("active");
+    });
+
+
+    button.classList.add("active");
+
+
+    if(button.dataset.page === "board"){
+
+      state.board = true;
+
+      document.getElementById(
+        "secretPost"
+      ).style.display = "block";
+
+    }
+
+    checkHorror();
+
+  };
+
 });
 
 
-/* =========================
-   CAMERAS
-========================= */
+/* ==================================================
+   HOME VIDEO
+================================================== */
 
-const viewer=document.getElementById("viewer");
-const mainVideo=document.getElementById("mainVideo");
+const homeVideo =
+  document.getElementById(
+    "homeVideo"
+  );
 
-let currentCam="";
-let frame=0;
 
-
-document.querySelectorAll(".cam").forEach(cam=>{
-
-const v=cam.querySelector("video");
-
-v.play().catch(()=>{});
-
-cam.onclick=()=>{
-
-currentCam=cam.dataset.cam;
-
-state.camsOpened++;
-
-if(currentCam==="04"){
-
-state.cam04=true;
-state.horror+=2;
-
-}
-
-openViewer(
-cam.dataset.cam,
-v.querySelector("source").src
+homeVideo.addEventListener(
+  "error",
+  ()=>{
+    document.getElementById(
+      "status"
+    ).textContent =
+      "VIDEO FILE NOT FOUND";
+  }
 );
 
-checkHorror();
 
-};
+/* ==================================================
+   CAMERA PREVIEWS
+================================================== */
+
+document.querySelectorAll(
+  ".camera video"
+).forEach(video=>{
+
+  video.addEventListener(
+    "loadedmetadata",
+    ()=>{
+      video.currentTime = 0;
+    }
+  );
+
+  video.play().catch(()=>{});
+
+});
+
+
+/* ==================================================
+   VIEWER
+================================================== */
+
+const viewer =
+  document.getElementById(
+    "viewer"
+  );
+
+const mainVideo =
+  document.getElementById(
+    "mainVideo"
+  );
+
+let currentCam = "";
+let frame = 0;
+
+
+document.querySelectorAll(
+  ".camera"
+).forEach(camera=>{
+
+  camera.onclick = ()=>{
+
+    currentCam =
+      camera.dataset.cam;
+
+
+    if(currentCam === "04"){
+
+      state.cam04 = true;
+
+      state.horror += 2;
+
+    }
+
+
+    const video =
+      camera.querySelector("video");
+
+    const source =
+      video.querySelector("source");
+
+
+    openViewer(
+      currentCam,
+      source.src
+    );
+
+    checkHorror();
+
+  };
 
 });
 
 
 function openViewer(cam,src){
 
-viewer.style.display="block";
+  viewer.style.display = "block";
 
-document.getElementById("viewerTitle")
-.textContent=
-"CAM_"+cam+" // RECOVERED FOOTAGE";
+  document.getElementById(
+    "viewerTitle"
+  ).textContent =
+    "CAM_" +
+    cam +
+    " // RECOVERED FOOTAGE";
 
-mainVideo.src=src;
 
-mainVideo.currentTime=
-cam==="04" ? 13 : 3;
+  mainVideo.src = src;
 
-mainVideo.play().catch(()=>{});
+  mainVideo.load();
 
-frame=Math.floor(mainVideo.currentTime*24);
 
-document.getElementById("frameInfo")
-.textContent=
-"FRAME: "+String(frame).padStart(5,"0");
+  mainVideo.onloadedmetadata = ()=>{
 
-noise(.3,.1);
+    /*
+      영상 길이를 넘지 않는 안전한 위치
+    */
 
-if(cam==="04"){
+    const target =
+      Math.min(
+        cam === "04" ? 13 : 3,
+        Math.max(
+          0,
+          mainVideo.duration - .5
+        )
+      );
 
-setTimeout(()=>{
-document.body.classList.add("glitch");
-noise(.7,.18);
-hit(32,.25);
+    mainVideo.currentTime =
+      target;
 
-setTimeout(()=>{
-document.body.classList.remove("glitch");
-},300);
+    frame =
+      Math.floor(
+        target * 24
+      );
 
-},4500);
+    updateFrame();
+
+    mainVideo.play().catch(()=>{});
+
+  };
+
+
+  noise(.3,.1);
+
+
+  if(cam === "04"){
+
+    setTimeout(()=>{
+
+      document.body.classList.add(
+        "glitch"
+      );
+
+      noise(.6,.16);
+
+      hit(30,.22);
+
+      setTimeout(()=>{
+
+        document.body.classList.remove(
+          "glitch"
+        );
+
+      },350);
+
+    },4000);
+
+  }
 
 }
 
+
+document.getElementById(
+  "closeViewer"
+).onclick = ()=>{
+
+  mainVideo.pause();
+
+  viewer.style.display = "none";
+
+  tick();
+
+};
+
+
+/* ==================================================
+   FRAME
+================================================== */
+
+function updateFrame(){
+
+  document.getElementById(
+    "frameInfo"
+  ).textContent =
+    "FRAME: " +
+    String(frame).padStart(5,"0");
+
 }
 
 
-/* =========================
-   VIDEO CONTROLS
-========================= */
+document.getElementById(
+  "plusFrame"
+).onclick = ()=>{
 
-document.getElementById("closeViewer").onclick=()=>{
+  mainVideo.pause();
 
-viewer.style.display="none";
-
-mainVideo.pause();
-
-tick();
-
-};
+  if(!Number.isFinite(
+    mainVideo.duration
+  )) return;
 
 
-document.getElementById("pause").onclick=()=>{
-
-if(mainVideo.paused)
-mainVideo.play();
-else
-mainVideo.pause();
-
-tick();
-
-};
+  const next =
+    Math.min(
+      mainVideo.duration,
+      mainVideo.currentTime +
+      1/24
+    );
 
 
-document.getElementById("slow").onclick=()=>{
-mainVideo.playbackRate=.35;
-tick();
-};
+  mainVideo.currentTime =
+    next;
+
+  frame =
+    Math.floor(
+      next * 24
+    );
 
 
-document.getElementById("normal").onclick=()=>{
-mainVideo.playbackRate=1;
-tick();
-};
+  updateFrame();
 
+  tick();
 
-document.getElementById("plusFrame").onclick=()=>{
+  if(
+    currentCam === "04" &&
+    frame % 37 === 0
+  ){
 
-mainVideo.pause();
+    state.horror++;
 
-mainVideo.currentTime+=1/24;
+    noise(.4,.18);
 
-frame++;
+  }
 
-document.getElementById("frameInfo")
-.textContent=
-"FRAME: "+String(frame).padStart(5,"0");
-
-tick();
-
-if(
-currentCam==="04" &&
-frame%37===0
-){
-
-state.horror++;
-noise(.4,.2);
-}
-
-checkHorror();
+  checkHorror();
 
 };
 
 
-document.getElementById("minusFrame").onclick=()=>{
+document.getElementById(
+  "minusFrame"
+).onclick = ()=>{
 
-mainVideo.pause();
+  mainVideo.pause();
 
-mainVideo.currentTime=Math.max(
-0,
-mainVideo.currentTime-1/24
-);
+  const next =
+    Math.max(
+      0,
+      mainVideo.currentTime -
+      1/24
+    );
 
-frame--;
+  mainVideo.currentTime =
+    next;
 
-document.getElementById("frameInfo")
-.textContent=
-"FRAME: "+String(frame).padStart(5,"0");
+  frame =
+    Math.floor(
+      next * 24
+    );
 
-tick();
+  updateFrame();
+
+  tick();
 
 };
 
 
-/* =========================
+document.getElementById(
+  "pause"
+).onclick = ()=>{
+
+  if(mainVideo.paused)
+    mainVideo.play();
+  else
+    mainVideo.pause();
+
+  tick();
+
+};
+
+
+document.getElementById(
+  "slow"
+).onclick = ()=>{
+
+  mainVideo.playbackRate = .35;
+
+  tick();
+
+};
+
+
+document.getElementById(
+  "normal"
+).onclick = ()=>{
+
+  mainVideo.playbackRate = 1;
+
+  tick();
+
+};
+
+
+/* ==================================================
    ENHANCE
-========================= */
+================================================== */
 
-document.getElementById("enhance").onclick=()=>{
+document.getElementById(
+  "enhance"
+).onclick = ()=>{
 
-mainVideo.style.filter=
-"grayscale(.2) contrast(2) brightness(.9)";
+  mainVideo.style.filter =
+    "grayscale(.2) contrast(2) brightness(.9)";
 
-noise(.8,.2);
+  noise(.8,.2);
 
-hit(35,.22);
+  hit(30,.22);
 
-state.horror++;
+  state.horror++;
 
-setTimeout(()=>{
+  document.getElementById(
+    "frameInfo"
+  ).textContent =
+    "ENHANCEMENT COMPLETE // MATCH FOUND";
 
-document.getElementById("frameInfo")
-.textContent=
-"ENHANCEMENT COMPLETE // MATCH FOUND";
-
-},700);
-
-checkHorror();
+  checkHorror();
 
 };
 
 
-/* =========================
+/* ==================================================
    FILES
-========================= */
+================================================== */
 
-document.querySelectorAll(".item")
-.forEach(item=>{
+document.querySelectorAll(
+  ".file"
+).forEach(file=>{
 
-item.onclick=()=>{
+  file.onclick = ()=>{
 
-tick();
+    tick();
 
-const id=item.dataset.file;
+    const id =
+      file.dataset.file;
 
-let text="";
+    let text = "";
 
-if(id==="001"){
 
-text=
+    if(id === "001"){
+
+      text =
 `INCIDENT_001
 
 03:17:22
@@ -1243,11 +2341,12 @@ Audio contains footsteps.
 The footsteps do not
 match the room acoustics.`;
 
-}
+    }
 
-if(id==="002"){
 
-text=
+    if(id === "002"){
+
+      text =
 `CAMERA_04_NOTES
 
 DO NOT LOOP THE FOOTAGE.
@@ -1256,18 +2355,18 @@ DO NOT ENHANCE FRAME 1837.
 
 DO NOT WATCH AFTER 03:17:26.
 
-Someone wrote this
-underneath the original note:
+Someone added this:
 
 "IT KNOWS WHEN YOU PAUSE."`;
 
-}
+    }
 
-if(id==="003"){
 
-state.file003=true;
+    if(id === "003"){
 
-text=
+      state.file003 = true;
+
+      text =
 `FRAME_1837
 
 MATCH FOUND.
@@ -1277,20 +2376,19 @@ CAMERA: 04
 The image does not match
 the surrounding frames.
 
-There is no explanation
-for the additional object.
-
 DO NOT CLOSE THIS WINDOW
 UNTIL THE VIDEO IS FINISHED.`;
 
-hit(31,.28);
-noise(1,.18);
+      hit(28,.28);
 
-}
+      noise(1,.18);
 
-if(id==="004"){
+    }
 
-text=
+
+    if(id === "004"){
+
+      text =
 `OBSERVER.LOG
 
 03:17:26
@@ -1308,26 +2406,20 @@ viewer connected
 03:17:46
 viewer connected
 
-03:17:51
-viewer connected
-
 ...
 
 There is only one
-connection.
+connection.`;
 
-`;
+    }
 
-}
 
-if(id==="005"){
+    if(id === "005"){
 
-state.file005=true;
+      state.file005 = true;
 
-text=
+      text =
 `██████████.DAT
-
-OPENED.
 
 SESSION: 8F2A-19C
 
@@ -1341,133 +2433,151 @@ OUTSIDE THE ARCHIVE.
 THE VIEWER IS INSIDE
 THE FOOTAGE.`;
 
-hit(24,.4);
-noise(1.5,.2);
+      hit(23,.4);
 
-}
+      noise(1.5,.2);
 
-showPopup(text);
+    }
 
-checkHorror();
 
-};
+    showPopup(text);
+
+    checkHorror();
+
+  };
 
 });
 
 
-/* =========================
+/* ==================================================
    POPUP
-========================= */
+================================================== */
 
 function showPopup(text){
 
-document.getElementById("popupText")
-.textContent=text;
+  document.getElementById(
+    "popupText"
+  ).textContent = text;
 
-document.getElementById("popup")
-.style.display="block";
+  document.getElementById(
+    "popup"
+  ).style.display = "block";
 
 }
 
-document.getElementById("closePopup").onclick=()=>{
 
-document.getElementById("popup")
-.style.display="none";
+document.getElementById(
+  "closePopup"
+).onclick = ()=>{
 
-tick();
+  document.getElementById(
+    "popup"
+  ).style.display = "none";
+
+  tick();
 
 };
 
 
-/* =========================
-   HORROR EVENTS
-========================= */
+/* ==================================================
+   HORROR
+================================================== */
 
 function checkHorror(){
 
-if(state.horror>=5){
+  if(state.horror >= 5){
 
-document.getElementById("status")
-.textContent="CORRUPTED";
+    document.getElementById(
+      "status"
+    ).textContent =
+      "CORRUPTED";
 
-}
+  }
 
-if(
-state.cam04 &&
-state.file003 &&
-state.board
-){
 
-setTimeout(()=>{
+  if(
+    state.cam04 &&
+    state.file003 &&
+    state.board
+  ){
 
-if(!state.final){
+    document.getElementById(
+      "secretPost"
+    ).querySelector(
+      ".post-text"
+    ).textContent =
+      "HE CAN SEE YOU THROUGH CAMERA 04.";
 
-document.getElementById("secretPost")
-.querySelector(".msg")
-.textContent=
-"HE CAN SEE YOU THROUGH CAMERA 04.";
+  }
 
-noise(1,.18);
-hit(29,.3);
 
-}
+  if(
+    state.cam04 &&
+    state.file003 &&
+    state.file005 &&
+    state.board &&
+    !state.final
+  ){
 
-},1200);
+    setTimeout(
+      finalSequence,
+      1800
+    );
 
-}
-
-if(
-state.cam04 &&
-state.file003 &&
-state.file005 &&
-state.board &&
-!state.final
-){
-
-setTimeout(finalSequence,2500);
-
-}
+  }
 
 }
 
 
-/* =========================
+/* ==================================================
    FINAL
-========================= */
+================================================== */
 
 function finalSequence(){
 
-if(state.final)return;
+  if(state.final) return;
 
-state.final=true;
+  state.final = true;
 
-if(drone)
-drone.gain.exponentialRampToValueAtTime(
-.001,
-ctx.currentTime+.2
-);
 
-document.getElementById("final")
-.style.display="flex";
+  if(drone){
 
-setTimeout(()=>{
-noise(.8,.25);
-},1800);
+    drone.gain
+      .exponentialRampToValueAtTime(
+        .001,
+        audioCtx.currentTime+.2
+      );
 
-setTimeout(()=>{
-hit(22,.45);
-},2600);
+  }
 
-setTimeout(()=>{
 
-document.querySelector("#final .finalText")
-.innerHTML=`
+  document.getElementById(
+    "final"
+  ).style.display =
+    "flex";
+
+
+  setTimeout(()=>{
+    noise(.8,.25);
+  },1500);
+
+
+  setTimeout(()=>{
+    hit(21,.45);
+  },2300);
+
+
+  setTimeout(()=>{
+
+    document.querySelector(
+      "#final .final-text"
+    ).innerHTML = `
 
 SESSION TERMINATED
 
 <br><br>
 
-<div class="finalBig">
+<div class="final-big">
 CONNECTION REESTABLISHED
 </div>
 
@@ -1488,69 +2598,129 @@ YOU WERE THE LIVE FEED.
 
 `;
 
-},4200);
+  },4000);
 
 }
 
 
-/* =========================
+/* ==================================================
    CLOCK
-========================= */
+================================================== */
 
-let seconds=3*3600+17*60+22;
+let seconds =
+  3*3600 +
+  17*60 +
+  22;
+
 
 setInterval(()=>{
 
-seconds++;
+  seconds++;
 
-let h=Math.floor(seconds/3600)%24;
-let m=Math.floor(seconds%3600/60);
-let s=seconds%60;
+  const h =
+    Math.floor(seconds/3600)%24;
 
-document.getElementById("clock")
-.textContent=
-[h,m,s]
-.map(x=>String(x).padStart(2,"0"))
-.join(":");
+  const m =
+    Math.floor(
+      seconds%3600/60
+    );
+
+  const s =
+    seconds%60;
+
+
+  document.getElementById(
+    "clock"
+  ).textContent =
+
+    [h,m,s]
+      .map(x=>
+        String(x).padStart(2,"0")
+      )
+      .join(":");
 
 },1000);
 
 
-/* =========================
-   RANDOM VHS EVENTS
-========================= */
+/* ==================================================
+   RANDOM VHS
+================================================== */
 
 setInterval(()=>{
 
-if(!state.entered)return;
+  if(!state.entered)
+    return;
 
-if(Math.random()<.2){
 
-document.body.classList.add("glitch");
+  if(Math.random() < .18){
 
-noise(.15,.08);
+    document.body.classList.add(
+      "glitch"
+    );
 
-setTimeout(()=>{
-document.body.classList.remove("glitch");
-},150);
+    noise(.15,.07);
 
-}
+
+    setTimeout(()=>{
+
+      document.body.classList.remove(
+        "glitch"
+      );
+
+    },150);
+
+  }
 
 },6000);
 
 
-/* =========================
-   USER COUNT
-========================= */
+/* ==================================================
+   VIEWER COUNT
+================================================== */
 
 setTimeout(()=>{
-document.getElementById("users").textContent="1";
+
+  document.getElementById(
+    "users"
+  ).textContent = "1";
+
 },2500);
 
+
 setTimeout(()=>{
-document.getElementById("users").textContent="2";
-noise(.3,.08);
+
+  document.getElementById(
+    "users"
+  ).textContent = "2";
+
+  noise(.25,.07);
+
 },9000);
+
+
+/* ==================================================
+   MOBILE VIDEO FIX
+================================================== */
+
+window.addEventListener(
+  "orientationchange",
+  ()=>{
+
+    setTimeout(()=>{
+
+      if(
+        viewer.style.display === "block"
+      ){
+
+        mainVideo.style.width = "100%";
+        mainVideo.style.height = "100%";
+
+      }
+
+    },300);
+
+  }
+);
 
 </script>
 
